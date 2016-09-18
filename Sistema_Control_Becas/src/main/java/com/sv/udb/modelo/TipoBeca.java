@@ -6,6 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -50,7 +51,7 @@ public class TipoBeca implements Serializable {
     private String nombTipoBeca;
     @Size(max = 100)
     @Column(name = "desc_tipo_beca")
-    private String descTipoBeca;
+    private BigDecimal descTipoBeca;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.LAZY)
     private List<Beca> becaList;
 
@@ -82,11 +83,11 @@ public class TipoBeca implements Serializable {
         this.nombTipoBeca = nombTipoBeca;
     }
 
-    public String getDescTipoBeca() {
+    public BigDecimal getDescTipoBeca() {
         return descTipoBeca;
     }
 
-    public void setDescTipoBeca(String descTipoBeca) {
+    public void setDescTipoBeca(BigDecimal descTipoBeca) {
         this.descTipoBeca = descTipoBeca;
     }
 
