@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "tipo_estado", catalog = "control_becas", schema = "")
+@Table(name = "tipo_estado", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoEstado.findAll", query = "SELECT t FROM TipoEstado t"),
@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoEstado.findByNombTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.nombTipoEsta = :nombTipoEsta"),
     @NamedQuery(name = "TipoEstado.findByDescTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.descTipoEsta = :descTipoEsta")})
 public class TipoEstado implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +52,7 @@ public class TipoEstado implements Serializable {
     @Size(max = 100)
     @Column(name = "desc_tipo_esta")
     private String descTipoEsta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoEsta", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoEsta", fetch = FetchType.EAGER)
     private List<Beca> becaList;
 
     public TipoEstado() {

@@ -12,11 +12,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Stateless
 public class DocumentoFacade extends AbstractFacade<Documento> implements DocumentoFacadeLocal {
-    @PersistenceContext(unitName = "BecasPU")
+
+    @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
 
     @Override

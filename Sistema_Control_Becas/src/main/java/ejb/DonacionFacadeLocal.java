@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Local
 public interface DonacionFacadeLocal {

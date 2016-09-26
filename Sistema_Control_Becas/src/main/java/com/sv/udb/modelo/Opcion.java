@@ -28,10 +28,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "opcion", catalog = "control_becas", schema = "")
+@Table(name = "opcion", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Opcion.findAll", query = "SELECT o FROM Opcion o"),
@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Opcion.findByTituOpci", query = "SELECT o FROM Opcion o WHERE o.tituOpci = :tituOpci"),
     @NamedQuery(name = "Opcion.findByDescOpci", query = "SELECT o FROM Opcion o WHERE o.descOpci = :descOpci")})
 public class Opcion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,13 +56,13 @@ public class Opcion implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "desc_opci")
     private String descOpci;
-    @JoinColumn(name = "codi_estr", referencedColumnName = "codi_estr")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Estructura codiEstr;
     @JoinColumn(name = "codi_preg", referencedColumnName = "codi_preg")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Pregunta codiPreg;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiOpci", fetch = FetchType.LAZY)
+    @JoinColumn(name = "codi_estr", referencedColumnName = "codi_estr")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Estructura codiEstr;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiOpci", fetch = FetchType.EAGER)
     private List<Respuesta> respuestaList;
 
     public Opcion() {
@@ -101,20 +102,20 @@ public class Opcion implements Serializable {
         this.descOpci = descOpci;
     }
 
-    public Estructura getCodiEstr() {
-        return codiEstr;
-    }
-
-    public void setCodiEstr(Estructura codiEstr) {
-        this.codiEstr = codiEstr;
-    }
-
     public Pregunta getCodiPreg() {
         return codiPreg;
     }
 
     public void setCodiPreg(Pregunta codiPreg) {
         this.codiPreg = codiPreg;
+    }
+
+    public Estructura getCodiEstr() {
+        return codiEstr;
+    }
+
+    public void setCodiEstr(Estructura codiEstr) {
+        this.codiEstr = codiEstr;
     }
 
     @XmlTransient

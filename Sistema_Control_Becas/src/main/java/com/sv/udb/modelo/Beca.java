@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "beca", catalog = "control_becas", schema = "")
+@Table(name = "beca", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Beca.findAll", query = "SELECT b FROM Beca b"),
@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Beca.findByFechInic", query = "SELECT b FROM Beca b WHERE b.fechInic = :fechInic"),
     @NamedQuery(name = "Beca.findByFechBaja", query = "SELECT b FROM Beca b WHERE b.fechBaja = :fechBaja")})
 public class Beca implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,16 +63,16 @@ public class Beca implements Serializable {
     @Column(name = "fech_baja")
     @Temporal(TemporalType.DATE)
     private Date fechBaja;
-    @JoinColumn(name = "codi_tipo_esta", referencedColumnName = "codi_tipo_esta")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TipoEstado codiTipoEsta;
     @JoinColumn(name = "codi_tipo_beca", referencedColumnName = "codi_tipo_beca")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoBeca codiTipoBeca;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private SolicitudBeca codiSoliBeca;
-    @OneToMany(mappedBy = "codiBeca", fetch = FetchType.LAZY)
+    @JoinColumn(name = "codi_tipo_esta", referencedColumnName = "codi_tipo_esta")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private TipoEstado codiTipoEsta;
+    @OneToMany(mappedBy = "codiBeca", fetch = FetchType.EAGER)
     private List<Transaccion> transaccionList;
 
     public Beca() {
@@ -126,14 +127,6 @@ public class Beca implements Serializable {
         this.fechBaja = fechBaja;
     }
 
-    public TipoEstado getCodiTipoEsta() {
-        return codiTipoEsta;
-    }
-
-    public void setCodiTipoEsta(TipoEstado codiTipoEsta) {
-        this.codiTipoEsta = codiTipoEsta;
-    }
-
     public TipoBeca getCodiTipoBeca() {
         return codiTipoBeca;
     }
@@ -148,6 +141,14 @@ public class Beca implements Serializable {
 
     public void setCodiSoliBeca(SolicitudBeca codiSoliBeca) {
         this.codiSoliBeca = codiSoliBeca;
+    }
+
+    public TipoEstado getCodiTipoEsta() {
+        return codiTipoEsta;
+    }
+
+    public void setCodiTipoEsta(TipoEstado codiTipoEsta) {
+        this.codiTipoEsta = codiTipoEsta;
     }
 
     @XmlTransient

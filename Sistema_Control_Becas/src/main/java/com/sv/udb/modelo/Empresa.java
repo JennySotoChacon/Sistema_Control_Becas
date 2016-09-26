@@ -29,10 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "empresa", catalog = "control_becas", schema = "")
+@Table(name = "empresa", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Empresa.findAll", query = "SELECT e FROM Empresa e"),
@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findByEncaEmpr", query = "SELECT e FROM Empresa e WHERE e.encaEmpr = :encaEmpr"),
     @NamedQuery(name = "Empresa.findByFechEmpr", query = "SELECT e FROM Empresa e WHERE e.fechEmpr = :fechEmpr")})
 public class Empresa implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,13 +75,13 @@ public class Empresa implements Serializable {
     @Column(name = "fech_empr")
     @Temporal(TemporalType.DATE)
     private Date fechEmpr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.EAGER)
     private List<Donacion> donacionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.EAGER)
     private List<Seguimiento> seguimientoList;
-    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.EAGER)
     private List<Documento> documentoList;
-    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.EAGER)
     private List<SolicitudBeca> solicitudBecaList;
 
     public Empresa() {

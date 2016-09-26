@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "donacion", catalog = "control_becas", schema = "")
+@Table(name = "donacion", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Donacion.findAll", query = "SELECT d FROM Donacion d"),
@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Donacion.findByEstaDona", query = "SELECT d FROM Donacion d WHERE d.estaDona = :estaDona"),
     @NamedQuery(name = "Donacion.findByFechDona", query = "SELECT d FROM Donacion d WHERE d.fechDona = :fechDona")})
 public class Donacion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,9 +80,9 @@ public class Donacion implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechDona;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empresa codiEmpr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDona", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDona", fetch = FetchType.EAGER)
     private List<Transaccion> transaccionList;
 
     public Donacion() {

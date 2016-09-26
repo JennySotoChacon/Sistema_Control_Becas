@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "transaccion", catalog = "control_becas", schema = "")
+@Table(name = "transaccion", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Transaccion.findByFechSaliTran", query = "SELECT t FROM Transaccion t WHERE t.fechSaliTran = :fechSaliTran"),
     @NamedQuery(name = "Transaccion.findByTipoTran", query = "SELECT t FROM Transaccion t WHERE t.tipoTran = :tipoTran")})
 public class Transaccion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,14 +65,14 @@ public class Transaccion implements Serializable {
     private Date fechSaliTran;
     @Column(name = "tipo_tran")
     private Integer tipoTran;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTran", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTran", fetch = FetchType.EAGER)
     private List<Detalle> detalleList;
-    @JoinColumn(name = "codi_beca", referencedColumnName = "codi_beca")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Beca codiBeca;
     @JoinColumn(name = "codi_dona", referencedColumnName = "codi_dona")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Donacion codiDona;
+    @JoinColumn(name = "codi_beca", referencedColumnName = "codi_beca")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Beca codiBeca;
 
     public Transaccion() {
     }
@@ -137,20 +138,20 @@ public class Transaccion implements Serializable {
         this.detalleList = detalleList;
     }
 
-    public Beca getCodiBeca() {
-        return codiBeca;
-    }
-
-    public void setCodiBeca(Beca codiBeca) {
-        this.codiBeca = codiBeca;
-    }
-
     public Donacion getCodiDona() {
         return codiDona;
     }
 
     public void setCodiDona(Donacion codiDona) {
         this.codiDona = codiDona;
+    }
+
+    public Beca getCodiBeca() {
+        return codiBeca;
+    }
+
+    public void setCodiBeca(Beca codiBeca) {
+        this.codiBeca = codiBeca;
     }
 
     @Override

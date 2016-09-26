@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "solicitud_beca", catalog = "control_becas", schema = "")
+@Table(name = "solicitud_beca", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SolicitudBeca.findAll", query = "SELECT s FROM SolicitudBeca s"),
@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SolicitudBeca.findByFechSoliBeca", query = "SELECT s FROM SolicitudBeca s WHERE s.fechSoliBeca = :fechSoliBeca"),
     @NamedQuery(name = "SolicitudBeca.findByEstaSoliBeca", query = "SELECT s FROM SolicitudBeca s WHERE s.estaSoliBeca = :estaSoliBeca")})
 public class SolicitudBeca implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,14 +64,14 @@ public class SolicitudBeca implements Serializable {
     @NotNull
     @Column(name = "esta_soli_beca")
     private int estaSoliBeca;
-    @OneToMany(mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "codiSoliBeca", fetch = FetchType.EAGER)
     private List<Documento> documentoList;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Empresa codiEmpr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.EAGER)
     private List<Beca> becaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.EAGER)
     private List<Respuesta> respuestaList;
 
     public SolicitudBeca() {

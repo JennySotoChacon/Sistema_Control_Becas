@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "seguimiento", catalog = "control_becas", schema = "")
+@Table(name = "seguimiento", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Seguimiento.findAll", query = "SELECT s FROM Seguimiento s"),
@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByFechReco", query = "SELECT s FROM Seguimiento s WHERE s.fechReco = :fechReco"),
     @NamedQuery(name = "Seguimiento.findByDescSegu", query = "SELECT s FROM Seguimiento s WHERE s.descSegu = :descSegu")})
 public class Seguimiento implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +62,7 @@ public class Seguimiento implements Serializable {
     @Column(name = "desc_segu")
     private String descSegu;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empresa codiEmpr;
 
     public Seguimiento() {

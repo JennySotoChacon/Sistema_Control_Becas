@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "pregunta", catalog = "control_becas", schema = "")
+@Table(name = "pregunta", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pregunta.findByCodiPregSupe", query = "SELECT p FROM Pregunta p WHERE p.codiPregSupe = :codiPregSupe"),
     @NamedQuery(name = "Pregunta.findByDescPreg", query = "SELECT p FROM Pregunta p WHERE p.descPreg = :descPreg")})
 public class Pregunta implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +50,10 @@ public class Pregunta implements Serializable {
     @Size(max = 255)
     @Column(name = "desc_preg")
     private String descPreg;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiPreg", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiPreg", fetch = FetchType.EAGER)
     private List<Opcion> opcionList;
     @JoinColumn(name = "codi_secc", referencedColumnName = "codi_secc")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Seccion codiSecc;
 
     public Pregunta() {

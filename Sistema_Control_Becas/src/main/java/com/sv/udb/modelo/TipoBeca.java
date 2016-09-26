@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "tipo_beca", catalog = "control_becas", schema = "")
+@Table(name = "tipo_beca", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoBeca.findAll", query = "SELECT t FROM TipoBeca t"),
@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoBeca.findByNombTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.nombTipoBeca = :nombTipoBeca"),
     @NamedQuery(name = "TipoBeca.findByDescTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.descTipoBeca = :descTipoBeca")})
 public class TipoBeca implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +50,10 @@ public class TipoBeca implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nomb_tipo_beca")
     private String nombTipoBeca;
-    @Size(max = 100)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "desc_tipo_beca")
     private BigDecimal descTipoBeca;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.EAGER)
     private List<Beca> becaList;
 
     public TipoBeca() {

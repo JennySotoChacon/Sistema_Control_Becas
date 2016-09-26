@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "seccion", catalog = "control_becas", schema = "")
+@Table(name = "seccion", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Seccion.findAll", query = "SELECT s FROM Seccion s"),
@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Seccion.findByDescSecc", query = "SELECT s FROM Seccion s WHERE s.descSecc = :descSecc"),
     @NamedQuery(name = "Seccion.findByIndiSecc", query = "SELECT s FROM Seccion s WHERE s.indiSecc = :indiSecc")})
 public class Seccion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,7 +56,7 @@ public class Seccion implements Serializable {
     @Size(max = 255)
     @Column(name = "indi_secc")
     private String indiSecc;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSecc", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSecc", fetch = FetchType.EAGER)
     private List<Pregunta> preguntaList;
 
     public Seccion() {

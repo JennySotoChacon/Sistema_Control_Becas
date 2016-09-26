@@ -26,16 +26,17 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "estructura", catalog = "control_becas", schema = "")
+@Table(name = "estructura", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estructura.findAll", query = "SELECT e FROM Estructura e"),
     @NamedQuery(name = "Estructura.findByCodiEstr", query = "SELECT e FROM Estructura e WHERE e.codiEstr = :codiEstr"),
     @NamedQuery(name = "Estructura.findByTipoEstr", query = "SELECT e FROM Estructura e WHERE e.tipoEstr = :tipoEstr")})
 public class Estructura implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +48,7 @@ public class Estructura implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "tipo_estr")
     private String tipoEstr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEstr", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEstr", fetch = FetchType.EAGER)
     private List<Opcion> opcionList;
 
     public Estructura() {

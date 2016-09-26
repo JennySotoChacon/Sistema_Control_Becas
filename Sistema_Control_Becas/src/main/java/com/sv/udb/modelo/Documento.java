@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "documento", catalog = "control_becas", schema = "")
+@Table(name = "documento", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Documento.findAll", query = "SELECT d FROM Documento d"),
@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Documento.findByFechDocu", query = "SELECT d FROM Documento d WHERE d.fechDocu = :fechDocu"),
     @NamedQuery(name = "Documento.findByEstaDocu", query = "SELECT d FROM Documento d WHERE d.estaDocu = :estaDocu")})
 public class Documento implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,15 +60,15 @@ public class Documento implements Serializable {
     @NotNull
     @Column(name = "esta_docu")
     private int estaDocu;
-    @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Empresa codiEmpr;
     @JoinColumn(name = "codi_tipo_docu", referencedColumnName = "codi_tipo_docu")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoDocumento codiTipoDocu;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private SolicitudBeca codiSoliBeca;
+    @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Empresa codiEmpr;
 
     public Documento() {
     }
@@ -115,14 +116,6 @@ public class Documento implements Serializable {
         this.estaDocu = estaDocu;
     }
 
-    public Empresa getCodiEmpr() {
-        return codiEmpr;
-    }
-
-    public void setCodiEmpr(Empresa codiEmpr) {
-        this.codiEmpr = codiEmpr;
-    }
-
     public TipoDocumento getCodiTipoDocu() {
         return codiTipoDocu;
     }
@@ -137,6 +130,14 @@ public class Documento implements Serializable {
 
     public void setCodiSoliBeca(SolicitudBeca codiSoliBeca) {
         this.codiSoliBeca = codiSoliBeca;
+    }
+
+    public Empresa getCodiEmpr() {
+        return codiEmpr;
+    }
+
+    public void setCodiEmpr(Empresa codiEmpr) {
+        this.codiEmpr = codiEmpr;
     }
 
     @Override

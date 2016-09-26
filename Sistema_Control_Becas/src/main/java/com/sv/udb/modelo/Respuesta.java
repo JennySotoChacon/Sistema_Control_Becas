@@ -24,16 +24,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "respuesta", catalog = "control_becas", schema = "")
+@Table(name = "respuesta", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Respuesta.findAll", query = "SELECT r FROM Respuesta r"),
     @NamedQuery(name = "Respuesta.findByCodiResp", query = "SELECT r FROM Respuesta r WHERE r.codiResp = :codiResp"),
     @NamedQuery(name = "Respuesta.findByDescOpci", query = "SELECT r FROM Respuesta r WHERE r.descOpci = :descOpci")})
 public class Respuesta implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +46,12 @@ public class Respuesta implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "desc_opci")
     private String descOpci;
-    @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private SolicitudBeca codiSoliBeca;
     @JoinColumn(name = "codi_opci", referencedColumnName = "codi_opci")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Opcion codiOpci;
+    @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private SolicitudBeca codiSoliBeca;
 
     public Respuesta() {
     }
@@ -80,20 +81,20 @@ public class Respuesta implements Serializable {
         this.descOpci = descOpci;
     }
 
-    public SolicitudBeca getCodiSoliBeca() {
-        return codiSoliBeca;
-    }
-
-    public void setCodiSoliBeca(SolicitudBeca codiSoliBeca) {
-        this.codiSoliBeca = codiSoliBeca;
-    }
-
     public Opcion getCodiOpci() {
         return codiOpci;
     }
 
     public void setCodiOpci(Opcion codiOpci) {
         this.codiOpci = codiOpci;
+    }
+
+    public SolicitudBeca getCodiSoliBeca() {
+        return codiSoliBeca;
+    }
+
+    public void setCodiSoliBeca(SolicitudBeca codiSoliBeca) {
+        this.codiSoliBeca = codiSoliBeca;
     }
 
     @Override

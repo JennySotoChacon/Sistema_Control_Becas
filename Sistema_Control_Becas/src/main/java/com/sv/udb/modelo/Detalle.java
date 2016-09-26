@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ferna
+ * @author Ariel
  */
 @Entity
-@Table(name = "detalle", catalog = "control_becas", schema = "")
+@Table(name = "detalle", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Detalle.findAll", query = "SELECT d FROM Detalle d"),
@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Detalle.findByFechDeta", query = "SELECT d FROM Detalle d WHERE d.fechDeta = :fechDeta"),
     @NamedQuery(name = "Detalle.findByMontAlum", query = "SELECT d FROM Detalle d WHERE d.montAlum = :montAlum")})
 public class Detalle implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +51,7 @@ public class Detalle implements Serializable {
     @Column(name = "mont_alum")
     private BigDecimal montAlum;
     @JoinColumn(name = "codi_tran", referencedColumnName = "codi_tran")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Transaccion codiTran;
 
     public Detalle() {
