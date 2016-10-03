@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="index2.html" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg pull-left">
+                        <p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/> Mi Sistema
+                    </span>
+                </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="label label-warning">#{loginBean.listNoti.size()}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">Ud. tiene #{loginBean.listNoti.size()} notificaciones</li>
+                                    <li>
+                                        <ul class="menu">
+                                            <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
+                                                <li>
+                                                    <a href="#">
+                                                        <h:panelGroup rendered="#{noti.leid}">
+                                                            <i class="fa fa-folder-open-o text-aqua"/> #{noti.desc}
+                                                        </h:panelGroup>
+                                                        <h:panelGroup rendered="#{!noti.leid}">
+                                                            <i class="fa fa-folder text-aqua"/> #{noti.desc}
+                                                        </h:panelGroup>
+                                                    </a>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <p:graphicImage value="#{globalAppBean.getImage('images/userDemo.png')}" class="user-image" alt="Usuario"/>
+                                    <span class="hidden-xs">Jennyfer Soto</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <p:graphicImage value="#{globalAppBean.getImage('images/userDemo.png')}" class="img-circle" alt="Usuario"/>
+                                        <p>
+                                            Jennyfer Soto
+                                            <small>Usuario #{loginBean.objeUsua.acceUsua} </small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a class="btn btn-default btn-flat" onclick="return false;">Perfil</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <h:form>
+                                                <h:commandLink id="btonSali" class="btn btn-default btn-flat">
+                                                    <p:ajax listener="#{loginBean.cerrSess()}" process="@form" update="@form" global="true"/>
+                                                    <i class="fa fa-minus-square"/> Salir
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+    </ui:composition>
+</html>

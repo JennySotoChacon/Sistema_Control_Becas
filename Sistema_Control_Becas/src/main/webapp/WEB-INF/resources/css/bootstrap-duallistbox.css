@@ -1,0 +1,109 @@
+/*
+ *  Bootstrap Duallistbox - v3.0.2
+ *  A responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
+ *  http://www.virtuosoft.eu/code/bootstrap-duallistbox/
+ *
+ *  Made by István Ujj-Mészáros
+ *  Under Apache License v2.0 License
+ */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url("#{resource['fonts/googleapi/DXI1ORHCpsQm3Vp6mXoaTegdm0LZdjqr5-oayXSOefg.woff2']}") format('woff2'), url("#{resource['fonts/googleapi/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff']}") format('woff');
+}
+.bootstrap-duallistbox-container
+{
+    font-family: "Open Sans";
+}
+
+.bootstrap-duallistbox-container .buttons {
+  width: 100%;
+  margin-bottom: -1px;
+}
+
+.bootstrap-duallistbox-container label {
+  display: block;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.bootstrap-duallistbox-container .info {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 11px;
+}
+
+.bootstrap-duallistbox-container .clear1,
+.bootstrap-duallistbox-container .clear2 {
+  display: none;
+  font-size: 10px;
+}
+
+.bootstrap-duallistbox-container .box1.filtered .clear1,
+.bootstrap-duallistbox-container .box2.filtered .clear2 {
+  display: inline-block;
+}
+
+.bootstrap-duallistbox-container .move,
+.bootstrap-duallistbox-container .remove {
+  width: 60%;
+}
+
+.bootstrap-duallistbox-container .btn-group .btn {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.bootstrap-duallistbox-container select {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-radius: 4px;
+}
+
+.bootstrap-duallistbox-container select option {
+    line-height: 1.5em;
+}
+
+.bootstrap-duallistbox-container select option:active{
+    background: #E35434;
+}
+
+.bootstrap-duallistbox-container .moveall,
+.bootstrap-duallistbox-container .removeall {
+  width: 40%;
+}
+
+.bootstrap-duallistbox-container.bs2compatible .btn-group > .btn + .btn {
+  margin-left: 0;
+}
+
+.bootstrap-duallistbox-container select {
+  width: 100%;
+  height: 300px;
+  padding: 0;
+  color: #333;
+}
+
+.bootstrap-duallistbox-container .filter {
+  display: inline-block;
+  width: 100%;
+  height: 31px;
+  margin: 0 0 5px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.bootstrap-duallistbox-container .filter.placeholder {
+  color: #aaa;
+}
+
+.bootstrap-duallistbox-container.moveonselect .move,
+.bootstrap-duallistbox-container.moveonselect .remove {
+  display:none;
+}
+
+.bootstrap-duallistbox-container.moveonselect .moveall,
+.bootstrap-duallistbox-container.moveonselect .removeall {
+  width: 100%;
+}

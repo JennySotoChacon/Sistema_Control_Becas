@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
+        <!-- Título de la página -->
+        <ui:param name="pageTitl" value="Bienvenido ::: Página Principal"/>
+        <ui:param name="pageNomb" value="Página Principal"/>
+        <ui:param name="pageDesc" value="Esta es la página principal"/>
+        <!-- Activar el link del menú -->
+        <ui:param name="actiIndex" value="active"/>
+        <!-- Scripts personalizados -->
+        <ui:define name="CustomScripts">
+            <!--h:outputScript library="js" name="custom/alum.js"/-->
+        </ui:define>
+        <!-- Elementos propios del boby -->
+        <ui:define name="body">
+            Hola Mundo
+        </ui:define>
+    </ui:composition>
+</html>

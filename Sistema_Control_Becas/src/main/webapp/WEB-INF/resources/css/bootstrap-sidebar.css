@@ -1,0 +1,22 @@
+div.list-group a.list-group-item.active {
+                background-color: #f5f5f5;
+                border-color: #f5f5f5;
+                color: #D9534F;
+            }
+            div.list-group a.list-group-item.active > .badge
+            {
+                background-color: #D9534F;
+                color: #FFF;
+            }
+            
+            div.list-group div.list-group a.list-group-item {
+                padding-left: 35px;
+            }
+            div.list-group div.list-group a.list-group-item.active {
+                background-color: #f5f5f5;
+                color: #D9534F;
+            }
+            div.list-group div.list-group div.list-group a.list-group-item {
+                padding-left: 70px;
+            }
+            

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <p:graphicImage value="#{globalAppBean.getImage('images/userDemo.png')}" class="img-circle" alt="Usuario"/>
+                    </div>
+                    <div class="pull-left info">
+                        <p>Jennyfer Soto</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="treeview #{actiIndex}">
+                        <h:link outcome="index">
+                            <i class="fa fa-home"></i> <span>Principal</span>
+                        </h:link>
+                    </li>
+                    <li class="treeview #{actiMenu1}">
+                        <a href="#">
+                            <i class="fa fa-dashboard"></i> <span>Menú 1</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><h:link outcome="alumnos"><i class="fa fa-user"></i> Alumnos</h:link></li>
+                            <li class="#{actiConfig}"><h:link outcome="config"><i class="fa fa-cogs"></i> Configuración</h:link></li>
+                            <li class="#{actiReport}"><h:link outcome="reportes"><i class="fa fa-file-text-o"></i> Reportes</h:link></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    </ui:composition>
+</html>

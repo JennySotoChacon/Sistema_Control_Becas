@@ -1,0 +1,38 @@
+a > h3 > i { font-size: 50px;text-align: right;position: absolute;top: 7px;right: 27px;outline: none; }
+a { transition: all .3s ease;-webkit-transition: all .3s ease;-moz-transition: all .3s ease;-o-transition: all .3s ease; cursor: pointer; }
+p.list-group-item-text {
+    width: 80%;
+    height: 22px;
+}
+
+/* Visitor */
+a.green i,.green h4.list-group-item-heading { color:#3D9400; }
+a.green:hover { background-color:#3D9400; }
+a.green:hover * { color:#FFF; }
+
+a.bricky i,.bricky h4.list-group-item-heading { color:#C83A2A; }
+a.bricky:hover { background-color:#C83A2A; }
+a.bricky:hover * { color:#FFF; }
+
+a.teal i,.teal h4.list-group-item-heading { color:#569099; }
+a.teal:hover { background-color:#569099; }
+a.teal:hover * { color:#FFF; }
+
+a.default i,.default h4.list-group-item-heading { color:#333333; }
+a.default:hover { background-color:#333333; }
+a.default:hover * { color:#FFF; }
+
+a.orange i,.orange h4.list-group-item-heading { color:#e35434; }
+a.orange:hover { background-color:#e35434; }
+a.orange:hover * { color:#FFF; }
+
+a.yellow i,.yellow h4.list-group-item-heading { color:#FFB848; }
+a.yellow:hover { background-color:#FFB848; }
+a.yellow:hover * { color:#FFF; }
+
+@media (min-width: 768px)
+{
+    .col-sm-4 {
+        margin-bottom: 10px;
+    }
+}

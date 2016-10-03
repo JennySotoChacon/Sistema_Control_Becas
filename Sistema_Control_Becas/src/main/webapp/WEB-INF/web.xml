@@ -9,16 +9,32 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <context-param>
+        <param-name>prefix</param-name>
+        <param-value>poo</param-value>
+    </context-param>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/poo/*</url-pattern>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>filtroSeguridad</filter-name>
+        <filter-class>com.sv.udb.utils.FilterManager</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>filtroSeguridad</filter-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </filter-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+        <param-value>/WEB-INF/resources</param-value>
+    </context-param>
     <welcome-file-list>
         <welcome-file>poo/index.xhtml</welcome-file>
     </welcome-file-list>
