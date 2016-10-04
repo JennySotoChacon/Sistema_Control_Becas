@@ -7,11 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.TipoEstado;
 import ejb.TipoEstadoFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -19,27 +22,27 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "tipoEstadoBean")
-@RequestScoped
-public class TipoEstadoBean {
+@ViewScoped
+public class TipoEstadoBean implements Serializable{
     @EJB
     private TipoEstadoFacadeLocal FCDETipo;
-    private TipoEstado objeAlum;
-    private List<TipoEstado> listAlum;
+    private TipoEstado objeTipoEsta;
+    private List<TipoEstado> listTipoEsta;
     private boolean guardar;        
-    public TipoEstado getObjeAlum() {
-        return objeAlum;
+    public TipoEstado getObjeTipoEsta() {
+        return objeTipoEsta;
     }
 
-    public void setObjeAlum(TipoEstado objeAlum) {
-        this.objeAlum = objeAlum;
+    public void setObjeTipoEsta(TipoEstado objeTipoEsta) {
+        this.objeTipoEsta = objeTipoEsta;
     }
 
     public boolean isGuardar() {
         return guardar;
     }
 
-    public List<TipoEstado> getListAlum() {
-        return listAlum;
+    public List<TipoEstado> getListTipoEsta() {
+        return listTipoEsta;
     }
 
     /**
@@ -51,14 +54,15 @@ public class TipoEstadoBean {
     @PostConstruct
     public void init()
     {
-        this.objeAlum = new TipoEstado();
-        this.guardar = true;
+//        this.objeTipoEsta = new TipoEstado();
+//        this.guardar = true;
+        limpForm();
         this.consTodo();
     }
     
     public void limpForm()
     {
-        this.objeAlum = new TipoEstado();
+        this.objeTipoEsta = new TipoEstado();
         this.guardar = true;        
     }
     
@@ -67,8 +71,8 @@ public class TipoEstadoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDETipo.create(this.objeAlum);
-            this.listAlum.add(this.objeAlum);
+            FCDETipo.create(this.objeTipoEsta);
+            this.listTipoEsta.add(this.objeTipoEsta);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
@@ -87,9 +91,9 @@ public class TipoEstadoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listAlum.remove(this.objeAlum); //Limpia el objeto viejo
-            FCDETipo.edit(this.objeAlum);
-            this.listAlum.add(this.objeAlum); //Agrega el objeto modificado
+            this.listTipoEsta.remove(this.objeTipoEsta); //Limpia el objeto viejo
+            FCDETipo.edit(this.objeTipoEsta);
+            this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
@@ -107,8 +111,9 @@ public class TipoEstadoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDETipo.remove(this.objeAlum);
-            this.listAlum.remove(this.objeAlum);
+            System.out.println("SOY ESPECIAL: "+this.objeTipoEsta);
+            FCDETipo.remove(this.objeTipoEsta);
+            this.listTipoEsta.remove(this.objeTipoEsta);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
@@ -126,7 +131,7 @@ public class TipoEstadoBean {
     {
         try
         {
-            this.listAlum = FCDETipo.findAll();
+            this.listTipoEsta = FCDETipo.findAll();
         }
         catch(Exception ex)
         {
@@ -138,25 +143,26 @@ public class TipoEstadoBean {
         }
     }
     
-//    public void cons()
-//    {
-//        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-//        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
-//        try
-//        {
-//            this.objeAlum = FCDETipo.find(codi);
-//            this.guardar = false;
-//            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-//                    String.format("%s %s", this.objeAlum.getNombAlum(), this.objeAlum.getApelAlum()) + "')");
-//        }
-//        catch(Exception ex)
-//        {
-//            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-//        }
-//        finally
-//        {
-//            
-//        }
-//    }
+    public void cons()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiTipoEstaPara"));
+        
+        try
+        {
+            this.objeTipoEsta = FCDETipo.find(codi);
+            this.guardar = false;
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
+                    String.format("%s", this.objeTipoEsta.getNombTipoEsta()) + "')");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+        finally
+        {
+            
+        }
+    }
     
 }

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
+        <!-- Título de la página -->
+        <ui:param name="pageTitl" value="::: Página Alumnos :::"/>
+        <ui:param name="pageNomb" value="Página Alumnos"/>
+        <ui:param name="pageDesc" value="Mantenimiento de alumnos"/>
+        <!-- Activar el link del menú -->
+        <ui:param name="actiMenu1" value="active"/>
+        <ui:param name="actiAlumnos" value="active"/>
+        <!-- Scripts personalizados -->
+        <ui:define name="CustomScripts">
+        <!--Plugins Selector de Fecha-->
+        <h:outputStylesheet library="css" name="datepicker3.css"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.js"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
+        <!--Plugins Select-->
+        <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+        <h:outputScript library="js" name="bootstrap-select.js"/>
+        <!--Plugins custom-->
+            <h:outputScript library="js" name="custom/alum.js"/>
+        </ui:define>
+        <!-- Elementos propios del boby -->
+        <ui:define name="body">
+        <style>
+            .field-error
+            {
+                color: #a94442; 
+                display: inline;
+                font-size: 10px;
+            }
+            .field-error:first-letter
+            {
+                text-transform: capitalize;
+                color: #003399;
+            }
+            .form-group
+            {
+                margin-bottom: 5px !important;
+            }
+            .bootstrap-select > .btn {
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+        </style>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tabla de Datos</div>
+                        <div class="panel-body">
+                            <h:panelGroup id="ContAlum">
+                                <div id="toolTablAlum">
+                                    <h:form>
+                                        <!--Form exclusivo para los remotos-->
+                                        <p:remoteCommand name="consAlum" actionListener="#{tipoEstadoBean.cons()}" update=":FormAlum" 
+                                                         oncomplete="$('#ModaFormAlum').modal('show');" global="true"/>
+                                        <p:remoteCommand name="elimAlum" actionListener="#{tipoEstadoBean.elim()}" update=":FormAlum :ContAlum" 
+                                                         oncomplete="INIT_OBJE_ALUM();" global="true"/>
+                                        <h:commandLink id="btonNuev" class="btn btn-success">
+                                            <p:ajax listener="#{tipoEstadoBean.limpForm()}" update=":FormAlum" global="true" 
+                                                    oncomplete="$('#ModaFormAlum').modal('show');"/>
+                                            <i class="fa fa-plus"/> Nuevo
+                                        </h:commandLink>
+                                    </h:form>
+                                </div>
+                                <h:dataTable pt:data-id="TablAlum" id="TablAlum" value="#{tipoEstadoBean.listAlum}"
+                                             var="fila" class="boottable" pt:data-toolbar="#toolTablAlum"
+                                             styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                             pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                             pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                             pt:data-single-select="true">                                
+                                    <h:column pt:data-field="state" pt:data-checkbox="true">
+                                    </h:column>
+                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                        <f:facet name="header">Código</f:facet>
+                                        <h:outputText value="#{fila.codiTipoEsta}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                        <f:facet name="header">Nombre</f:facet>
+                                        <h:outputText value="#{fila.nombTipoEsta}"/>   
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Fecha Nac.</f:facet>
+                                        <h:outputText value="#{fila.descTipoEsta}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                        </h:outputText>                            
+                                    </h:column>
+                                </h:dataTable>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Modal -->
+                <div id="ModaFormAlum" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <h:form id="FormAlum" class="form-horizontal">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                    <h4 class="modal-title">Gestión de Alumnos</h4>
+                                </div>
+                                <div class="modal-body" style="padding-top: 2px;">
+                                    <fieldset class="col-md-12">
+                                        <h:inputHidden id="codi" value="#{tipoEstadoBean.objeAlum.codiTipoEsta}" />
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="nomb" value="Nombre: "/> 
+                                            <h:message for="nomb" errorClass="field-error" />
+                                            <h:inputText id="nomb" value="#{tipoEstadoBean.objeAlum.nombTipoEsta}" class="form-control" />
+                                            
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="apel" value="Apellido: "/>
+                                            <h:message for="apel" errorClass="field-error" />
+                                            <h:inputText id="apel" value="#{tipoEstadoBean.objeAlum.descTipoEsta}" class="form-control" />
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                        <div class="input-group-btn right" style="padding-top: 5px;">
+                                            <div class="btn-group">
+                                                <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                    <p:ajax listener="#{tipoEstadoBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                    <i class="fa fa-mail-forward"/> Cerrar
+                                                </h:commandLink>
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{tipoEstadoBean.guardar}">
+                                                    <p:ajax listener="#{tipoEstadoBean.guar()}" process="@form" update="@form :ContAlum" oncomplete="INIT_OBJE_ALUM();" />
+                                                    <i class="fa fa-plus"/> Guardar
+                                                </h:commandLink>
+                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!tipoEstadoBean.guardar}">
+                                                    <p:ajax listener="#{tipoEstadoBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA_ALUM();" />
+                                                    <i class="fa fa-plus"/> Nuevo
+                                                </h:commandLink>
+                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!tipoEstadoBean.guardar}">
+                                                    <p:ajax listener="#{tipoEstadoBean.modi()}" process="@form" update="@form :ContAlum" oncomplete="INIT_OBJE_ALUM();" />
+                                                    <i class="fa fa-edit"/> Modificar
+                                                </h:commandLink>
+                                                <!--
+                                                    # Para corregir el error que redirecciona hice una serie de pasos
+                                                    1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
+                                                    2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
+                                                    3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
+                                                    4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
+                                                -->
+                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!tipoEstadoBean.guardar}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimAlum"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                    <i class="fa fa-times"/> Eliminar
+                                                </h:outputLink>
+                                            </div>
+                                        </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
