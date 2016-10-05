@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -23,15 +24,15 @@ import org.primefaces.context.RequestContext;
 public class BecaBean {
     @EJB
     private BecaFacadeLocal FCDEBeca;
-    private Beca objeAlum;
-    private List<Beca> listAlum;
+    private Beca objeBeca;
+    private List<Beca> listBeca;
     private boolean guardar;        
-    public Beca getObjeAlum() {
-        return objeAlum;
+    public Beca getObjeBeca() {
+        return objeBeca;
     }
 
-    public void setObjeAlum(Beca objeAlum) {
-        this.objeAlum = objeAlum;
+    public void setObjeAlum(Beca objeBeca) {
+        this.objeBeca = objeBeca;
     }
 
     public boolean isGuardar() {
@@ -39,7 +40,7 @@ public class BecaBean {
     }
 
     public List<Beca> getListAlum() {
-        return listAlum;
+        return listBeca;
     }
 
     /**
@@ -51,14 +52,14 @@ public class BecaBean {
     @PostConstruct
     public void init()
     {
-        this.objeAlum = new Beca();
+        this.objeBeca = new Beca();
         this.guardar = true;
         this.consTodo();
     }
     
     public void limpForm()
     {
-        this.objeAlum = new Beca();
+        this.objeBeca = new Beca();
         this.guardar = true;        
     }
     
@@ -67,8 +68,8 @@ public class BecaBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEBeca.create(this.objeAlum);
-            this.listAlum.add(this.objeAlum);
+            FCDEBeca.create(this.objeBeca);
+            this.listBeca.add(this.objeBeca);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
@@ -87,9 +88,9 @@ public class BecaBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listAlum.remove(this.objeAlum); //Limpia el objeto viejo
-            FCDEBeca.edit(this.objeAlum);
-            this.listAlum.add(this.objeAlum); //Agrega el objeto modificado
+            this.listBeca.remove(this.objeBeca); //Limpia el objeto viejo
+            FCDEBeca.edit(this.objeBeca);
+            this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
@@ -107,8 +108,8 @@ public class BecaBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEBeca.remove(this.objeAlum);
-            this.listAlum.remove(this.objeAlum);
+            FCDEBeca.remove(this.objeBeca);
+            this.listBeca.remove(this.objeBeca);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
@@ -126,7 +127,7 @@ public class BecaBean {
     {
         try
         {
-            this.listAlum = FCDEBeca.findAll();
+            this.listBeca = FCDEBeca.findAll();
         }
         catch(Exception ex)
         {
@@ -138,25 +139,25 @@ public class BecaBean {
         }
     }
     
-//    public void cons()
-//    {
-//        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-//        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
-//        try
-//        {
-//            this.objeAlum = FCDEBeca.find(codi);
-//            this.guardar = false;
-//            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-//                    String.format("%s %s", this.objeAlum.getNombAlum(), this.objeAlum.getApelAlum()) + "')");
-//        }
-//        catch(Exception ex)
-//        {
-//            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-//        }
-//        finally
-//        {
-//            
-//        }
-//    }
+    public void cons()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
+        try
+        {
+            this.objeBeca = FCDEBeca.find(codi);
+            this.guardar = false;
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
+                    String.format("%s", this.objeBeca.getMensAlum()) + "')");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+        finally
+        {
+            
+        }
+    }
     
 }

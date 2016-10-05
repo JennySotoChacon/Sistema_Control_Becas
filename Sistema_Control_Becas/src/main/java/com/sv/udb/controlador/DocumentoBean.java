@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -23,15 +24,15 @@ import org.primefaces.context.RequestContext;
 public class DocumentoBean {
     @EJB
     private DocumentoFacadeLocal FCDEDocu;
-    private Documento objeAlum;
-    private List<Documento> listAlum;
+    private Documento objeDocu;
+    private List<Documento> listDocu;
     private boolean guardar;        
-    public Documento getObjeAlum() {
-        return objeAlum;
+    public Documento getObjeDocu() {
+        return objeDocu;
     }
 
-    public void setObjeAlum(Documento objeAlum) {
-        this.objeAlum = objeAlum;
+    public void setObjeAlum(Documento objeDocu) {
+        this.objeDocu = objeDocu;
     }
 
     public boolean isGuardar() {
@@ -39,7 +40,7 @@ public class DocumentoBean {
     }
 
     public List<Documento> getListAlum() {
-        return listAlum;
+        return listDocu;
     }
 
     /**
@@ -51,14 +52,14 @@ public class DocumentoBean {
     @PostConstruct
     public void init()
     {
-        this.objeAlum = new Documento();
+        this.objeDocu = new Documento();
         this.guardar = true;
         this.consTodo();
     }
     
     public void limpForm()
     {
-        this.objeAlum = new Documento();
+        this.objeDocu = new Documento();
         this.guardar = true;        
     }
     
@@ -67,8 +68,8 @@ public class DocumentoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEDocu.create(this.objeAlum);
-            this.listAlum.add(this.objeAlum);
+            FCDEDocu.create(this.objeDocu);
+            this.listDocu.add(this.objeDocu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
@@ -87,9 +88,9 @@ public class DocumentoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listAlum.remove(this.objeAlum); //Limpia el objeto viejo
-            FCDEDocu.edit(this.objeAlum);
-            this.listAlum.add(this.objeAlum); //Agrega el objeto modificado
+            this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
+            FCDEDocu.edit(this.objeDocu);
+            this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
@@ -107,8 +108,8 @@ public class DocumentoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEDocu.remove(this.objeAlum);
-            this.listAlum.remove(this.objeAlum);
+            FCDEDocu.remove(this.objeDocu);
+            this.listDocu.remove(this.objeDocu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
@@ -126,7 +127,7 @@ public class DocumentoBean {
     {
         try
         {
-            this.listAlum = FCDEDocu.findAll();
+            this.listDocu = FCDEDocu.findAll();
         }
         catch(Exception ex)
         {
@@ -138,25 +139,25 @@ public class DocumentoBean {
         }
     }
     
-//    public void cons()
-//    {
-//        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-//        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
-//        try
-//        {
-//            this.objeAlum = FCDEDocu.find(codi);
-//            this.guardar = false;
-//            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-//                    String.format("%s %s", this.objeAlum.getNombAlum(), this.objeAlum.getApelAlum()) + "')");
-//        }
-//        catch(Exception ex)
-//        {
-//            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-//        }
-//        finally
-//        {
-//            
-//        }
-//    }
+    public void cons()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
+        try
+        {
+            this.objeDocu = FCDEDocu.find(codi);
+            this.guardar = false;
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
+                    String.format("%s", this.objeDocu.getRutaDocu()) + "')");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+        finally
+        {
+            
+        }
+    }
     
 }

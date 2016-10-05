@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -23,15 +24,15 @@ import org.primefaces.context.RequestContext;
 public class SeguimientoBean {
     @EJB
     private SeguimientoFacadeLocal FCDESegu;
-    private Seguimiento objeAlum;
-    private List<Seguimiento> listAlum;
+    private Seguimiento objeSegu;
+    private List<Seguimiento> listSegu;
     private boolean guardar;        
-    public Seguimiento getObjeAlum() {
-        return objeAlum;
+    public Seguimiento getObjeSegu() {
+        return objeSegu;
     }
 
-    public void setObjeAlum(Seguimiento objeAlum) {
-        this.objeAlum = objeAlum;
+    public void setObjeAlum(Seguimiento objeSegu) {
+        this.objeSegu = objeSegu;
     }
 
     public boolean isGuardar() {
@@ -39,7 +40,7 @@ public class SeguimientoBean {
     }
 
     public List<Seguimiento> getListAlum() {
-        return listAlum;
+        return listSegu;
     }
 
     /**
@@ -51,14 +52,14 @@ public class SeguimientoBean {
     @PostConstruct
     public void init()
     {
-        this.objeAlum = new Seguimiento();
+        this.objeSegu = new Seguimiento();
         this.guardar = true;
         this.consTodo();
     }
     
     public void limpForm()
     {
-        this.objeAlum = new Seguimiento();
+        this.objeSegu = new Seguimiento();
         this.guardar = true;        
     }
     
@@ -67,8 +68,8 @@ public class SeguimientoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDESegu.create(this.objeAlum);
-            this.listAlum.add(this.objeAlum);
+            FCDESegu.create(this.objeSegu);
+            this.listSegu.add(this.objeSegu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
@@ -87,9 +88,9 @@ public class SeguimientoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listAlum.remove(this.objeAlum); //Limpia el objeto viejo
-            FCDESegu.edit(this.objeAlum);
-            this.listAlum.add(this.objeAlum); //Agrega el objeto modificado
+            this.listSegu.remove(this.objeSegu); //Limpia el objeto viejo
+            FCDESegu.edit(this.objeSegu);
+            this.listSegu.add(this.objeSegu); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
@@ -107,8 +108,8 @@ public class SeguimientoBean {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDESegu.remove(this.objeAlum);
-            this.listAlum.remove(this.objeAlum);
+            FCDESegu.remove(this.objeSegu);
+            this.listSegu.remove(this.objeSegu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
@@ -126,7 +127,7 @@ public class SeguimientoBean {
     {
         try
         {
-            this.listAlum = FCDESegu.findAll();
+            this.listSegu = FCDESegu.findAll();
         }
         catch(Exception ex)
         {
@@ -138,25 +139,25 @@ public class SeguimientoBean {
         }
     }
     
-//    public void cons()
-//    {
-//        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-//        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
-//        try
-//        {
-//            this.objeAlum = FCDESegu.find(codi);
-//            this.guardar = false;
-//            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-//                    String.format("%s %s", this.objeAlum.getNombAlum(), this.objeAlum.getApelAlum()) + "')");
-//        }
-//        catch(Exception ex)
-//        {
-//            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-//        }
-//        finally
-//        {
-//            
-//        }
-//    }
+    public void cons()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
+        try
+        {
+            this.objeSegu = FCDESegu.find(codi);
+            this.guardar = false;
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
+                    String.format("%s", this.objeSegu.getDescSegu()) + "')");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+        finally
+        {
+            
+        }
+    }
     
 }
