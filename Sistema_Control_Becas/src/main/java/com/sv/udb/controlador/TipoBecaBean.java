@@ -33,7 +33,7 @@ public class TipoBecaBean implements Serializable{
         return objeTipo;
     }
 
-    public void setObjeAlum(TipoBeca objeTipo) {
+    public void setObjeTipo(TipoBeca objeTipo) {
         this.objeTipo = objeTipo;
     }
 
@@ -41,7 +41,7 @@ public class TipoBecaBean implements Serializable{
         return guardar;
     }
 
-    public List<TipoBeca> getListBeca() {
+    public List<TipoBeca> getListTipo() {
         return listTipo;
     }
 

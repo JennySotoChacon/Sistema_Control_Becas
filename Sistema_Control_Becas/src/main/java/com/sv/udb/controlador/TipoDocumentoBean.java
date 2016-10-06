@@ -33,7 +33,7 @@ public class TipoDocumentoBean implements Serializable{
         return objeTipo;
     }
 
-    public void setObjeAlum(TipoDocumento objeTipo) {
+    public void setObjeTipo(TipoDocumento objeTipo) {
         this.objeTipo = objeTipo;
     }
 
@@ -41,7 +41,7 @@ public class TipoDocumentoBean implements Serializable{
         return guardar;
     }
 
-    public List<TipoDocumento> getListAlum() {
+    public List<TipoDocumento> getListTipo() {
         return listTipo;
     }
 

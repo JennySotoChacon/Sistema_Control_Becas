@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Donacion;
 import ejb.DonacionFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "donacionBean")
-@RequestScoped
-public class DonacionBean {
+@ViewScoped
+public class DonacionBean implements Serializable{
     @EJB
     private DonacionFacadeLocal FCDEDona;
     private Donacion objeDona;
@@ -31,7 +33,7 @@ public class DonacionBean {
         return objeDona;
     }
 
-    public void setObjeAlum(Donacion objeDona) {
+    public void setObjeDona(Donacion objeDona) {
         this.objeDona = objeDona;
     }
 
@@ -39,7 +41,7 @@ public class DonacionBean {
         return guardar;
     }
 
-    public List<Donacion> getListAlum() {
+    public List<Donacion> getListDona() {
         return listDona;
     }
 

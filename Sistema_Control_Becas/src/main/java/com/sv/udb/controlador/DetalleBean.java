@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Detalle;
 import ejb.DetalleFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "detalleBean")
-@RequestScoped
-public class DetalleBean {
+@ViewScoped
+public class DetalleBean implements Serializable{
     @EJB
     private DetalleFacadeLocal FCDEDeta;
     private Detalle objeDeta;
@@ -31,7 +33,7 @@ public class DetalleBean {
         return objeDeta;
     }
 
-    public void setObjeAlum(Detalle objeDeta) {
+    public void setObjeDeta(Detalle objeDeta) {
         this.objeDeta = objeDeta;
     }
 
@@ -39,7 +41,7 @@ public class DetalleBean {
         return guardar;
     }
 
-    public List<Detalle> getListAlum() {
+    public List<Detalle> getListDeta() {
         return listDeta;
     }
 

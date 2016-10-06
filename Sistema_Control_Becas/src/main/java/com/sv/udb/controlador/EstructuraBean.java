@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Estructura;
 import ejb.EstructuraFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "estructuraBean")
-@RequestScoped
-public class EstructuraBean {
+@ViewScoped
+public class EstructuraBean implements Serializable{
     @EJB
     private EstructuraFacadeLocal FCDEEstr;
     private Estructura objeEstr;
@@ -31,7 +33,7 @@ public class EstructuraBean {
         return objeEstr;
     }
 
-    public void setObjeAlum(Estructura objeEstr) {
+    public void setObjeEstr(Estructura objeEstr) {
         this.objeEstr = objeEstr;
     }
 
@@ -39,7 +41,7 @@ public class EstructuraBean {
         return guardar;
     }
 
-    public List<Estructura> getListAlum() {
+    public List<Estructura> getListEstr() {
         return listEstr;
     }
 

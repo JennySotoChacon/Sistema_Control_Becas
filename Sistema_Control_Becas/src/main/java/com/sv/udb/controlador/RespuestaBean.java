@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Respuesta;
 import ejb.RespuestaFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "respuestaBean")
-@RequestScoped
-public class RespuestaBean {
+@ViewScoped
+public class RespuestaBean implements Serializable{
     @EJB
     private RespuestaFacadeLocal FCDEResp;
     private Respuesta objeResp;
@@ -31,7 +33,7 @@ public class RespuestaBean {
         return objeResp;
     }
 
-    public void setObjeAlum(Respuesta objeResp) {
+    public void setObjeResp(Respuesta objeResp) {
         this.objeResp = objeResp;
     }
 
@@ -39,7 +41,7 @@ public class RespuestaBean {
         return guardar;
     }
 
-    public List<Respuesta> getListAlum() {
+    public List<Respuesta> getListResp() {
         return listResp;
     }
 

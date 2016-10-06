@@ -33,7 +33,7 @@ public class SolicitudBecaBean implements Serializable{
         return objeSoli;
     }
 
-    public void setObjeAlum(SolicitudBeca objeSoli) {
+    public void setObjeSoli(SolicitudBeca objeSoli) {
         this.objeSoli = objeSoli;
     }
 
@@ -41,7 +41,7 @@ public class SolicitudBecaBean implements Serializable{
         return guardar;
     }
 
-    public List<SolicitudBeca> getListAlum() {
+    public List<SolicitudBeca> getListSoli() {
         return listSoli;
     }
 

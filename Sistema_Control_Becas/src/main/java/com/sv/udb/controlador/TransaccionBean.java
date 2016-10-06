@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Transaccion;
 import ejb.TransaccionFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "transaccionBean")
-@RequestScoped
-public class TransaccionBean {
+@ViewScoped
+public class TransaccionBean implements Serializable{
     @EJB
     private TransaccionFacadeLocal FCDETran;
     private Transaccion objeTran;
@@ -31,7 +33,7 @@ public class TransaccionBean {
         return objeTran;
     }
 
-    public void setObjeAlum(Transaccion objeTran) {
+    public void setObjeTran(Transaccion objeTran) {
         this.objeTran = objeTran;
     }
 
@@ -39,7 +41,7 @@ public class TransaccionBean {
         return guardar;
     }
 
-    public List<Transaccion> getListAlum() {
+    public List<Transaccion> getListTran() {
         return listTran;
     }
 

@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Beca;
 import ejb.BecaFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "becaBean")
-@RequestScoped
-public class BecaBean {
+@ViewScoped
+public class BecaBean implements Serializable{
     @EJB
     private BecaFacadeLocal FCDEBeca;
     private Beca objeBeca;
@@ -31,7 +33,7 @@ public class BecaBean {
         return objeBeca;
     }
 
-    public void setObjeAlum(Beca objeBeca) {
+    public void setObjeBeca(Beca objeBeca) {
         this.objeBeca = objeBeca;
     }
 
@@ -39,7 +41,7 @@ public class BecaBean {
         return guardar;
     }
 
-    public List<Beca> getListAlum() {
+    public List<Beca> getListBeca() {
         return listBeca;
     }
 

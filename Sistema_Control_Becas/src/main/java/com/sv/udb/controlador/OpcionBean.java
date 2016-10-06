@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Opcion;
 import ejb.OpcionFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "opcionBean")
-@RequestScoped
-public class OpcionBean {
+@ViewScoped
+public class OpcionBean implements Serializable{
     @EJB
     private OpcionFacadeLocal FCDEOpci;
     private Opcion objeOpci;
@@ -31,7 +33,7 @@ public class OpcionBean {
         return objeOpci;
     }
 
-    public void setObjeAlum(Opcion objeOpci) {
+    public void setObjeOpci(Opcion objeOpci) {
         this.objeOpci = objeOpci;
     }
 
@@ -39,7 +41,7 @@ public class OpcionBean {
         return guardar;
     }
 
-    public List<Opcion> getListAlum() {
+    public List<Opcion> getListOpci() {
         return listOpci;
     }
 

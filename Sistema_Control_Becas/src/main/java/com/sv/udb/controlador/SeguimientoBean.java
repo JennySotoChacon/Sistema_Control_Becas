@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Seguimiento;
 import ejb.SeguimientoFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "seguimientoBean")
-@RequestScoped
-public class SeguimientoBean {
+@ViewScoped
+public class SeguimientoBean implements Serializable{
     @EJB
     private SeguimientoFacadeLocal FCDESegu;
     private Seguimiento objeSegu;
@@ -31,7 +33,7 @@ public class SeguimientoBean {
         return objeSegu;
     }
 
-    public void setObjeAlum(Seguimiento objeSegu) {
+    public void setObjeSegu(Seguimiento objeSegu) {
         this.objeSegu = objeSegu;
     }
 
@@ -39,7 +41,7 @@ public class SeguimientoBean {
         return guardar;
     }
 
-    public List<Seguimiento> getListAlum() {
+    public List<Seguimiento> getListSegu() {
         return listSegu;
     }
 

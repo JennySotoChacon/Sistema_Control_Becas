@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Seccion;
 import ejb.SeccionFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "seccionBean")
-@RequestScoped
-public class SeccionBean {
+@ViewScoped
+public class SeccionBean implements Serializable{
     @EJB
     private SeccionFacadeLocal FCDESecc;
     private Seccion objeSecc;
@@ -31,7 +33,7 @@ public class SeccionBean {
         return objeSecc;
     }
 
-    public void setObjeAlum(Seccion objeSecc) {
+    public void setObjeSecc(Seccion objeSecc) {
         this.objeSecc = objeSecc;
     }
 
@@ -39,7 +41,7 @@ public class SeccionBean {
         return guardar;
     }
 
-    public List<Seccion> getListAlum() {
+    public List<Seccion> getListSecc() {
         return listSecc;
     }
 

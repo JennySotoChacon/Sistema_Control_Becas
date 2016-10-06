@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Documento;
 import ejb.DocumentoFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "documentoBean")
-@RequestScoped
-public class DocumentoBean {
+@ViewScoped
+public class DocumentoBean implements Serializable{
     @EJB
     private DocumentoFacadeLocal FCDEDocu;
     private Documento objeDocu;
@@ -31,7 +33,7 @@ public class DocumentoBean {
         return objeDocu;
     }
 
-    public void setObjeAlum(Documento objeDocu) {
+    public void setObjeDocu(Documento objeDocu) {
         this.objeDocu = objeDocu;
     }
 
@@ -39,7 +41,7 @@ public class DocumentoBean {
         return guardar;
     }
 
-    public List<Documento> getListAlum() {
+    public List<Documento> getListDocu() {
         return listDocu;
     }
 
