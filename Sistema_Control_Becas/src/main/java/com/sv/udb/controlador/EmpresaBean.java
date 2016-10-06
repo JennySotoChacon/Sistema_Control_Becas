@@ -31,7 +31,7 @@ public class EmpresaBean {
         return objeEmpr;
     }
 
-    public void setObjeAlum(Empresa objeEmpr) {
+    public void setObjeEmpr(Empresa objeEmpr) {
         this.objeEmpr = objeEmpr;
     }
 
@@ -39,7 +39,7 @@ public class EmpresaBean {
         return guardar;
     }
 
-    public List<Empresa> getListAlum() {
+    public List<Empresa> getListEmpr() {
         return listEmpr;
     }
     

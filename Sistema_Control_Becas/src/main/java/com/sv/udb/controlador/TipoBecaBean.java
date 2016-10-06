@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.TipoBeca;
 import ejb.TipoBecaFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "tipoBecaBean")
-@RequestScoped
-public class TipoBecaBean {
+@ViewScoped
+public class TipoBecaBean implements Serializable{
     @EJB
     private TipoBecaFacadeLocal FCDETipo;
     private TipoBeca objeTipo;
@@ -39,7 +41,7 @@ public class TipoBecaBean {
         return guardar;
     }
 
-    public List<TipoBeca> getListAlum() {
+    public List<TipoBeca> getListBeca() {
         return listTipo;
     }
 
@@ -142,7 +144,7 @@ public class TipoBecaBean {
     public void cons()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
             this.objeTipo = FCDETipo.find(codi);

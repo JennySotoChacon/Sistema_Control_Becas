@@ -7,12 +7,14 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.TipoDocumento;
 import ejb.TipoDocumentoFacadeLocal;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,8 +22,8 @@ import org.primefaces.context.RequestContext;
  * @author ferna
  */
 @Named(value = "tipoDocumentoBean")
-@RequestScoped
-public class TipoDocumentoBean {
+@ViewScoped
+public class TipoDocumentoBean implements Serializable{
     @EJB
     private TipoDocumentoFacadeLocal FCDETipo;
     private TipoDocumento objeTipo;
@@ -142,7 +144,7 @@ public class TipoDocumentoBean {
     public void cons()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
             this.objeTipo = FCDETipo.find(codi);
