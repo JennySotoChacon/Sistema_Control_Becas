@@ -131,7 +131,7 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{solicitudBecaBean.objeSoli.codiSoliBeca}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="Empr" value="Empresa: "/>
-                                            <h:selectOneMenu id="Empr" value="#{solicitudBecaBean.objeSoli.codiEmpr}" class="form-control">
+                                            <h:selectOneMenu id="Empr" value="#{solicitudBecaBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
