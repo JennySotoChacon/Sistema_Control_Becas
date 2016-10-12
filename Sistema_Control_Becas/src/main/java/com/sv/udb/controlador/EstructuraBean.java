@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Estructura;
 import ejb.EstructuraFacadeLocal;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,7 +30,8 @@ public class EstructuraBean implements Serializable{
     private EstructuraFacadeLocal FCDEEstr;
     private Estructura objeEstr;
     private List<Estructura> listEstr;
-    private boolean guardar;        
+    private boolean guardar;    
+private static Logger log = Logger.getLogger(EstructuraBean.class);    
     public Estructura getObjeEstr() {
         return objeEstr;
     }
@@ -74,10 +77,12 @@ public class EstructuraBean implements Serializable{
             this.listEstr.add(this.objeEstr);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Estructura Guardada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -94,10 +99,12 @@ public class EstructuraBean implements Serializable{
             FCDEEstr.edit(this.objeEstr);
             this.listEstr.add(this.objeEstr); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Estructura Modificada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -114,10 +121,12 @@ public class EstructuraBean implements Serializable{
             this.listEstr.remove(this.objeEstr);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Estructura Eliminada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -130,10 +139,12 @@ public class EstructuraBean implements Serializable{
         try
         {
             this.listEstr = FCDEEstr.findAll();
+            log.info("Estructuras Consultadas");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -151,10 +162,12 @@ public class EstructuraBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeEstr.getTipoEstr()) + "')");
+            log.info("Estructura Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {

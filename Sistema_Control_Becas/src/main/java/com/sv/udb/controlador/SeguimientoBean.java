@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Seguimiento;
 import ejb.SeguimientoFacadeLocal;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,7 +30,8 @@ public class SeguimientoBean implements Serializable{
     private SeguimientoFacadeLocal FCDESegu;
     private Seguimiento objeSegu;
     private List<Seguimiento> listSegu;
-    private boolean guardar;        
+    private boolean guardar;  
+    private static Logger log = Logger.getLogger(SeguimientoBean.class);
     public Seguimiento getObjeSegu() {
         return objeSegu;
     }
@@ -74,10 +77,12 @@ public class SeguimientoBean implements Serializable{
             this.listSegu.add(this.objeSegu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Seguimiento Guardado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -94,10 +99,12 @@ public class SeguimientoBean implements Serializable{
             FCDESegu.edit(this.objeSegu);
             this.listSegu.add(this.objeSegu); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Seguimiento Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -114,10 +121,12 @@ public class SeguimientoBean implements Serializable{
             this.listSegu.remove(this.objeSegu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Seguimiento Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -130,10 +139,12 @@ public class SeguimientoBean implements Serializable{
         try
         {
             this.listSegu = FCDESegu.findAll();
+            log.info("Seguimientos Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -151,10 +162,12 @@ public class SeguimientoBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeSegu.getDescSegu()) + "')");
+            log.info("Seguimiento Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {

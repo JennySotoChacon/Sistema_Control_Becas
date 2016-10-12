@@ -75,7 +75,7 @@ CREATE TABLE tipo_estado (
 codi_tipo_esta int NOT NULL AUTO_INCREMENT, 
 nomb_tipo_esta varchar(50) NOT NULL,
 desc_tipo_esta varchar(100),
-esta_tipo_esta int;
+esta_tipo_esta int,
 PRIMARY KEY (codi_tipo_esta),
 UNIQUE (nomb_tipo_esta));
 

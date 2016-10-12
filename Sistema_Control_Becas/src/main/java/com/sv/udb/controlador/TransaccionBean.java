@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Transaccion;
 import ejb.TransaccionFacadeLocal;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,7 +30,8 @@ public class TransaccionBean implements Serializable{
     private TransaccionFacadeLocal FCDETran;
     private Transaccion objeTran;
     private List<Transaccion> listTran;
-    private boolean guardar;        
+    private boolean guardar;
+    private static Logger log = Logger.getLogger(TransaccionBean.class);
     public Transaccion getObjeTran() {
         return objeTran;
     }
@@ -74,10 +77,12 @@ public class TransaccionBean implements Serializable{
             this.listTran.add(this.objeTran);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Transaccion guardada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -94,10 +99,12 @@ public class TransaccionBean implements Serializable{
             FCDETran.edit(this.objeTran);
             this.listTran.add(this.objeTran); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Transaccion Modificada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -114,10 +121,12 @@ public class TransaccionBean implements Serializable{
             this.listTran.remove(this.objeTran);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Transaccion Eliminada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -130,10 +139,12 @@ public class TransaccionBean implements Serializable{
         try
         {
             this.listTran = FCDETran.findAll();
+            log.info("Transacciones Consultadas");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -151,10 +162,12 @@ public class TransaccionBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeTran.getFechConfTran()) + "')");
+            log.info("Transaccion Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {

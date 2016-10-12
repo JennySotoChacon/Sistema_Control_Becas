@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Detalle;
 import ejb.DetalleFacadeLocal;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,7 +30,8 @@ public class DetalleBean implements Serializable{
     private DetalleFacadeLocal FCDEDeta;
     private Detalle objeDeta;
     private List<Detalle> listDeta;
-    private boolean guardar;        
+    private boolean guardar;      
+    private static Logger log = Logger.getLogger(DetalleBean.class);
     public Detalle getObjeDeta() {
         return objeDeta;
     }
@@ -74,10 +77,13 @@ public class DetalleBean implements Serializable{
             this.listDeta.add(this.objeDeta);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Detalle Guardado");
+            
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -94,10 +100,12 @@ public class DetalleBean implements Serializable{
             FCDEDeta.edit(this.objeDeta);
             this.listDeta.add(this.objeDeta); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Detalle Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -114,10 +122,12 @@ public class DetalleBean implements Serializable{
             this.listDeta.remove(this.objeDeta);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info("Detalle Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -130,10 +140,12 @@ public class DetalleBean implements Serializable{
         try
         {
             this.listDeta = FCDEDeta.findAll();
+            log.info("Detalles Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -151,10 +163,12 @@ public class DetalleBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDeta.getMontAlum()) + "')");
+            log.info("Detalle Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {

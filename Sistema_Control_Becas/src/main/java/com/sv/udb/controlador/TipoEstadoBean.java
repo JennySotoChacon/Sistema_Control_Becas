@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.TipoEstado;
 import ejb.TipoEstadoFacadeLocal;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,7 +30,8 @@ public class TipoEstadoBean implements Serializable{
     private TipoEstadoFacadeLocal FCDETipo;
     private TipoEstado objeTipoEsta;
     private List<TipoEstado> listTipoEsta;
-    private boolean guardar;        
+    private boolean guardar;   
+    private static Logger log = Logger.getLogger(TipoEstadoBean.class);
     public TipoEstado getObjeTipoEsta() {
         return objeTipoEsta;
     }
@@ -76,10 +79,12 @@ public class TipoEstadoBean implements Serializable{
             this.listTipoEsta.add(this.objeTipoEsta);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Tipo Estado Guardado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -96,10 +101,12 @@ public class TipoEstadoBean implements Serializable{
             FCDETipo.edit(this.objeTipoEsta);
             this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Tipo Estado Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -117,10 +124,12 @@ public class TipoEstadoBean implements Serializable{
             FCDETipo.edit(this.objeTipoEsta);
             this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Tipo Estado Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -133,10 +142,12 @@ public class TipoEstadoBean implements Serializable{
         try
         {
             this.listTipoEsta = FCDETipo.findAll();
+            log.info("Tipo Estados Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -155,10 +166,12 @@ public class TipoEstadoBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeTipoEsta.getNombTipoEsta()) + "')");
+            log.info("Tipo Estado Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {

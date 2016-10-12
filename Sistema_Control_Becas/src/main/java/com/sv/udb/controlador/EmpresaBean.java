@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Empresa;
 import ejb.EmpresaFacadeLocal;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,7 +30,8 @@ public class EmpresaBean implements Serializable{
     private EmpresaFacadeLocal FCDEEmpr;
     private Empresa objeEmpr;
     private List<Empresa> listEmpr;
-    private boolean guardar;        
+    private boolean guardar; 
+    private static Logger log = Logger.getLogger(EmpresaBean.class);
     public Empresa getObjeEmpr() {
         return objeEmpr;
     }
@@ -75,10 +78,12 @@ public class EmpresaBean implements Serializable{
             this.listEmpr.add(this.objeEmpr);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Empresa Guardada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -95,10 +100,12 @@ public class EmpresaBean implements Serializable{
             FCDEEmpr.edit(this.objeEmpr);
             this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Empresa Modificada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -116,10 +123,12 @@ public class EmpresaBean implements Serializable{
             FCDEEmpr.edit(this.objeEmpr);
             this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Empresa Eliminada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -132,10 +141,12 @@ public class EmpresaBean implements Serializable{
         try
         {
             this.listEmpr = FCDEEmpr.findAll();
+            log.info("Empresas Consultadas");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -153,10 +164,12 @@ public class EmpresaBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeEmpr.getNombEmpr()) + "')");
+            log.info("Empresa Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {
