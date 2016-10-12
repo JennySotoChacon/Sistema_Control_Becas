@@ -95,6 +95,13 @@ and open the template in the editor.
                                         <f:facet name="header">Descripcion</f:facet>
                                         <h:outputText value="#{fila.descTipoEsta}"/>
                                     </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Estado</f:facet> 
+                                        <h:panelGroup class="label label-success" rendered="#{fila.estaTipoEsta eq '1'}">
+                                       <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaTipoEsta ne '1'}">
+                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                    </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
                         </div>

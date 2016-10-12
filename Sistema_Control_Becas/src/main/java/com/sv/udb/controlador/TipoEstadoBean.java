@@ -71,6 +71,7 @@ public class TipoEstadoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeTipoEsta.setEstaTipoEsta(1);
             FCDETipo.create(this.objeTipoEsta);
             this.listTipoEsta.add(this.objeTipoEsta);
             this.limpForm();
@@ -111,15 +112,15 @@ public class TipoEstadoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            System.out.println("SOY ESPECIAL: "+this.objeTipoEsta);
-            FCDETipo.remove(this.objeTipoEsta);
-            this.listTipoEsta.remove(this.objeTipoEsta);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            this.listTipoEsta.remove(this.objeTipoEsta); //Limpia el objeto viejo
+            this.objeTipoEsta.setEstaTipoEsta(0);
+            FCDETipo.edit(this.objeTipoEsta);
+            this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
         finally
         {

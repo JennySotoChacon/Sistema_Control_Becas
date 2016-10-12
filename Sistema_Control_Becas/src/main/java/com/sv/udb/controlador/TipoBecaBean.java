@@ -70,6 +70,7 @@ public class TipoBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeTipo.setEstaTipoBeca(1);
             FCDETipo.create(this.objeTipo);
             this.listTipo.add(this.objeTipo);
             this.limpForm();
@@ -110,14 +111,15 @@ public class TipoBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDETipo.remove(this.objeTipo);
-            this.listTipo.remove(this.objeTipo);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
+            this.objeTipo.setEstaTipoBeca(0);
+            FCDETipo.edit(this.objeTipo);
+            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
         finally
         {

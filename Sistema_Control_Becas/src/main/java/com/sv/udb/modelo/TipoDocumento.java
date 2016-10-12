@@ -6,27 +6,22 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author Owner
  */
 @Entity
 @Table(name = "tipo_documento", catalog = "sistemas_pilet", schema = "")
@@ -35,7 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoDocumento.findAll", query = "SELECT t FROM TipoDocumento t"),
     @NamedQuery(name = "TipoDocumento.findByCodiTipoDocu", query = "SELECT t FROM TipoDocumento t WHERE t.codiTipoDocu = :codiTipoDocu"),
     @NamedQuery(name = "TipoDocumento.findByNombTipoDocu", query = "SELECT t FROM TipoDocumento t WHERE t.nombTipoDocu = :nombTipoDocu"),
-    @NamedQuery(name = "TipoDocumento.findByDescTipoDocu", query = "SELECT t FROM TipoDocumento t WHERE t.descTipoDocu = :descTipoDocu")})
+    @NamedQuery(name = "TipoDocumento.findByDescTipoDocu", query = "SELECT t FROM TipoDocumento t WHERE t.descTipoDocu = :descTipoDocu"),
+    @NamedQuery(name = "TipoDocumento.findByEstaTipoDocu", query = "SELECT t FROM TipoDocumento t WHERE t.estaTipoDocu = :estaTipoDocu")})
 public class TipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,8 +48,10 @@ public class TipoDocumento implements Serializable {
     @Size(max = 100)
     @Column(name = "desc_tipo_docu")
     private String descTipoDocu;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoDocu", fetch = FetchType.EAGER)
-    private List<Documento> documentoList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_tipo_docu")
+    private int estaTipoDocu;
 
     public TipoDocumento() {
     }
@@ -62,9 +60,10 @@ public class TipoDocumento implements Serializable {
         this.codiTipoDocu = codiTipoDocu;
     }
 
-    public TipoDocumento(Integer codiTipoDocu, String nombTipoDocu) {
+    public TipoDocumento(Integer codiTipoDocu, String nombTipoDocu, int estaTipoDocu) {
         this.codiTipoDocu = codiTipoDocu;
         this.nombTipoDocu = nombTipoDocu;
+        this.estaTipoDocu = estaTipoDocu;
     }
 
     public Integer getCodiTipoDocu() {
@@ -91,13 +90,12 @@ public class TipoDocumento implements Serializable {
         this.descTipoDocu = descTipoDocu;
     }
 
-    @XmlTransient
-    public List<Documento> getDocumentoList() {
-        return documentoList;
+    public int getEstaTipoDocu() {
+        return estaTipoDocu;
     }
 
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+    public void setEstaTipoDocu(int estaTipoDocu) {
+        this.estaTipoDocu = estaTipoDocu;
     }
 
     @Override

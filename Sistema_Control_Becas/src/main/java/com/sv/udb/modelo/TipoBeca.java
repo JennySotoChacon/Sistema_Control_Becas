@@ -7,27 +7,22 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author Owner
  */
 @Entity
 @Table(name = "tipo_beca", catalog = "sistemas_pilet", schema = "")
@@ -36,7 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoBeca.findAll", query = "SELECT t FROM TipoBeca t"),
     @NamedQuery(name = "TipoBeca.findByCodiTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.codiTipoBeca = :codiTipoBeca"),
     @NamedQuery(name = "TipoBeca.findByNombTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.nombTipoBeca = :nombTipoBeca"),
-    @NamedQuery(name = "TipoBeca.findByDescTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.descTipoBeca = :descTipoBeca")})
+    @NamedQuery(name = "TipoBeca.findByDescTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.descTipoBeca = :descTipoBeca"),
+    @NamedQuery(name = "TipoBeca.findByEstaTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.estaTipoBeca = :estaTipoBeca")})
 public class TipoBeca implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,8 +49,10 @@ public class TipoBeca implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "desc_tipo_beca")
     private BigDecimal descTipoBeca;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.EAGER)
-    private List<Beca> becaList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_tipo_beca")
+    private int estaTipoBeca;
 
     public TipoBeca() {
     }
@@ -63,9 +61,10 @@ public class TipoBeca implements Serializable {
         this.codiTipoBeca = codiTipoBeca;
     }
 
-    public TipoBeca(Integer codiTipoBeca, String nombTipoBeca) {
+    public TipoBeca(Integer codiTipoBeca, String nombTipoBeca, int estaTipoBeca) {
         this.codiTipoBeca = codiTipoBeca;
         this.nombTipoBeca = nombTipoBeca;
+        this.estaTipoBeca = estaTipoBeca;
     }
 
     public Integer getCodiTipoBeca() {
@@ -92,13 +91,12 @@ public class TipoBeca implements Serializable {
         this.descTipoBeca = descTipoBeca;
     }
 
-    @XmlTransient
-    public List<Beca> getBecaList() {
-        return becaList;
+    public int getEstaTipoBeca() {
+        return estaTipoBeca;
     }
 
-    public void setBecaList(List<Beca> becaList) {
-        this.becaList = becaList;
+    public void setEstaTipoBeca(int estaTipoBeca) {
+        this.estaTipoBeca = estaTipoBeca;
     }
 
     @Override

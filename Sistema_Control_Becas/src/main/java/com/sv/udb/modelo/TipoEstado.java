@@ -6,27 +6,22 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author Owner
  */
 @Entity
 @Table(name = "tipo_estado", catalog = "sistemas_pilet", schema = "")
@@ -35,7 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoEstado.findAll", query = "SELECT t FROM TipoEstado t"),
     @NamedQuery(name = "TipoEstado.findByCodiTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.codiTipoEsta = :codiTipoEsta"),
     @NamedQuery(name = "TipoEstado.findByNombTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.nombTipoEsta = :nombTipoEsta"),
-    @NamedQuery(name = "TipoEstado.findByDescTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.descTipoEsta = :descTipoEsta")})
+    @NamedQuery(name = "TipoEstado.findByDescTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.descTipoEsta = :descTipoEsta"),
+    @NamedQuery(name = "TipoEstado.findByEstaTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.estaTipoEsta = :estaTipoEsta")})
 public class TipoEstado implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,8 +48,10 @@ public class TipoEstado implements Serializable {
     @Size(max = 100)
     @Column(name = "desc_tipo_esta")
     private String descTipoEsta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoEsta", fetch = FetchType.EAGER)
-    private List<Beca> becaList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_tipo_esta")
+    private int estaTipoEsta;
 
     public TipoEstado() {
     }
@@ -62,9 +60,10 @@ public class TipoEstado implements Serializable {
         this.codiTipoEsta = codiTipoEsta;
     }
 
-    public TipoEstado(Integer codiTipoEsta, String nombTipoEsta) {
+    public TipoEstado(Integer codiTipoEsta, String nombTipoEsta, int estaTipoEsta) {
         this.codiTipoEsta = codiTipoEsta;
         this.nombTipoEsta = nombTipoEsta;
+        this.estaTipoEsta = estaTipoEsta;
     }
 
     public Integer getCodiTipoEsta() {
@@ -91,13 +90,12 @@ public class TipoEstado implements Serializable {
         this.descTipoEsta = descTipoEsta;
     }
 
-    @XmlTransient
-    public List<Beca> getBecaList() {
-        return becaList;
+    public int getEstaTipoEsta() {
+        return estaTipoEsta;
     }
 
-    public void setBecaList(List<Beca> becaList) {
-        this.becaList = becaList;
+    public void setEstaTipoEsta(int estaTipoEsta) {
+        this.estaTipoEsta = estaTipoEsta;
     }
 
     @Override

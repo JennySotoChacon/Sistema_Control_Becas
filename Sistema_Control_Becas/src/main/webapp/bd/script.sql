@@ -53,6 +53,7 @@ CREATE TABLE  tipo_documento (
 codi_tipo_docu int NOT NULL AUTO_INCREMENT, 
 nomb_tipo_docu varchar(50) NOT NULL,
 desc_tipo_docu varchar(100),
+esta_tipo_docu int,
 PRIMARY KEY (codi_tipo_docu),
 UNIQUE (nomb_tipo_docu));
 
@@ -74,6 +75,7 @@ CREATE TABLE tipo_estado (
 codi_tipo_esta int NOT NULL AUTO_INCREMENT, 
 nomb_tipo_esta varchar(50) NOT NULL,
 desc_tipo_esta varchar(100),
+esta_tipo_esta int;
 PRIMARY KEY (codi_tipo_esta),
 UNIQUE (nomb_tipo_esta));
 
@@ -82,6 +84,7 @@ CREATE TABLE  tipo_beca (
 codi_tipo_beca int NOT NULL AUTO_INCREMENT, 
 nomb_tipo_beca varchar(50) NOT NULL,
 desc_tipo_beca  numeric(15,2),
+esta_tipo_beca int,
 PRIMARY KEY (codi_tipo_beca),
 UNIQUE (nomb_tipo_beca));
 
