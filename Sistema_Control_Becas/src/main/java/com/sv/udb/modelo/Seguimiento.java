@@ -56,6 +56,11 @@ public class Seguimiento implements Serializable {
     @Column(name = "fech_reco")
     @Temporal(TemporalType.DATE)
     private Date fechReco;
+    @Basic(optional = true)
+    @NotNull
+    @Size(min = 1, max = 200)
+    @Column(name = "nomb_segu")
+    private String nombSegu;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 150)
@@ -64,6 +69,10 @@ public class Seguimiento implements Serializable {
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empresa codiEmpr;
+     @JoinColumn(name = "padr_segu", referencedColumnName = "padr_segu")
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    private Empresa padrSegu;
+     
 
     public Seguimiento() {
     }
@@ -72,11 +81,28 @@ public class Seguimiento implements Serializable {
         this.codiSegu = codiSegu;
     }
 
-    public Seguimiento(Integer codiSegu, Date fechSegu, Date fechReco, String descSegu) {
+    public Seguimiento(Integer codiSegu, Date fechSegu, Date fechReco,String nombSegu, String descSegu) {
         this.codiSegu = codiSegu;
         this.fechSegu = fechSegu;
         this.fechReco = fechReco;
+        this.nombSegu = nombSegu;
         this.descSegu = descSegu;
+    }
+
+    public Empresa getPadrSegu() {
+        return padrSegu;
+    }
+
+    public void setPadrSegu(Empresa padrSegu) {
+        this.padrSegu = padrSegu;
+    }
+
+    public String getNombSegu() {
+        return nombSegu;
+    }
+
+    public void setNombSegu(String nombSegu) {
+        this.nombSegu = nombSegu;
     }
 
     public Integer getCodiSegu() {
