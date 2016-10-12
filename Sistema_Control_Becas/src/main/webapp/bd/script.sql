@@ -20,6 +20,8 @@ codi_empr int  NOT NULL,
 fech_segu date NOT NULL,
 fech_reco date NOT NULL,
 desc_segu varchar(150) NOT NULL,
+esta_segu int, 
+padr_segu int
 PRIMARY KEY (codi_segu));
 
 alter table seguimiento add foreign key (codi_empr) references empresa (codi_empr);
