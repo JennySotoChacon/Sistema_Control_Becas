@@ -51,8 +51,7 @@ public class Seguimiento implements Serializable {
     @Column(name = "fech_segu")
     @Temporal(TemporalType.DATE)
     private Date fechSegu;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = false)   
     @Column(name = "fech_reco")
     @Temporal(TemporalType.DATE)
     private Date fechReco;
