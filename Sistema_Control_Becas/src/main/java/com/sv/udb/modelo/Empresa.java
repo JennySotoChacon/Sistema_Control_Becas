@@ -7,29 +7,24 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author Owner
  */
 @Entity
 @Table(name = "empresa", catalog = "sistemas_pilet", schema = "")
@@ -41,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findByDireEmpr", query = "SELECT e FROM Empresa e WHERE e.direEmpr = :direEmpr"),
     @NamedQuery(name = "Empresa.findByEmaiEmpr", query = "SELECT e FROM Empresa e WHERE e.emaiEmpr = :emaiEmpr"),
     @NamedQuery(name = "Empresa.findByEncaEmpr", query = "SELECT e FROM Empresa e WHERE e.encaEmpr = :encaEmpr"),
-    @NamedQuery(name = "Empresa.findByFechEmpr", query = "SELECT e FROM Empresa e WHERE e.fechEmpr = :fechEmpr")})
+    @NamedQuery(name = "Empresa.findByFechEmpr", query = "SELECT e FROM Empresa e WHERE e.fechEmpr = :fechEmpr"),
+    @NamedQuery(name = "Empresa.findByEstaEmpr", query = "SELECT e FROM Empresa e WHERE e.estaEmpr = :estaEmpr")})
 public class Empresa implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,14 +71,10 @@ public class Empresa implements Serializable {
     @Column(name = "fech_empr")
     @Temporal(TemporalType.DATE)
     private Date fechEmpr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.EAGER)
-    private List<Donacion> donacionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.EAGER)
-    private List<Seguimiento> seguimientoList;
-    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.EAGER)
-    private List<Documento> documentoList;
-    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.EAGER)
-    private List<SolicitudBeca> solicitudBecaList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_empr")
+    private int estaEmpr;
 
     public Empresa() {
     }
@@ -91,13 +83,14 @@ public class Empresa implements Serializable {
         this.codiEmpr = codiEmpr;
     }
 
-    public Empresa(Integer codiEmpr, String nombEmpr, String direEmpr, String emaiEmpr, String encaEmpr, Date fechEmpr) {
+    public Empresa(Integer codiEmpr, String nombEmpr, String direEmpr, String emaiEmpr, String encaEmpr, Date fechEmpr, int estaEmpr) {
         this.codiEmpr = codiEmpr;
         this.nombEmpr = nombEmpr;
         this.direEmpr = direEmpr;
         this.emaiEmpr = emaiEmpr;
         this.encaEmpr = encaEmpr;
         this.fechEmpr = fechEmpr;
+        this.estaEmpr = estaEmpr;
     }
 
     public Integer getCodiEmpr() {
@@ -148,40 +141,12 @@ public class Empresa implements Serializable {
         this.fechEmpr = fechEmpr;
     }
 
-    @XmlTransient
-    public List<Donacion> getDonacionList() {
-        return donacionList;
+    public int getEstaEmpr() {
+        return estaEmpr;
     }
 
-    public void setDonacionList(List<Donacion> donacionList) {
-        this.donacionList = donacionList;
-    }
-
-    @XmlTransient
-    public List<Seguimiento> getSeguimientoList() {
-        return seguimientoList;
-    }
-
-    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
-        this.seguimientoList = seguimientoList;
-    }
-
-    @XmlTransient
-    public List<Documento> getDocumentoList() {
-        return documentoList;
-    }
-
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
-    }
-
-    @XmlTransient
-    public List<SolicitudBeca> getSolicitudBecaList() {
-        return solicitudBecaList;
-    }
-
-    public void setSolicitudBecaList(List<SolicitudBeca> solicitudBecaList) {
-        this.solicitudBecaList = solicitudBecaList;
+    public void setEstaEmpr(int estaEmpr) {
+        this.estaEmpr = estaEmpr;
     }
 
     @Override

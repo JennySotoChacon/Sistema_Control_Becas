@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
+        <!-- Título de la página -->
+        <ui:param name="pageTitl" value="::: Página Empresas :::"/>
+        <ui:param name="pageNomb" value="Página Empresas"/>
+        <ui:param name="pageDesc" value="Mantenimiento de Empresas"/>
+        <!-- Activar el link del menú -->
+        <ui:param name="actiMenu1" value=""/>
+        <ui:param name="actiAlumnos" value="active"/>
+        <!-- Scripts personalizados -->
+        <ui:define name="CustomScripts">
+        <!--Plugins Selector de Fecha-->
+        <h:outputStylesheet library="css" name="datepicker3.css"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.js"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
+        <!--Plugins Select-->
+        <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+        <h:outputScript library="js" name="bootstrap-select.js"/>
+        <!--Plugins custom-->
+            <h:outputScript library="js" name="custom/general.js"/>
+        </ui:define>
+        <!-- Elementos propios del boby -->
+        <ui:define name="body">
+        <style>
+            .field-error
+            {
+                color: #a94442; 
+                display: inline;
+                font-size: 10px;
+            }
+            .field-error:first-letter
+            {
+                text-transform: capitalize;
+                color: #003399;
+            }
+            .form-group
+            {
+                margin-bottom: 5px !important;
+            }
+            .bootstrap-select > .btn {
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+        </style>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tabla de Datos</div>
+                        <div class="panel-body">
+                            <h:panelGroup id="ContRegi">
+                                <div id="toolTablRegi">
+                                    <h:form>
+                                        <!--Form exclusivo para los remotos-->
+                                        <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" update=":FormRegi" 
+                                                         oncomplete="$('#ModaForm').modal('show');" global="true"/>
+                                        <p:remoteCommand name="elimObje" actionListener="#{empresaBean.elim()}" update=":FormRegi :ContRegi" 
+                                                         oncomplete="INIT_OBJE();" global="true"/>
+                                        <h:commandLink id="btonNuev" class="btn btn-success">
+                                            <p:ajax listener="#{empresaBean.limpForm()}" update=":FormRegi" global="true" 
+                                                    oncomplete="$('#ModaForm').modal('show');"/>
+                                            <i class="fa fa-plus"/> Nuevo
+                                        </h:commandLink>
+                                    </h:form>
+                                </div>
+                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{empresaBean.listEmpr}"
+                                             var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
+                                             styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                             pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                             pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                             pt:data-single-select="true">                                
+                                    <h:column pt:data-field="state" pt:data-checkbox="true">
+                                    </h:column>
+                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                        <f:facet name="header">Código</f:facet>
+                                        <h:outputText value="#{fila.codiEmpr}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                        <f:facet name="header">Empresa</f:facet>
+                                        <h:outputText value="#{fila.nombEmpr}"/>   
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Dirección</f:facet>
+                                        <h:outputText value="#{fila.direEmpr}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Correo electronico</f:facet>
+                                        <h:outputText value="#{fila.emaiEmpr}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Encargado</f:facet>
+                                        <h:outputText value="#{fila.encaEmpr}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Estado</f:facet> 
+                                        <h:panelGroup class="label label-success" rendered="#{fila.estaEmpr eq '1'}">
+                                       <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaEmpr ne '1'}">
+                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                    </h:column>
+                                </h:dataTable>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Modal -->
+                <div id="ModaForm" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <h:form id="FormRegi" class="form-horizontal">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                    <h4 class="modal-title">Gestión de Empresas</h4>
+                                </div>
+                                <div class="modal-body" style="padding-top: 2px;">
+                                    <fieldset class="col-md-12">
+                                        <h:inputHidden id="codi" value="#{empresaBean.objeEmpr.codiEmpr}" />
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="nomb" value="Nombre: "/>
+                                            <h:message for="nomb" errorClass="field-error" />
+                                            <h:inputText id="carn" value="#{empresaBean.objeEmpr.nombEmpr}" class="form-control" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="dire" value="Dirección: "/>
+                                            <h:inputText id="dire" value="#{empresaBean.objeEmpr.direEmpr}" class="form-control"/>
+                                            <h:message for="dire" errorClass="field-error" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="emai" value="Correo electronico: "/>
+                                            <h:inputText id="emai" value="#{empresaBean.objeEmpr.emaiEmpr}" class="form-control"/>
+                                            <h:message for="emai" errorClass="field-error" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="enca" value="Encargado: "/>
+                                            <h:inputText id="enca" value="#{empresaBean.objeEmpr.encaEmpr}" class="form-control"/>
+                                            <h:message for="enca" errorClass="field-error" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="fech" value="Fecha de ingreso: "/>
+                                            <h:inputText id="fech" value="#{empresaBean.objeEmpr.fechEmpr}" class="form-control">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText>
+                                            <h:message for="fech" errorClass="field-error" />
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                        <div class="input-group-btn right" style="padding-top: 5px;">
+                                            <div class="btn-group">
+                                                <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                    <p:ajax listener="#{empresaBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                    <i class="fa fa-mail-forward"/> Cerrar
+                                                </h:commandLink>
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{empresaBean.guardar}">
+                                                    <p:ajax listener="#{empresaBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <i class="fa fa-plus"/> Guardar
+                                                </h:commandLink>
+                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!empresaBean.guardar}">
+                                                    <p:ajax listener="#{empresaBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                    <i class="fa fa-plus"/> Nuevo
+                                                </h:commandLink>
+                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!empresaBean.guardar}">
+                                                    <p:ajax listener="#{empresaBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <i class="fa fa-edit"/> Modificar
+                                                </h:commandLink>
+                                                <!--
+                                                    # Para corregir el error que redirecciona hice una serie de pasos
+                                                    1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
+                                                    2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
+                                                    3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
+                                                    4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
+                                                -->
+                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!empresaBean.guardar}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                    <i class="fa fa-times"/> Eliminar
+                                                </h:outputLink>
+                                            </div>
+                                        </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        </ui:define>
+    </ui:composition>
+</html>

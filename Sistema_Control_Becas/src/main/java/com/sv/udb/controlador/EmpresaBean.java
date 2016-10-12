@@ -70,6 +70,7 @@ public class EmpresaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeEmpr.setEstaEmpr(1);
             FCDEEmpr.create(this.objeEmpr);
             this.listEmpr.add(this.objeEmpr);
             this.limpForm();
@@ -110,14 +111,15 @@ public class EmpresaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEEmpr.remove(this.objeEmpr);
-            this.listEmpr.remove(this.objeEmpr);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            this.listEmpr.remove(this.objeEmpr); //Limpia el objeto viejo
+            this.objeEmpr.setEstaEmpr(0);
+            FCDEEmpr.edit(this.objeEmpr);
+            this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
         finally
         {

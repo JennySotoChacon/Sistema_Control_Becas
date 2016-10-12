@@ -9,6 +9,7 @@ dire_empr varchar(255) NOT NULL,
 emai_empr varchar(70) NOT NULL,
 enca_empr varchar(70) NOT NULL,
 fech_empr date NOT NULL,
+esta_empr int,
 PRIMARY KEY (codi_empr),
 UNIQUE (nomb_empr));
 
