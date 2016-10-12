@@ -148,15 +148,6 @@ and open the template in the editor.
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText>
                                             <h:message for="fech" errorClass="field-error" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="Esta" value="Estado: "/>
-                                            <h:selectOneMenu id="Esta" value="#{solicitudBecaBean.objeSoli.estaSoliBeca}" class="form-control">
-                                                
-                                                <f:selectItem itemValue="#{1}" itemLabel="Activo"/>
-                                                <f:selectItem itemValue="#{0}" itemLabel="Inactivo"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="Esta" errorClass="field-error" />
                                         </div> 
                                     </fieldset>
                                 </div>

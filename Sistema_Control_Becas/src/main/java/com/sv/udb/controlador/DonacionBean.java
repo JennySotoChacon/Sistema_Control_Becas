@@ -75,6 +75,7 @@ public class DonacionBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeDona.setEstaDona(1);
             FCDEDona.create(this.objeDona);
             this.listDona.add(this.objeDona);
             this.limpForm();
@@ -119,9 +120,10 @@ public class DonacionBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEDona.remove(this.objeDona);
-            this.listDona.remove(this.objeDona);
-            this.limpForm();
+            this.objeDona.setEstaDona(0);
+            this.listDona.remove(this.objeDona); //Limpia el objeto viejo
+            FCDEDona.edit(this.objeDona);
+            this.listDona.add(this.objeDona); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             log.info("Donacion Eliminada");
         }

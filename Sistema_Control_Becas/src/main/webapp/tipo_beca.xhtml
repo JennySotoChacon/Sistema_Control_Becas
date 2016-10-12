@@ -92,7 +92,7 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.nombTipoBeca}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Descripcion</f:facet>
+                                        <f:facet name="header">Descuento:</f:facet>
                                         <h:outputText value="#{fila.descTipoBeca}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
@@ -129,7 +129,7 @@ and open the template in the editor.
                                             
                                         </div>
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="desc" value="Descripcion: "/>
+                                            <h:outputLabel  for="desc" value="Descuento: "/>
                                             <h:message for="desc" errorClass="field-error" />
                                             <h:inputText id="desc" value="#{tipoBecaBean.objeTipo.descTipoBeca}" class="form-control" />
                                         </div>

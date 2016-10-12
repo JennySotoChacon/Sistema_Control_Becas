@@ -73,6 +73,7 @@ private static Logger log = Logger.getLogger(SolicitudBecaBean.class);
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeSoli.setEstaSoliBeca(1);
             FCDESoli.create(this.objeSoli);
             this.listSoli.add(this.objeSoli);
             this.limpForm();
@@ -117,9 +118,10 @@ private static Logger log = Logger.getLogger(SolicitudBecaBean.class);
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDESoli.remove(this.objeSoli);
-            this.listSoli.remove(this.objeSoli);
-            this.limpForm();
+            this.objeSoli.setEstaSoliBeca(0);
+            this.listSoli.remove(this.objeSoli); //Limpia el objeto viejo
+            FCDESoli.edit(this.objeSoli);
+            this.listSoli.add(this.objeSoli); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             log.info("Solicitud Eliminada");
         }
