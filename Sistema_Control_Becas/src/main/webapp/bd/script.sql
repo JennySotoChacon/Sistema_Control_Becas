@@ -44,6 +44,7 @@ CREATE TABLE  solicitud_beca (
 codi_soli_beca int NOT NULL AUTO_INCREMENT, 
 codi_empr int,
 carn_alum varchar(10) NOT NULL,
+nomb_alum varchar(100) NOT NULL,
 fech_soli_beca date NOT NULL, 
 esta_soli_beca int NOT NULL,
 PRIMARY KEY (codi_soli_beca));

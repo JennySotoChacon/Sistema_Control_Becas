@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Beca;
 import ejb.BecaFacadeLocal;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -64,7 +65,8 @@ public class BecaBean implements Serializable{
     
     public void limpForm()
     {
-        this.objeBeca = new Beca();
+        this.objeBeca = new Beca();        
+        this.objeBeca.setFechInic(new Date());
         this.guardar = true;        
     }
     

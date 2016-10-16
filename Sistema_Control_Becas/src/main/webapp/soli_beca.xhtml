@@ -87,13 +87,27 @@ and open the template in the editor.
                                         <f:facet name="header">Código</f:facet>
                                         <h:outputText value="#{fila.codiSoliBeca}"/>
                                     </h:column>
-                                    <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                        <f:facet name="header">Empresa</f:facet>
-                                        <h:outputText value="#{fila.codiEmpr.nombEmpr}"/>   
+                                    
+                                    
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Empresa</f:facet> 
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiEmpr.nombEmpr eq null}">
+                                       <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiEmpr.nombEmpr ne null}">
+                                      <h:outputText value="#{fila.codiEmpr.nombEmpr}"/></h:panelGroup>
+                                    </h:column>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">C. Alumno</f:facet>
+                                        <h:outputText value="#{fila.carnAlum}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Alumno</f:facet>
-                                        <h:outputText value="#{fila.carnAlum}"/>
+                                        <f:facet name="header">N. Alumno</f:facet>
+                                        <h:outputText value="#{fila.nombAlum}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Fecha Solicitud</f:facet>
@@ -132,6 +146,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="Empr" value="Empresa: "/>
                                             <h:selectOneMenu id="Empr" value="#{solicitudBecaBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
@@ -142,13 +157,19 @@ and open the template in the editor.
                                             <h:message for="carn" errorClass="field-error" />
                                             <h:inputText id="carn" value="#{solicitudBecaBean.objeSoli.carnAlum}" class="form-control" />
                                         </div>
+                                         <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="nomb" value="Nombre Alumno: "/>
+                                            <h:message for="nomb" errorClass="field-error" />
+                                            <h:inputText id="nomb" value="#{solicitudBecaBean.objeSoli.nombAlum}" class="form-control" />
+                                        </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha Solicitud: "/>
-                                            <h:inputText id="fech" value="#{solicitudBecaBean.objeSoli.fechSoliBeca}" class="form-control">
+                                            <h:inputText  id="fech" value="#{solicitudBecaBean.objeSoli.fechSoliBeca}" class="form-control">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText>
                                             <h:message for="fech" errorClass="field-error" />
-                                        </div> 
+                                        </div>
+                                        
                                     </fieldset>
                                 </div>
                                 <div class="modal-footer">

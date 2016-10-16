@@ -20,7 +20,14 @@ and open the template in the editor.
         <ui:param name="actiIndex" value="active"/>
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
-            <!--h:outputScript library="js" name="custom/alum.js"/-->
+        <!--Plugins Selector de Fecha-->
+        <h:outputStylesheet library="css" name="datepicker3.css"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.js"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
+        <!--Plugins Select-->
+        <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+        <h:outputScript library="js" name="bootstrap-select.js"/>
+        <!--Plugins custom-->
             <h:outputScript library="js" name="custom/general.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->

@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.SolicitudBeca;
 import ejb.SolicitudBecaFacadeLocal;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -65,6 +66,7 @@ private static Logger log = Logger.getLogger(SolicitudBecaBean.class);
     public void limpForm()
     {
         this.objeSoli = new SolicitudBeca();
+        this.objeSoli.setFechSoliBeca(new Date());
         this.guardar = true;        
     }
     
@@ -74,6 +76,7 @@ private static Logger log = Logger.getLogger(SolicitudBecaBean.class);
         try
         {
             this.objeSoli.setEstaSoliBeca(1);
+            this.objeSoli.setFechSoliBeca(new Date());
             FCDESoli.create(this.objeSoli);
             this.listSoli.add(this.objeSoli);
             this.limpForm();

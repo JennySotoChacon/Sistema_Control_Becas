@@ -57,6 +57,12 @@ public class SolicitudBeca implements Serializable {
     private String carnAlum;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "nomb_alum")
+    private String nombAlum;
+    
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "fech_soli_beca")
     @Temporal(TemporalType.DATE)
     private Date fechSoliBeca;
@@ -81,9 +87,10 @@ public class SolicitudBeca implements Serializable {
         this.codiSoliBeca = codiSoliBeca;
     }
 
-    public SolicitudBeca(Integer codiSoliBeca, String carnAlum, Date fechSoliBeca, int estaSoliBeca) {
+    public SolicitudBeca(Integer codiSoliBeca, String carnAlum,String nombAlum, Date fechSoliBeca, int estaSoliBeca) {
         this.codiSoliBeca = codiSoliBeca;
         this.carnAlum = carnAlum;
+        this.nombAlum = nombAlum;
         this.fechSoliBeca = fechSoliBeca;
         this.estaSoliBeca = estaSoliBeca;
     }
@@ -98,6 +105,14 @@ public class SolicitudBeca implements Serializable {
 
     public String getCarnAlum() {
         return carnAlum;
+    }
+
+    public String getNombAlum() {
+        return nombAlum;
+    }
+
+    public void setNombAlum(String nombAlum) {
+        this.nombAlum = nombAlum;
     }
 
     public void setCarnAlum(String carnAlum) {

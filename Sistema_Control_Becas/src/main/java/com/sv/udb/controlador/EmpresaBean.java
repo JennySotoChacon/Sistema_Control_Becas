@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Empresa;
 import ejb.EmpresaFacadeLocal;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -57,7 +58,7 @@ public class EmpresaBean implements Serializable{
     @PostConstruct
     public void init()
     {
-        this.objeEmpr = new Empresa();
+        this.objeEmpr = new Empresa();        
         this.guardar = true;
         this.consTodo();
     }
@@ -65,6 +66,7 @@ public class EmpresaBean implements Serializable{
     public void limpForm()
     {
         this.objeEmpr = new Empresa();
+        this.objeEmpr.setFechEmpr(new Date());
         this.guardar = true;        
     }
     

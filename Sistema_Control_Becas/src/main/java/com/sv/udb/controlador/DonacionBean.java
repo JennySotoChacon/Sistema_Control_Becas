@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Donacion;
 import ejb.DonacionFacadeLocal;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -66,7 +67,8 @@ public class DonacionBean implements Serializable{
     
     public void limpForm()
     {
-        this.objeDona = new Donacion();
+        this.objeDona = new Donacion();        
+        this.objeDona.setFechDona(new Date());
         this.guardar = true;        
     }
     

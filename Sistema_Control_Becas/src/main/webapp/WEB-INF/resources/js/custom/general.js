@@ -35,6 +35,7 @@ $(document).ready(function() {
     $('#ModaForm').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
     });
+     
 
     
     INIT_OBJE();
@@ -49,4 +50,9 @@ function INIT_OBJE()
 function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
+     $("#FormRegi\\:fech").initDatePick();
+     
+     
+         
+      
 }
