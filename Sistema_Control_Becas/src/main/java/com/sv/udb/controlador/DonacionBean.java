@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Donacion;
 import ejb.DonacionFacadeLocal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,9 @@ public class DonacionBean implements Serializable{
     {
         this.objeDona = new Donacion();        
         this.objeDona.setFechDona(new Date());
+        this.objeDona.setMontTot(BigDecimal.ZERO);
+        this.objeDona.setMontPend(BigDecimal.ZERO);
+        this.objeDona.setCantCuot(BigDecimal.ZERO);        
         this.guardar = true;        
     }
     
@@ -77,6 +81,12 @@ public class DonacionBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            BigDecimal total = this.objeDona.getCantCuot().multiply(BigDecimal.valueOf(objeDona.getPlazDona()));
+            this.objeDona.setMontTot(total);
+            if(this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0))==0 ||this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0.00))==0 )
+            {
+                this.objeDona.setMontPend(total);
+            }            
             this.objeDona.setEstaDona(1);
             FCDEDona.create(this.objeDona);
             this.listDona.add(this.objeDona);
@@ -101,6 +111,10 @@ public class DonacionBean implements Serializable{
         try
         {
             this.listDona.remove(this.objeDona); //Limpia el objeto viejo
+            if(this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0))!=0 ||this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0.00))!=0 )
+            {
+                 this.objeDona.setEstaDona(1);
+            }  
             FCDEDona.edit(this.objeDona);
             this.listDona.add(this.objeDona); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");

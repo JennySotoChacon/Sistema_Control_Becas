@@ -6,9 +6,12 @@
 package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
+import com.sv.udb.modelo.Donacion;
 import com.sv.udb.modelo.Transaccion;
+import ejb.DonacionFacadeLocal;
 import ejb.TransaccionFacadeLocal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,6 +32,9 @@ public class TransaccionBean implements Serializable{
     @EJB
     private TransaccionFacadeLocal FCDETran;
     private Transaccion objeTran;
+    @EJB
+    private DonacionFacadeLocal FCDEDona;
+    private Donacion objeDona;
     private List<Transaccion> listTran;
     private boolean guardar;
     private static Logger log = Logger.getLogger(TransaccionBean.class);
@@ -38,6 +44,9 @@ public class TransaccionBean implements Serializable{
 
     public void setObjeTran(Transaccion objeTran) {
         this.objeTran = objeTran;
+    }
+    public void setObjeDona(Donacion objeDona) {
+        this.objeDona = objeDona;
     }
 
     public boolean isGuardar() {
@@ -58,6 +67,7 @@ public class TransaccionBean implements Serializable{
     public void init()
     {
         this.objeTran = new Transaccion();
+          this.objeDona = new Donacion();
         this.guardar = true;
         this.consTodo();
     }
@@ -68,12 +78,31 @@ public class TransaccionBean implements Serializable{
         this.guardar = true;        
     }
     
-    public void guar()
+    public void guarEntrada()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+//            this.objeDona.setCodiDona(this.objeTran.getCodiDona().getCodiDona());
+            this.objeDona = FCDEDona.find(this.objeTran.getCodiDona().getCodiDona());
+            
+            objeTran.setMontTran(objeDona.getCantCuot());
+            objeTran.setTipoTran(1);         
+            //Restando del monto pendiente
+            BigDecimal resta = objeDona.getMontPend().subtract(objeDona.getCantCuot());
+            objeDona.setMontPend(resta);
+            //Comprobando si la resta es igual a cero para desactivar la donción
+            
+             if(resta.compareTo(BigDecimal.valueOf(0))==0 ||resta.compareTo(BigDecimal.valueOf(0.00))==0 )
+            {
+               objeDona.setEstaDona(0);
+            }
+            //Para cuando edite la donación
+            FCDEDona.edit(this.objeDona);
+            //Para cuando cree la transacción
             FCDETran.create(this.objeTran);
+                      
+            
             this.listTran.add(this.objeTran);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");

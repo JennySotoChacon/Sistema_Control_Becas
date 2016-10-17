@@ -60,14 +60,14 @@ public class Donacion implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cant_cuot")
-    private int cantCuot;
+    private BigDecimal cantCuot;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Column(name = "mont_tot")
     private BigDecimal montTot;
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Column(name = "mont_pend")
     private BigDecimal montPend;
     @Basic(optional = false)
@@ -92,7 +92,7 @@ public class Donacion implements Serializable {
         this.codiDona = codiDona;
     }
 
-    public Donacion(Integer codiDona, int plazDona, int cantCuot, BigDecimal montTot, BigDecimal montPend, int estaDona, Date fechDona) {
+    public Donacion(Integer codiDona, int plazDona, BigDecimal cantCuot, BigDecimal montTot, BigDecimal montPend, int estaDona, Date fechDona) {
         this.codiDona = codiDona;
         this.plazDona = plazDona;
         this.cantCuot = cantCuot;
@@ -118,11 +118,11 @@ public class Donacion implements Serializable {
         this.plazDona = plazDona;
     }
 
-    public int getCantCuot() {
+    public BigDecimal getCantCuot() {
         return cantCuot;
     }
 
-    public void setCantCuot(int cantCuot) {
+    public void setCantCuot(BigDecimal cantCuot) {
         this.cantCuot = cantCuot;
     }
 
