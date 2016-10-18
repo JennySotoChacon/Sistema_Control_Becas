@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Stateless
 public class TipoBecaFacade extends AbstractFacade<TipoBeca> implements TipoBecaFacadeLocal {

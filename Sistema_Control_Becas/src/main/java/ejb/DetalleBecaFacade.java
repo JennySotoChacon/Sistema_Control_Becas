@@ -5,7 +5,7 @@
  */
 package ejb;
 
-import com.sv.udb.modelo.Estructura;
+import com.sv.udb.modelo.DetalleBeca;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author eduardo
  */
 @Stateless
-public class EstructuraFacade extends AbstractFacade<Estructura> implements EstructuraFacadeLocal {
+public class DetalleBecaFacade extends AbstractFacade<DetalleBeca> implements DetalleBecaFacadeLocal {
 
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class EstructuraFacade extends AbstractFacade<Estructura> implements Estr
         return em;
     }
 
-    public EstructuraFacade() {
-        super(Estructura.class);
+    public DetalleBecaFacade() {
+        super(DetalleBeca.class);
     }
     
 }

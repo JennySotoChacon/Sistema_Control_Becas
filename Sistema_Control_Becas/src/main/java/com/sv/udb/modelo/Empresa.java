@@ -7,24 +7,29 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Owner
+ * @author eduardo
  */
 @Entity
 @Table(name = "empresa", catalog = "sistemas_pilet", schema = "")
@@ -39,6 +44,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Empresa.findByFechEmpr", query = "SELECT e FROM Empresa e WHERE e.fechEmpr = :fechEmpr"),
     @NamedQuery(name = "Empresa.findByEstaEmpr", query = "SELECT e FROM Empresa e WHERE e.estaEmpr = :estaEmpr")})
 public class Empresa implements Serializable {
+
+    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    private List<SolicitudBeca> solicitudBecaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    private List<Donacion> donacionList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -71,10 +82,8 @@ public class Empresa implements Serializable {
     @Column(name = "fech_empr")
     @Temporal(TemporalType.DATE)
     private Date fechEmpr;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "esta_empr")
-    private int estaEmpr;
+    private Integer estaEmpr;
 
     public Empresa() {
     }
@@ -83,14 +92,13 @@ public class Empresa implements Serializable {
         this.codiEmpr = codiEmpr;
     }
 
-    public Empresa(Integer codiEmpr, String nombEmpr, String direEmpr, String emaiEmpr, String encaEmpr, Date fechEmpr, int estaEmpr) {
+    public Empresa(Integer codiEmpr, String nombEmpr, String direEmpr, String emaiEmpr, String encaEmpr, Date fechEmpr) {
         this.codiEmpr = codiEmpr;
         this.nombEmpr = nombEmpr;
         this.direEmpr = direEmpr;
         this.emaiEmpr = emaiEmpr;
         this.encaEmpr = encaEmpr;
         this.fechEmpr = fechEmpr;
-        this.estaEmpr = estaEmpr;
     }
 
     public Integer getCodiEmpr() {
@@ -141,11 +149,11 @@ public class Empresa implements Serializable {
         this.fechEmpr = fechEmpr;
     }
 
-    public int getEstaEmpr() {
+    public Integer getEstaEmpr() {
         return estaEmpr;
     }
 
-    public void setEstaEmpr(int estaEmpr) {
+    public void setEstaEmpr(Integer estaEmpr) {
         this.estaEmpr = estaEmpr;
     }
 
@@ -172,6 +180,24 @@ public class Empresa implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Empresa[ codiEmpr=" + codiEmpr + " ]";
+    }
+
+    @XmlTransient
+    public List<Donacion> getDonacionList() {
+        return donacionList;
+    }
+
+    public void setDonacionList(List<Donacion> donacionList) {
+        this.donacionList = donacionList;
+    }
+
+    @XmlTransient
+    public List<SolicitudBeca> getSolicitudBecaList() {
+        return solicitudBecaList;
+    }
+
+    public void setSolicitudBecaList(List<SolicitudBeca> solicitudBecaList) {
+        this.solicitudBecaList = solicitudBecaList;
     }
     
 }

@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Stateless
 public class DonacionFacade extends AbstractFacade<Donacion> implements DonacionFacadeLocal {

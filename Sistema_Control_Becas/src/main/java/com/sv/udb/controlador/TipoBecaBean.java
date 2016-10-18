@@ -68,6 +68,9 @@ public class TipoBecaBean implements Serializable{
         this.guardar = true;        
     }
     
+    /**
+     * Metodo que guarda un registro en la tabla Tipo Beca
+     */
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -91,6 +94,9 @@ public class TipoBecaBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que modifia un registro de la tabla Tipo Beca
+     */
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -113,6 +119,9 @@ public class TipoBecaBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que elimina un registro de la tabla Tipo Beca
+     */
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -136,6 +145,9 @@ public class TipoBecaBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que consulta todos los registros de la tabla Tipo Beca
+     */
     public void consTodo()
     {
         try
@@ -154,6 +166,9 @@ public class TipoBecaBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que consulta un registro de la tabla Tipo Beca
+     */
     public void cons()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página

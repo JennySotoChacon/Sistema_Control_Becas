@@ -93,10 +93,10 @@ and open the template in the editor.
                                     
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estudiante</f:facet> 
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiBeca eq null}">
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiDetaBeca eq null}">
                                        <i class="fa fa-lock"/> Sin Carnet</h:panelGroup>
-                                        <h:panelGroup  rendered="#{fila.codiBeca ne null}">
-                                         <h:outputText value="#{fila.codiBeca.codiSoliBeca.carnAlum.concat(' ').concat(fila.codiBeca.codiSoliBeca.nombAlum)}"/>                                           
+                                        <h:panelGroup  rendered="#{fila.codiDetaBeca ne null}">
+                                            <h:outputText value="#{fila.codiDetaBeca.codiBeca.codiSoliBeca.carnAlum.concat(' ').concat(fila.codiDetaBeca.codiBeca.codiSoliBeca.nombAlum)}"/>                                           
                                         </h:panelGroup>
                                     </h:column>
                                     

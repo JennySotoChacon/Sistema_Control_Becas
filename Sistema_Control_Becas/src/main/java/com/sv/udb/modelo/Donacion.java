@@ -8,9 +8,7 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,17 +19,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "donacion", catalog = "sistemas_pilet", schema = "")
@@ -63,11 +59,11 @@ public class Donacion implements Serializable {
     private BigDecimal cantCuot;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    //@NotNull
+    @NotNull
     @Column(name = "mont_tot")
     private BigDecimal montTot;
     @Basic(optional = false)
-    //@NotNull
+    @NotNull
     @Column(name = "mont_pend")
     private BigDecimal montPend;
     @Basic(optional = false)
@@ -80,10 +76,8 @@ public class Donacion implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechDona;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Empresa codiEmpr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDona", fetch = FetchType.EAGER)
-    private List<Transaccion> transaccionList;
 
     public Donacion() {
     }
@@ -164,15 +158,6 @@ public class Donacion implements Serializable {
 
     public void setCodiEmpr(Empresa codiEmpr) {
         this.codiEmpr = codiEmpr;
-    }
-
-    @XmlTransient
-    public List<Transaccion> getTransaccionList() {
-        return transaccionList;
-    }
-
-    public void setTransaccionList(List<Transaccion> transaccionList) {
-        this.transaccionList = transaccionList;
     }
 
     @Override

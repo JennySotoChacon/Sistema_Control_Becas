@@ -87,28 +87,36 @@ codi_tipo_beca int NOT NULL AUTO_INCREMENT,
 nomb_tipo_beca varchar(50) NOT NULL,
 desc_tipo_beca  numeric(15,2),
 esta_tipo_beca int,
+tipo_tipo_beca int,
 PRIMARY KEY (codi_tipo_beca),
 UNIQUE (nomb_tipo_beca));
 
 CREATE TABLE  beca (
 codi_beca int NOT NULL AUTO_INCREMENT,
 codi_soli_beca int NOT NULL,
-codi_tipo_beca int NOT NULL,
 codi_tipo_esta int NOT NULL,
 mens_alum numeric(15,2) NOT NULL,
-cant_mese int, 
 fech_inic date, 
 fech_baja date, 
 PRIMARY KEY (codi_beca));
 
-alter table beca add foreign key (codi_tipo_beca) references tipo_beca (codi_tipo_beca);
 alter table beca add foreign key (codi_soli_beca) references solicitud_beca (codi_soli_beca);
 alter table beca add foreign key (codi_tipo_esta) references tipo_estado (codi_tipo_esta);
+
+CREATE TABLE detalle_beca (
+codi_deta_beca int NOT NULL AUTO_INCREMENT,
+codi_beca int NOT NULL,
+codi_tipo_beca int NOT NULL,
+cant_mese int NOT NULL,
+PRIMARY KEY (codi_deta_beca));
+
+alter table detalle_beca add foreign key (codi_beca) references beca (codi_beca);
+alter table detalle_beca add foreign key (codi_tipo_beca) references tipo_beca (codi_tipo_beca);
 
 CREATE TABLE transaccion (
 codi_tran int NOT NULL AUTO_INCREMENT,
 codi_dona int NOT NULL,
-codi_beca int,
+codi_deta_beca int,
 mont_tran numeric(15,2), 
 fech_entr_tran date, 
 fech_conf_tran date, 
@@ -117,7 +125,7 @@ tipo_tran int,
 PRIMARY KEY (codi_tran));
 
 alter table transaccion add foreign key (codi_dona) references donacion (codi_dona);
-alter table transaccion add foreign key (codi_beca) references beca (codi_beca);
+alter table transaccion add foreign key (codi_deta_beca) references detalle_beca (codi_deta_beca);
 
 CREATE TABLE  detalle (
 codi_deta int NOT NULL AUTO_INCREMENT, 

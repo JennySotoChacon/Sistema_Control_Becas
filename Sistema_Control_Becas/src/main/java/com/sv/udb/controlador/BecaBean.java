@@ -7,8 +7,11 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Beca;
+import com.sv.udb.modelo.DetalleBeca;
 import ejb.BecaFacadeLocal;
+import ejb.DetalleBecaFacadeLocal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -27,9 +30,15 @@ import org.primefaces.context.RequestContext;
 @Named(value = "becaBean")
 @ViewScoped
 public class BecaBean implements Serializable{
+
+    @EJB
+    private DetalleBecaFacadeLocal FCDEDetaBeca;
+    private DetalleBeca objeDetaBeca;
+    
     @EJB
     private BecaFacadeLocal FCDEBeca;
     private Beca objeBeca;
+    
     private List<Beca> listBeca;
     private boolean guardar; 
     private static Logger log = Logger.getLogger(BecaBean.class);

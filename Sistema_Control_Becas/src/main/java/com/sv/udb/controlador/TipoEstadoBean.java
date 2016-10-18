@@ -69,6 +69,9 @@ public class TipoEstadoBean implements Serializable{
         this.guardar = true;        
     }
     
+    /**
+     * Metodo que guarda un registro en la tabla Tipo Estado
+     */
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -92,6 +95,9 @@ public class TipoEstadoBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que modifica un registro en la tabla Tipo Estado
+     */
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -114,6 +120,9 @@ public class TipoEstadoBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que elimina un registro de la tabla Tipo Estado
+     */
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -137,6 +146,9 @@ public class TipoEstadoBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que consulta todos los registros de la tabla Tipo Estado
+     */
     public void consTodo()
     {
         try
@@ -155,6 +167,9 @@ public class TipoEstadoBean implements Serializable{
         }
     }
     
+    /**
+     * Metodo que consulta un registro de la tabla Tipo Estado
+     */
     public void cons()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página

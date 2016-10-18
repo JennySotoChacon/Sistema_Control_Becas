@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Stateless
 public class TransaccionFacade extends AbstractFacade<Transaccion> implements TransaccionFacadeLocal {

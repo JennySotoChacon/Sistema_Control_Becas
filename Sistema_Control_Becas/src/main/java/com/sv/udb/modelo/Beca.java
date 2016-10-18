@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "beca", catalog = "sistemas_pilet", schema = "")
@@ -39,7 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Beca.findAll", query = "SELECT b FROM Beca b"),
     @NamedQuery(name = "Beca.findByCodiBeca", query = "SELECT b FROM Beca b WHERE b.codiBeca = :codiBeca"),
     @NamedQuery(name = "Beca.findByMensAlum", query = "SELECT b FROM Beca b WHERE b.mensAlum = :mensAlum"),
-    @NamedQuery(name = "Beca.findByCantMese", query = "SELECT b FROM Beca b WHERE b.cantMese = :cantMese"),
     @NamedQuery(name = "Beca.findByFechInic", query = "SELECT b FROM Beca b WHERE b.fechInic = :fechInic"),
     @NamedQuery(name = "Beca.findByFechBaja", query = "SELECT b FROM Beca b WHERE b.fechBaja = :fechBaja")})
 public class Beca implements Serializable {
@@ -55,25 +55,20 @@ public class Beca implements Serializable {
     @NotNull
     @Column(name = "mens_alum")
     private BigDecimal mensAlum;
-    @Column(name = "cant_mese")
-    private Integer cantMese;
     @Column(name = "fech_inic")
     @Temporal(TemporalType.DATE)
     private Date fechInic;
     @Column(name = "fech_baja")
     @Temporal(TemporalType.DATE)
     private Date fechBaja;
-    @JoinColumn(name = "codi_tipo_beca", referencedColumnName = "codi_tipo_beca")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private TipoBeca codiTipoBeca;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SolicitudBeca codiSoliBeca;
     @JoinColumn(name = "codi_tipo_esta", referencedColumnName = "codi_tipo_esta")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TipoEstado codiTipoEsta;
-    @OneToMany(mappedBy = "codiBeca", fetch = FetchType.EAGER)
-    private List<Transaccion> transaccionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiBeca", fetch = FetchType.LAZY)
+    private List<DetalleBeca> detalleBecaList;
 
     public Beca() {
     }
@@ -103,14 +98,6 @@ public class Beca implements Serializable {
         this.mensAlum = mensAlum;
     }
 
-    public Integer getCantMese() {
-        return cantMese;
-    }
-
-    public void setCantMese(Integer cantMese) {
-        this.cantMese = cantMese;
-    }
-
     public Date getFechInic() {
         return fechInic;
     }
@@ -125,14 +112,6 @@ public class Beca implements Serializable {
 
     public void setFechBaja(Date fechBaja) {
         this.fechBaja = fechBaja;
-    }
-
-    public TipoBeca getCodiTipoBeca() {
-        return codiTipoBeca;
-    }
-
-    public void setCodiTipoBeca(TipoBeca codiTipoBeca) {
-        this.codiTipoBeca = codiTipoBeca;
     }
 
     public SolicitudBeca getCodiSoliBeca() {
@@ -152,12 +131,12 @@ public class Beca implements Serializable {
     }
 
     @XmlTransient
-    public List<Transaccion> getTransaccionList() {
-        return transaccionList;
+    public List<DetalleBeca> getDetalleBecaList() {
+        return detalleBecaList;
     }
 
-    public void setTransaccionList(List<Transaccion> transaccionList) {
-        this.transaccionList = transaccionList;
+    public void setDetalleBecaList(List<DetalleBeca> detalleBecaList) {
+        this.detalleBecaList = detalleBecaList;
     }
 
     @Override

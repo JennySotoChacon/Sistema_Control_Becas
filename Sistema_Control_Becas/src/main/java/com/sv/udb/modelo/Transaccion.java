@@ -8,9 +8,7 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,16 +19,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "transaccion", catalog = "sistemas_pilet", schema = "")
@@ -65,14 +61,12 @@ public class Transaccion implements Serializable {
     private Date fechSaliTran;
     @Column(name = "tipo_tran")
     private Integer tipoTran;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTran", fetch = FetchType.EAGER)
-    private List<Detalle> detalleList;
     @JoinColumn(name = "codi_dona", referencedColumnName = "codi_dona")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Donacion codiDona;
-    @JoinColumn(name = "codi_beca", referencedColumnName = "codi_beca")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Beca codiBeca;
+    @JoinColumn(name = "codi_deta_beca", referencedColumnName = "codi_deta_beca")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DetalleBeca codiDetaBeca;
 
     public Transaccion() {
     }
@@ -129,15 +123,6 @@ public class Transaccion implements Serializable {
         this.tipoTran = tipoTran;
     }
 
-    @XmlTransient
-    public List<Detalle> getDetalleList() {
-        return detalleList;
-    }
-
-    public void setDetalleList(List<Detalle> detalleList) {
-        this.detalleList = detalleList;
-    }
-
     public Donacion getCodiDona() {
         return codiDona;
     }
@@ -146,12 +131,12 @@ public class Transaccion implements Serializable {
         this.codiDona = codiDona;
     }
 
-    public Beca getCodiBeca() {
-        return codiBeca;
+    public DetalleBeca getCodiDetaBeca() {
+        return codiDetaBeca;
     }
 
-    public void setCodiBeca(Beca codiBeca) {
-        this.codiBeca = codiBeca;
+    public void setCodiDetaBeca(DetalleBeca codiDetaBeca) {
+        this.codiDetaBeca = codiDetaBeca;
     }
 
     @Override

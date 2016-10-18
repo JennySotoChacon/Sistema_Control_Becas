@@ -98,9 +98,16 @@ and open the template in the editor.
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estado</f:facet> 
                                         <h:panelGroup class="label label-success" rendered="#{fila.estaTipoBeca eq '1'}">
-                                       <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
                                         <h:panelGroup class="label label-danger" rendered="#{fila.estaTipoBeca ne '1'}">
                                        <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                    </h:column>
+                                    <h:column pt:data-sortable = "true">
+                                        <f:facet name="header">Tipo</f:facet>
+                                        <h:panelGroup class="label label-success" rendered="#{fila.tipoTipoBeca eq '1'}">
+                                        <i class="fa fa-unlock"/> Mensualidad</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoTipoBeca ne '1'}">
+                                        <i class="fa fa-lock"/> Otro</h:panelGroup>
                                     </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
@@ -132,6 +139,14 @@ and open the template in the editor.
                                             <h:outputLabel  for="desc" value="Descuento: "/>
                                             <h:message for="desc" errorClass="field-error" />
                                             <h:inputText id="desc" value="#{tipoBecaBean.objeTipo.descTipoBeca}" class="form-control" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="tipo" value="Descuento: "/>
+                                            <h:message for="tipo" errorClass="field-error" />
+                                            <h:selectOneRadio value="#{tipoBecaBean.objeTipo.tipoTipoBeca}">
+                                                <f:selectItem itemValue="1" itemLabel="Mensualidad" />
+                                                <f:selectItem itemValue="0" itemLabel="Otro" />
+                                            </h:selectOneRadio>
                                         </div>
                                     </fieldset>
                                 </div>

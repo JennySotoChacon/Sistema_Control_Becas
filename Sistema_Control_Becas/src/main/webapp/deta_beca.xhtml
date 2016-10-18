@@ -13,11 +13,12 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
-        <ui:param name="pageTitl" value="Bienvenido ::: Página Principal"/>
-        <ui:param name="pageNomb" value="Página Principal"/>
-        <ui:param name="pageDesc" value="Esta es la página principal"/>
+        <ui:param name="pageTitl" value="Bienvenido ::: Detalle Beca"/>
+        <ui:param name="pageNomb" value="Detalle Beca"/>
+        <ui:param name="pageDesc" value="Esta es la página gestiona los detalles de becas"/>
         <!-- Activar el link del menú -->
         <ui:param name="actiIndex" value="active"/>
+        <ui:param name="actiMenu1" value="active"/>
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
         <!--Plugins Selector de Fecha-->
@@ -30,8 +31,8 @@ and open the template in the editor.
         <!--Plugins custom-->
             <h:outputScript library="js" name="custom/general.js"/>
         </ui:define>
-        
         <!-- Elementos propios del boby -->
+        <h:outputScript library="js" name="custom/general.js"/>
         <ui:define name="body">
             <style>
             .field-error
@@ -63,18 +64,18 @@ and open the template in the editor.
                                 <div id="toolTablRegi">
                                     <h:form>
                                         <!--Form exclusivo para los remotos-->
-                                        <p:remoteCommand name="consObje" actionListener="#{becaBean.cons()}" update=":FormRegi" 
+                                        <p:remoteCommand name="consObje" actionListener="#{detalleBecaBean.cons()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{becaBean.elim()}" update=":FormRegi :ContRegi" 
+                                        <p:remoteCommand name="elimObje" actionListener="#{detalleBecaBean.elim()}" update=":FormRegi :ContRegi" 
                                                          oncomplete="INIT_OBJE();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{becaBean.limpForm()}" update=":FormRegi" global="true" 
+                                            <p:ajax listener="#{detalleBecaBean.limpForm()}" update=":FormRegi" global="true" 
                                                     oncomplete="$('#ModaForm').modal('show');"/>
                                             <i class="fa fa-plus"/> Nuevo
                                         </h:commandLink>
                                     </h:form>
                                 </div>
-                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{becaBean.listBeca}"
+                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{detalleBecaBean.listDetaBeca}"
                                              var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
                                              styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                              pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -85,25 +86,19 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
                                         <f:facet name="header">Código</f:facet>
-                                        <h:outputText value="#{fila.codiBeca}"/>
+                                        <h:outputText value="#{fila.codiDetaBeca}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                        <f:facet name="header">Numero de Solicitud</f:facet>
-                                        <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>   
+                                        <f:facet name="header">Beca</f:facet>
+                                        <h:outputText value="#{fila.codiBeca.codiBeca}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Tipo Estado</f:facet>
-                                        <h:outputText value="#{fila.codiTipoEsta.nombTipoEsta}"/>
+                                        <f:facet name="header">Tipo Beca</f:facet>
+                                        <h:outputText value="#{fila.codiTipoBeca.codiTipoBeca}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Mensualidad Alumno</f:facet>
-                                        <h:outputText value="$#{fila.mensAlum}"/>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Fecha Inicio</f:facet>
-                                        <h:outputText value="#{fila.fechInic}">
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
-                                        </h:outputText>
+                                        <f:facet name="header">Meses</f:facet>
+                                        <h:outputText value="#{fila.cantMese}"/>
                                     </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
@@ -120,37 +115,31 @@ and open the template in the editor.
                             <h:form id="FormRegi" class="form-horizontal">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                    <h4 class="modal-title">Gestión Beca</h4>
+                                    <h4 class="modal-title">Gestión de Detalle Beca</h4>
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
-                                        <h:inputHidden id="codi" value="#{becaBean.objeBeca.codiBeca}" />
+                                        <h:inputHidden id="codi" value="#{detalleBecaBean.objeDetaBeca.codiDetaBeca}" />
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="soli" value="Numero de solicitud: "/>
-                                            <h:selectOneMenu id="soli" value="#{becaBean.objeBeca.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.codiSoliBeca}" itemValue="#{lst}"/>
+                                            <h:outputLabel  for="beca" value="Numero de beca "/>
+                                            <h:selectOneMenu id="beca" value="#{detalleBecaBean.objeDetaBeca.codiBeca}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{becaBean.listBeca}" var="lst" itemLabel="#{lst.codiBeca}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
-                                            <h:message for="soli" errorClass="field-error" />           
+                                            <h:message for="beca" errorClass="field-error" />           
                                         </div>
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="tipoEsta" value="Tipo estado "/>
-                                            <h:selectOneMenu id="tipoEsta" value="#{becaBean.objeBeca.codiTipoEsta}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{tipoEstadoBean.listTipoEsta}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
+                                            <h:outputLabel  for="tipo" value="Tipo Beca"/>
+                                            <h:selectOneMenu id="tipo" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{tipoBecaBean.listTipo}" var="lst" itemLabel="#{lst.codiTipoBeca}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
+                                            <h:message for="tipo" errorClass="field-error" />           
                                         </div>
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="mens" value="Mensualidad alumno "/>
-                                            <h:message for="mens" errorClass="field-error" />
-                                            <h:inputText id="mens" value="#{becaBean.objeBeca.mensAlum}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="fech" value="Fecha Inicio "/>
-                                            <h:message for="fech" errorClass="field-error" />
-                                            <h:inputText id="fech" value="#{becaBean.objeBeca.fechInic}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText>
+                                            <h:outputLabel  for="cant" value="Meses"/>
+                                            <h:message for="cant" errorClass="field-error" />
+                                            <h:inputText id="cant" value="#{detalleBecaBean.objeDetaBeca.cantMese}" class="form-control" />
                                         </div>
                                     </fieldset>
                                 </div>
@@ -158,19 +147,19 @@ and open the template in the editor.
                                         <div class="input-group-btn right" style="padding-top: 5px;">
                                             <div class="btn-group">
                                                 <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                    <p:ajax listener="#{becaBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                    <p:ajax listener="#{detalleBecaBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{becaBean.guardar}">
-                                                    <p:ajax listener="#{becaBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{detalleBecaBean.guardar}">
+                                                    <p:ajax listener="#{detalleBecaBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                     <i class="fa fa-plus"/> Guardar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!becaBean.guardar}">
-                                                    <p:ajax listener="#{becaBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!detalleBecaBean.guardar}">
+                                                    <p:ajax listener="#{detalleBecaBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
                                                     <i class="fa fa-plus"/> Nuevo
                                                 </h:commandLink>
-                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becaBean.guardar}">
-                                                    <p:ajax listener="#{becaBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!detalleBecaBean.guardar}">
+                                                    <p:ajax listener="#{detalleBecaBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                     <i class="fa fa-edit"/> Modificar
                                                 </h:commandLink>
                                                 <!--
@@ -180,7 +169,7 @@ and open the template in the editor.
                                                     3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
                                                     4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                 -->
-                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!becaBean.guardar}" value="#" pt:data-placement="left"
+                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!detalleBecaBean.guardar}" value="#" pt:data-placement="left"
                                                               pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"

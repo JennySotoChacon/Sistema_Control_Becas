@@ -6,22 +6,27 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Owner
+ * @author eduardo
  */
 @Entity
 @Table(name = "tipo_estado", catalog = "sistemas_pilet", schema = "")
@@ -33,6 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TipoEstado.findByDescTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.descTipoEsta = :descTipoEsta"),
     @NamedQuery(name = "TipoEstado.findByEstaTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.estaTipoEsta = :estaTipoEsta")})
 public class TipoEstado implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoEsta", fetch = FetchType.LAZY)
+    private List<Beca> becaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,10 +56,8 @@ public class TipoEstado implements Serializable {
     @Size(max = 100)
     @Column(name = "desc_tipo_esta")
     private String descTipoEsta;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "esta_tipo_esta")
-    private int estaTipoEsta;
+    private Integer estaTipoEsta;
 
     public TipoEstado() {
     }
@@ -60,10 +66,9 @@ public class TipoEstado implements Serializable {
         this.codiTipoEsta = codiTipoEsta;
     }
 
-    public TipoEstado(Integer codiTipoEsta, String nombTipoEsta, int estaTipoEsta) {
+    public TipoEstado(Integer codiTipoEsta, String nombTipoEsta) {
         this.codiTipoEsta = codiTipoEsta;
         this.nombTipoEsta = nombTipoEsta;
-        this.estaTipoEsta = estaTipoEsta;
     }
 
     public Integer getCodiTipoEsta() {
@@ -90,11 +95,11 @@ public class TipoEstado implements Serializable {
         this.descTipoEsta = descTipoEsta;
     }
 
-    public int getEstaTipoEsta() {
+    public Integer getEstaTipoEsta() {
         return estaTipoEsta;
     }
 
-    public void setEstaTipoEsta(int estaTipoEsta) {
+    public void setEstaTipoEsta(Integer estaTipoEsta) {
         this.estaTipoEsta = estaTipoEsta;
     }
 
@@ -121,6 +126,15 @@ public class TipoEstado implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.TipoEstado[ codiTipoEsta=" + codiTipoEsta + " ]";
+    }
+
+    @XmlTransient
+    public List<Beca> getBecaList() {
+        return becaList;
+    }
+
+    public void setBecaList(List<Beca> becaList) {
+        this.becaList = becaList;
     }
     
 }
