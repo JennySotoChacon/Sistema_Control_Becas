@@ -7,7 +7,7 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.SolicitudBeca;
-import ejb.SolicitudBecaFacadeLocal;
+import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

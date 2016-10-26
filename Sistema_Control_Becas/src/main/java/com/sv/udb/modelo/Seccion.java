@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "seccion", catalog = "sistemas_pilet", schema = "")
@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Seccion.findByCodiSecc", query = "SELECT s FROM Seccion s WHERE s.codiSecc = :codiSecc"),
     @NamedQuery(name = "Seccion.findByNombSecc", query = "SELECT s FROM Seccion s WHERE s.nombSecc = :nombSecc"),
     @NamedQuery(name = "Seccion.findByDescSecc", query = "SELECT s FROM Seccion s WHERE s.descSecc = :descSecc"),
-    @NamedQuery(name = "Seccion.findByIndiSecc", query = "SELECT s FROM Seccion s WHERE s.indiSecc = :indiSecc")})
+    @NamedQuery(name = "Seccion.findByIndiSecc", query = "SELECT s FROM Seccion s WHERE s.indiSecc = :indiSecc"),
+    @NamedQuery(name = "Seccion.findByEstaSecc", query = "SELECT s FROM Seccion s WHERE s.estaSecc = :estaSecc")})
 public class Seccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,7 +57,9 @@ public class Seccion implements Serializable {
     @Size(max = 255)
     @Column(name = "indi_secc")
     private String indiSecc;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSecc", fetch = FetchType.EAGER)
+    @Column(name = "esta_secc")
+    private Integer estaSecc;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSecc", fetch = FetchType.LAZY)
     private List<Pregunta> preguntaList;
 
     public Seccion() {
@@ -101,6 +104,14 @@ public class Seccion implements Serializable {
 
     public void setIndiSecc(String indiSecc) {
         this.indiSecc = indiSecc;
+    }
+
+    public Integer getEstaSecc() {
+        return estaSecc;
+    }
+
+    public void setEstaSecc(Integer estaSecc) {
+        this.estaSecc = estaSecc;
     }
 
     @XmlTransient

@@ -8,8 +8,8 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Donacion;
 import com.sv.udb.modelo.Transaccion;
-import ejb.DonacionFacadeLocal;
-import ejb.TransaccionFacadeLocal;
+import com.sv.udb.ejb.DonacionFacadeLocal;
+import com.sv.udb.ejb.TransaccionFacadeLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -190,7 +190,7 @@ public class TransaccionBean implements Serializable{
             this.objeTran = FCDETran.find(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s", this.objeTran.getFechConfTran()) + "')");
+                    String.format("%s", this.objeTran.getFechTran()) + "')");
             log.info("Transaccion Consultada");
         }
         catch(Exception ex)

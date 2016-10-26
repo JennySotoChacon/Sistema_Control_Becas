@@ -7,7 +7,7 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Detalle;
-import ejb.DetalleFacadeLocal;
+import com.sv.udb.ejb.DetalleFacadeLocal;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

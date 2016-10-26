@@ -8,7 +8,9 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,10 +21,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,10 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
     @NamedQuery(name = "Transaccion.findByCodiTran", query = "SELECT t FROM Transaccion t WHERE t.codiTran = :codiTran"),
     @NamedQuery(name = "Transaccion.findByMontTran", query = "SELECT t FROM Transaccion t WHERE t.montTran = :montTran"),
-    @NamedQuery(name = "Transaccion.findByFechEntrTran", query = "SELECT t FROM Transaccion t WHERE t.fechEntrTran = :fechEntrTran"),
-    @NamedQuery(name = "Transaccion.findByFechConfTran", query = "SELECT t FROM Transaccion t WHERE t.fechConfTran = :fechConfTran"),
-    @NamedQuery(name = "Transaccion.findByFechSaliTran", query = "SELECT t FROM Transaccion t WHERE t.fechSaliTran = :fechSaliTran"),
-    @NamedQuery(name = "Transaccion.findByTipoTran", query = "SELECT t FROM Transaccion t WHERE t.tipoTran = :tipoTran")})
+    @NamedQuery(name = "Transaccion.findByFechTran", query = "SELECT t FROM Transaccion t WHERE t.fechTran = :fechTran"),
+    @NamedQuery(name = "Transaccion.findByMontTota", query = "SELECT t FROM Transaccion t WHERE t.montTota = :montTota"),
+    @NamedQuery(name = "Transaccion.findByTipoTran", query = "SELECT t FROM Transaccion t WHERE t.tipoTran = :tipoTran"),
+    @NamedQuery(name = "Transaccion.findByEstaTran", query = "SELECT t FROM Transaccion t WHERE t.estaTran = :estaTran")})
 public class Transaccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,17 +54,17 @@ public class Transaccion implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "mont_tran")
     private BigDecimal montTran;
-    @Column(name = "fech_entr_tran")
+    @Column(name = "fech_tran")
     @Temporal(TemporalType.DATE)
-    private Date fechEntrTran;
-    @Column(name = "fech_conf_tran")
-    @Temporal(TemporalType.DATE)
-    private Date fechConfTran;
-    @Column(name = "fech_sali_tran")
-    @Temporal(TemporalType.DATE)
-    private Date fechSaliTran;
+    private Date fechTran;
+    @Column(name = "mont_tota")
+    private BigDecimal montTota;
     @Column(name = "tipo_tran")
     private Integer tipoTran;
+    @Column(name = "esta_tran")
+    private Integer estaTran;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTran", fetch = FetchType.LAZY)
+    private List<Detalle> detalleList;
     @JoinColumn(name = "codi_dona", referencedColumnName = "codi_dona")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Donacion codiDona;
@@ -91,28 +95,20 @@ public class Transaccion implements Serializable {
         this.montTran = montTran;
     }
 
-    public Date getFechEntrTran() {
-        return fechEntrTran;
+    public Date getFechTran() {
+        return fechTran;
     }
 
-    public void setFechEntrTran(Date fechEntrTran) {
-        this.fechEntrTran = fechEntrTran;
+    public void setFechTran(Date fechTran) {
+        this.fechTran = fechTran;
     }
 
-    public Date getFechConfTran() {
-        return fechConfTran;
+    public BigDecimal getMontTota() {
+        return montTota;
     }
 
-    public void setFechConfTran(Date fechConfTran) {
-        this.fechConfTran = fechConfTran;
-    }
-
-    public Date getFechSaliTran() {
-        return fechSaliTran;
-    }
-
-    public void setFechSaliTran(Date fechSaliTran) {
-        this.fechSaliTran = fechSaliTran;
+    public void setMontTota(BigDecimal montTota) {
+        this.montTota = montTota;
     }
 
     public Integer getTipoTran() {
@@ -121,6 +117,23 @@ public class Transaccion implements Serializable {
 
     public void setTipoTran(Integer tipoTran) {
         this.tipoTran = tipoTran;
+    }
+
+    public Integer getEstaTran() {
+        return estaTran;
+    }
+
+    public void setEstaTran(Integer estaTran) {
+        this.estaTran = estaTran;
+    }
+
+    @XmlTransient
+    public List<Detalle> getDetalleList() {
+        return detalleList;
+    }
+
+    public void setDetalleList(List<Detalle> detalleList) {
+        this.detalleList = detalleList;
     }
 
     public Donacion getCodiDona() {

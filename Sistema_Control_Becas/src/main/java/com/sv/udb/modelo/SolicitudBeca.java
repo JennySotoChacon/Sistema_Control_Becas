@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "solicitud_beca", catalog = "sistemas_pilet", schema = "")
@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SolicitudBeca.findAll", query = "SELECT s FROM SolicitudBeca s"),
     @NamedQuery(name = "SolicitudBeca.findByCodiSoliBeca", query = "SELECT s FROM SolicitudBeca s WHERE s.codiSoliBeca = :codiSoliBeca"),
     @NamedQuery(name = "SolicitudBeca.findByCarnAlum", query = "SELECT s FROM SolicitudBeca s WHERE s.carnAlum = :carnAlum"),
+    @NamedQuery(name = "SolicitudBeca.findByNombAlum", query = "SELECT s FROM SolicitudBeca s WHERE s.nombAlum = :nombAlum"),
     @NamedQuery(name = "SolicitudBeca.findByFechSoliBeca", query = "SELECT s FROM SolicitudBeca s WHERE s.fechSoliBeca = :fechSoliBeca"),
     @NamedQuery(name = "SolicitudBeca.findByEstaSoliBeca", query = "SELECT s FROM SolicitudBeca s WHERE s.estaSoliBeca = :estaSoliBeca")})
 public class SolicitudBeca implements Serializable {
@@ -60,7 +61,6 @@ public class SolicitudBeca implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "nomb_alum")
     private String nombAlum;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fech_soli_beca")
@@ -70,14 +70,19 @@ public class SolicitudBeca implements Serializable {
     @NotNull
     @Column(name = "esta_soli_beca")
     private int estaSoliBeca;
-    @OneToMany(mappedBy = "codiSoliBeca", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
+    private List<Seguimiento> seguimientoList;
+    @OneToMany(mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
     private List<Documento> documentoList;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Empresa codiEmpr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.EAGER)
+    @JoinColumn(name = "codi_grad", referencedColumnName = "codi_grad")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Grado codiGrad;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
     private List<Beca> becaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoliBeca", fetch = FetchType.LAZY)
     private List<Respuesta> respuestaList;
 
     public SolicitudBeca() {
@@ -87,7 +92,7 @@ public class SolicitudBeca implements Serializable {
         this.codiSoliBeca = codiSoliBeca;
     }
 
-    public SolicitudBeca(Integer codiSoliBeca, String carnAlum,String nombAlum, Date fechSoliBeca, int estaSoliBeca) {
+    public SolicitudBeca(Integer codiSoliBeca, String carnAlum, String nombAlum, Date fechSoliBeca, int estaSoliBeca) {
         this.codiSoliBeca = codiSoliBeca;
         this.carnAlum = carnAlum;
         this.nombAlum = nombAlum;
@@ -107,16 +112,16 @@ public class SolicitudBeca implements Serializable {
         return carnAlum;
     }
 
+    public void setCarnAlum(String carnAlum) {
+        this.carnAlum = carnAlum;
+    }
+
     public String getNombAlum() {
         return nombAlum;
     }
 
     public void setNombAlum(String nombAlum) {
         this.nombAlum = nombAlum;
-    }
-
-    public void setCarnAlum(String carnAlum) {
-        this.carnAlum = carnAlum;
     }
 
     public Date getFechSoliBeca() {
@@ -136,6 +141,15 @@ public class SolicitudBeca implements Serializable {
     }
 
     @XmlTransient
+    public List<Seguimiento> getSeguimientoList() {
+        return seguimientoList;
+    }
+
+    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
+        this.seguimientoList = seguimientoList;
+    }
+
+    @XmlTransient
     public List<Documento> getDocumentoList() {
         return documentoList;
     }
@@ -150,6 +164,14 @@ public class SolicitudBeca implements Serializable {
 
     public void setCodiEmpr(Empresa codiEmpr) {
         this.codiEmpr = codiEmpr;
+    }
+
+    public Grado getCodiGrad() {
+        return codiGrad;
+    }
+
+    public void setCodiGrad(Grado codiGrad) {
+        this.codiGrad = codiGrad;
     }
 
     @XmlTransient

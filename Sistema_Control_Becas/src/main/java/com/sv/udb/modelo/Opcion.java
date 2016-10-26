@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "opcion", catalog = "sistemas_pilet", schema = "")
@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Opcion.findAll", query = "SELECT o FROM Opcion o"),
     @NamedQuery(name = "Opcion.findByCodiOpci", query = "SELECT o FROM Opcion o WHERE o.codiOpci = :codiOpci"),
     @NamedQuery(name = "Opcion.findByTituOpci", query = "SELECT o FROM Opcion o WHERE o.tituOpci = :tituOpci"),
-    @NamedQuery(name = "Opcion.findByDescOpci", query = "SELECT o FROM Opcion o WHERE o.descOpci = :descOpci")})
+    @NamedQuery(name = "Opcion.findByDescOpci", query = "SELECT o FROM Opcion o WHERE o.descOpci = :descOpci"),
+    @NamedQuery(name = "Opcion.findByEstaOpci", query = "SELECT o FROM Opcion o WHERE o.estaOpci = :estaOpci")})
 public class Opcion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,13 +57,15 @@ public class Opcion implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "desc_opci")
     private String descOpci;
+    @Column(name = "esta_opci")
+    private Integer estaOpci;
     @JoinColumn(name = "codi_preg", referencedColumnName = "codi_preg")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Pregunta codiPreg;
     @JoinColumn(name = "codi_estr", referencedColumnName = "codi_estr")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Estructura codiEstr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiOpci", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiOpci", fetch = FetchType.LAZY)
     private List<Respuesta> respuestaList;
 
     public Opcion() {
@@ -100,6 +103,14 @@ public class Opcion implements Serializable {
 
     public void setDescOpci(String descOpci) {
         this.descOpci = descOpci;
+    }
+
+    public Integer getEstaOpci() {
+        return estaOpci;
+    }
+
+    public void setEstaOpci(Integer estaOpci) {
+        this.estaOpci = estaOpci;
     }
 
     public Pregunta getCodiPreg() {

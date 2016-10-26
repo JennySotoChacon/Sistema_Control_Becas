@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "documento", catalog = "sistemas_pilet", schema = "")
@@ -61,13 +61,13 @@ public class Documento implements Serializable {
     @Column(name = "esta_docu")
     private int estaDocu;
     @JoinColumn(name = "codi_tipo_docu", referencedColumnName = "codi_tipo_docu")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TipoDocumento codiTipoDocu;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private SolicitudBeca codiSoliBeca;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Empresa codiEmpr;
 
     public Documento() {

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "estructura", catalog = "sistemas_pilet", schema = "")
@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Estructura.findAll", query = "SELECT e FROM Estructura e"),
     @NamedQuery(name = "Estructura.findByCodiEstr", query = "SELECT e FROM Estructura e WHERE e.codiEstr = :codiEstr"),
-    @NamedQuery(name = "Estructura.findByTipoEstr", query = "SELECT e FROM Estructura e WHERE e.tipoEstr = :tipoEstr")})
+    @NamedQuery(name = "Estructura.findByTipoEstr", query = "SELECT e FROM Estructura e WHERE e.tipoEstr = :tipoEstr"),
+    @NamedQuery(name = "Estructura.findByEstaEstr", query = "SELECT e FROM Estructura e WHERE e.estaEstr = :estaEstr")})
 public class Estructura implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +49,9 @@ public class Estructura implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "tipo_estr")
     private String tipoEstr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEstr", fetch = FetchType.EAGER)
+    @Column(name = "esta_estr")
+    private Integer estaEstr;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEstr", fetch = FetchType.LAZY)
     private List<Opcion> opcionList;
 
     public Estructura() {
@@ -77,6 +80,14 @@ public class Estructura implements Serializable {
 
     public void setTipoEstr(String tipoEstr) {
         this.tipoEstr = tipoEstr;
+    }
+
+    public Integer getEstaEstr() {
+        return estaEstr;
+    }
+
+    public void setEstaEstr(Integer estaEstr) {
+        this.estaEstr = estaEstr;
     }
 
     @XmlTransient

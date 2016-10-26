@@ -6,7 +6,6 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -25,7 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Beca.findAll", query = "SELECT b FROM Beca b"),
     @NamedQuery(name = "Beca.findByCodiBeca", query = "SELECT b FROM Beca b WHERE b.codiBeca = :codiBeca"),
-    @NamedQuery(name = "Beca.findByMensAlum", query = "SELECT b FROM Beca b WHERE b.mensAlum = :mensAlum"),
+    @NamedQuery(name = "Beca.findByRetiBeca", query = "SELECT b FROM Beca b WHERE b.retiBeca = :retiBeca"),
     @NamedQuery(name = "Beca.findByFechInic", query = "SELECT b FROM Beca b WHERE b.fechInic = :fechInic"),
     @NamedQuery(name = "Beca.findByFechBaja", query = "SELECT b FROM Beca b WHERE b.fechBaja = :fechBaja")})
 public class Beca implements Serializable {
@@ -50,11 +49,9 @@ public class Beca implements Serializable {
     @Basic(optional = false)
     @Column(name = "codi_beca")
     private Integer codiBeca;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "mens_alum")
-    private BigDecimal mensAlum;
+    @Size(max = 500)
+    @Column(name = "reti_beca")
+    private String retiBeca;
     @Column(name = "fech_inic")
     @Temporal(TemporalType.DATE)
     private Date fechInic;
@@ -67,6 +64,9 @@ public class Beca implements Serializable {
     @JoinColumn(name = "codi_tipo_esta", referencedColumnName = "codi_tipo_esta")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TipoEstado codiTipoEsta;
+    @JoinColumn(name = "codi_reti", referencedColumnName = "codi_reti")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TipoRetiro codiReti;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiBeca", fetch = FetchType.LAZY)
     private List<DetalleBeca> detalleBecaList;
 
@@ -77,11 +77,6 @@ public class Beca implements Serializable {
         this.codiBeca = codiBeca;
     }
 
-    public Beca(Integer codiBeca, BigDecimal mensAlum) {
-        this.codiBeca = codiBeca;
-        this.mensAlum = mensAlum;
-    }
-
     public Integer getCodiBeca() {
         return codiBeca;
     }
@@ -90,12 +85,12 @@ public class Beca implements Serializable {
         this.codiBeca = codiBeca;
     }
 
-    public BigDecimal getMensAlum() {
-        return mensAlum;
+    public String getRetiBeca() {
+        return retiBeca;
     }
 
-    public void setMensAlum(BigDecimal mensAlum) {
-        this.mensAlum = mensAlum;
+    public void setRetiBeca(String retiBeca) {
+        this.retiBeca = retiBeca;
     }
 
     public Date getFechInic() {
@@ -128,6 +123,14 @@ public class Beca implements Serializable {
 
     public void setCodiTipoEsta(TipoEstado codiTipoEsta) {
         this.codiTipoEsta = codiTipoEsta;
+    }
+
+    public TipoRetiro getCodiReti() {
+        return codiReti;
+    }
+
+    public void setCodiReti(TipoRetiro codiReti) {
+        this.codiReti = codiReti;
     }
 
     @XmlTransient

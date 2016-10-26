@@ -7,7 +7,7 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Donacion;
-import ejb.DonacionFacadeLocal;
+import com.sv.udb.ejb.DonacionFacadeLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

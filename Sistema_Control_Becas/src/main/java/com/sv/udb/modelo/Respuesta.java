@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "respuesta", catalog = "sistemas_pilet", schema = "")
@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Respuesta.findAll", query = "SELECT r FROM Respuesta r"),
     @NamedQuery(name = "Respuesta.findByCodiResp", query = "SELECT r FROM Respuesta r WHERE r.codiResp = :codiResp"),
-    @NamedQuery(name = "Respuesta.findByDescOpci", query = "SELECT r FROM Respuesta r WHERE r.descOpci = :descOpci")})
+    @NamedQuery(name = "Respuesta.findByDescOpci", query = "SELECT r FROM Respuesta r WHERE r.descOpci = :descOpci"),
+    @NamedQuery(name = "Respuesta.findByEstaResp", query = "SELECT r FROM Respuesta r WHERE r.estaResp = :estaResp")})
 public class Respuesta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,11 +47,13 @@ public class Respuesta implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "desc_opci")
     private String descOpci;
+    @Column(name = "esta_resp")
+    private Integer estaResp;
     @JoinColumn(name = "codi_opci", referencedColumnName = "codi_opci")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Opcion codiOpci;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SolicitudBeca codiSoliBeca;
 
     public Respuesta() {
@@ -79,6 +82,14 @@ public class Respuesta implements Serializable {
 
     public void setDescOpci(String descOpci) {
         this.descOpci = descOpci;
+    }
+
+    public Integer getEstaResp() {
+        return estaResp;
+    }
+
+    public void setEstaResp(Integer estaResp) {
+        this.estaResp = estaResp;
     }
 
     public Opcion getCodiOpci() {

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "detalle", catalog = "sistemas_pilet", schema = "")
@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Detalle.findAll", query = "SELECT d FROM Detalle d"),
     @NamedQuery(name = "Detalle.findByCodiDeta", query = "SELECT d FROM Detalle d WHERE d.codiDeta = :codiDeta"),
     @NamedQuery(name = "Detalle.findByFechDeta", query = "SELECT d FROM Detalle d WHERE d.fechDeta = :fechDeta"),
-    @NamedQuery(name = "Detalle.findByMontAlum", query = "SELECT d FROM Detalle d WHERE d.montAlum = :montAlum")})
+    @NamedQuery(name = "Detalle.findByMontAlum", query = "SELECT d FROM Detalle d WHERE d.montAlum = :montAlum"),
+    @NamedQuery(name = "Detalle.findByEstaDeta", query = "SELECT d FROM Detalle d WHERE d.estaDeta = :estaDeta")})
 public class Detalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,8 +51,10 @@ public class Detalle implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "mont_alum")
     private BigDecimal montAlum;
+    @Column(name = "esta_deta")
+    private Integer estaDeta;
     @JoinColumn(name = "codi_tran", referencedColumnName = "codi_tran")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Transaccion codiTran;
 
     public Detalle() {
@@ -83,6 +86,14 @@ public class Detalle implements Serializable {
 
     public void setMontAlum(BigDecimal montAlum) {
         this.montAlum = montAlum;
+    }
+
+    public Integer getEstaDeta() {
+        return estaDeta;
+    }
+
+    public void setEstaDeta(Integer estaDeta) {
+        this.estaDeta = estaDeta;
     }
 
     public Transaccion getCodiTran() {

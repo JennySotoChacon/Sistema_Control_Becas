@@ -45,12 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findByEstaEmpr", query = "SELECT e FROM Empresa e WHERE e.estaEmpr = :estaEmpr")})
 public class Empresa implements Serializable {
 
-    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
-    private List<SolicitudBeca> solicitudBecaList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.LAZY)
-    private List<Donacion> donacionList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,6 +78,14 @@ public class Empresa implements Serializable {
     private Date fechEmpr;
     @Column(name = "esta_empr")
     private Integer estaEmpr;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    private List<Donacion> donacionList;
+    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    private List<Seguimiento> seguimientoList;
+    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    private List<Documento> documentoList;
+    @OneToMany(mappedBy = "codiEmpr", fetch = FetchType.LAZY)
+    private List<SolicitudBeca> solicitudBecaList;
 
     public Empresa() {
     }
@@ -157,6 +159,42 @@ public class Empresa implements Serializable {
         this.estaEmpr = estaEmpr;
     }
 
+    @XmlTransient
+    public List<Donacion> getDonacionList() {
+        return donacionList;
+    }
+
+    public void setDonacionList(List<Donacion> donacionList) {
+        this.donacionList = donacionList;
+    }
+
+    @XmlTransient
+    public List<Seguimiento> getSeguimientoList() {
+        return seguimientoList;
+    }
+
+    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
+        this.seguimientoList = seguimientoList;
+    }
+
+    @XmlTransient
+    public List<Documento> getDocumentoList() {
+        return documentoList;
+    }
+
+    public void setDocumentoList(List<Documento> documentoList) {
+        this.documentoList = documentoList;
+    }
+
+    @XmlTransient
+    public List<SolicitudBeca> getSolicitudBecaList() {
+        return solicitudBecaList;
+    }
+
+    public void setSolicitudBecaList(List<SolicitudBeca> solicitudBecaList) {
+        this.solicitudBecaList = solicitudBecaList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -180,24 +218,6 @@ public class Empresa implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Empresa[ codiEmpr=" + codiEmpr + " ]";
-    }
-
-    @XmlTransient
-    public List<Donacion> getDonacionList() {
-        return donacionList;
-    }
-
-    public void setDonacionList(List<Donacion> donacionList) {
-        this.donacionList = donacionList;
-    }
-
-    @XmlTransient
-    public List<SolicitudBeca> getSolicitudBecaList() {
-        return solicitudBecaList;
-    }
-
-    public void setSolicitudBecaList(List<SolicitudBeca> solicitudBecaList) {
-        this.solicitudBecaList = solicitudBecaList;
     }
     
 }

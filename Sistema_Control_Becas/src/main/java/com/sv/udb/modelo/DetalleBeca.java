@@ -6,6 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,6 +47,8 @@ public class DetalleBeca implements Serializable {
     @NotNull
     @Column(name = "cant_mese")
     private int cantMese;
+    @OneToMany(mappedBy = "codiDetaBeca", fetch = FetchType.LAZY)
+    private List<Transaccion> transaccionList;
     @JoinColumn(name = "codi_beca", referencedColumnName = "codi_beca")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Beca codiBeca;
@@ -77,6 +82,15 @@ public class DetalleBeca implements Serializable {
 
     public void setCantMese(int cantMese) {
         this.cantMese = cantMese;
+    }
+
+    @XmlTransient
+    public List<Transaccion> getTransaccionList() {
+        return transaccionList;
+    }
+
+    public void setTransaccionList(List<Transaccion> transaccionList) {
+        this.transaccionList = transaccionList;
     }
 
     public Beca getCodiBeca() {

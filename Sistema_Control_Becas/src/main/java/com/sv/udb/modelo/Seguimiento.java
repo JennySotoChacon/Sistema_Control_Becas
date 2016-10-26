@@ -7,6 +7,7 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,16 +19,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author eduardo
  */
 @Entity
 @Table(name = "seguimiento", catalog = "sistemas_pilet", schema = "")
@@ -37,7 +40,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByCodiSegu", query = "SELECT s FROM Seguimiento s WHERE s.codiSegu = :codiSegu"),
     @NamedQuery(name = "Seguimiento.findByFechSegu", query = "SELECT s FROM Seguimiento s WHERE s.fechSegu = :fechSegu"),
     @NamedQuery(name = "Seguimiento.findByFechReco", query = "SELECT s FROM Seguimiento s WHERE s.fechReco = :fechReco"),
-    @NamedQuery(name = "Seguimiento.findByDescSegu", query = "SELECT s FROM Seguimiento s WHERE s.descSegu = :descSegu")})
+    @NamedQuery(name = "Seguimiento.findByNombSegu", query = "SELECT s FROM Seguimiento s WHERE s.nombSegu = :nombSegu"),
+    @NamedQuery(name = "Seguimiento.findByDescSegu", query = "SELECT s FROM Seguimiento s WHERE s.descSegu = :descSegu"),
+    @NamedQuery(name = "Seguimiento.findByEstaSegu", query = "SELECT s FROM Seguimiento s WHERE s.estaSegu = :estaSegu")})
 public class Seguimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,27 +56,35 @@ public class Seguimiento implements Serializable {
     @Column(name = "fech_segu")
     @Temporal(TemporalType.DATE)
     private Date fechSegu;
-    @Basic(optional = false)   
     @Column(name = "fech_reco")
     @Temporal(TemporalType.DATE)
     private Date fechReco;
-    @Basic(optional = true)
+    @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(min = 1, max = 50)
     @Column(name = "nomb_segu")
     private String nombSegu;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 150)
+    @Size(min = 1, max = 500)
     @Column(name = "desc_segu")
     private String descSegu;
+    @Column(name = "esta_segu")
+    private Integer estaSegu;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Empresa codiEmpr;
-     @JoinColumn(name = "padr_segu", referencedColumnName = "padr_segu")
-    @ManyToOne(optional = true, fetch = FetchType.EAGER)
-    private Empresa padrSegu;
-     
+    @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SolicitudBeca codiSoliBeca;
+    @JoinColumn(name = "codi_tipo_segui", referencedColumnName = "codi_tipo_segui")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TipoSeguimiento codiTipoSegui;
+    @OneToMany(mappedBy = "padrSegu", fetch = FetchType.LAZY)
+    private List<Seguimiento> seguimientoList;
+    @JoinColumn(name = "padr_segu", referencedColumnName = "codi_segu")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Seguimiento padrSegu;
 
     public Seguimiento() {
     }
@@ -80,28 +93,11 @@ public class Seguimiento implements Serializable {
         this.codiSegu = codiSegu;
     }
 
-    public Seguimiento(Integer codiSegu, Date fechSegu, Date fechReco,String nombSegu, String descSegu) {
+    public Seguimiento(Integer codiSegu, Date fechSegu, String nombSegu, String descSegu) {
         this.codiSegu = codiSegu;
         this.fechSegu = fechSegu;
-        this.fechReco = fechReco;
         this.nombSegu = nombSegu;
         this.descSegu = descSegu;
-    }
-
-    public Empresa getPadrSegu() {
-        return padrSegu;
-    }
-
-    public void setPadrSegu(Empresa padrSegu) {
-        this.padrSegu = padrSegu;
-    }
-
-    public String getNombSegu() {
-        return nombSegu;
-    }
-
-    public void setNombSegu(String nombSegu) {
-        this.nombSegu = nombSegu;
     }
 
     public Integer getCodiSegu() {
@@ -128,6 +124,14 @@ public class Seguimiento implements Serializable {
         this.fechReco = fechReco;
     }
 
+    public String getNombSegu() {
+        return nombSegu;
+    }
+
+    public void setNombSegu(String nombSegu) {
+        this.nombSegu = nombSegu;
+    }
+
     public String getDescSegu() {
         return descSegu;
     }
@@ -136,12 +140,53 @@ public class Seguimiento implements Serializable {
         this.descSegu = descSegu;
     }
 
+    public Integer getEstaSegu() {
+        return estaSegu;
+    }
+
+    public void setEstaSegu(Integer estaSegu) {
+        this.estaSegu = estaSegu;
+    }
+
     public Empresa getCodiEmpr() {
         return codiEmpr;
     }
 
     public void setCodiEmpr(Empresa codiEmpr) {
         this.codiEmpr = codiEmpr;
+    }
+
+    public SolicitudBeca getCodiSoliBeca() {
+        return codiSoliBeca;
+    }
+
+    public void setCodiSoliBeca(SolicitudBeca codiSoliBeca) {
+        this.codiSoliBeca = codiSoliBeca;
+    }
+
+    public TipoSeguimiento getCodiTipoSegui() {
+        return codiTipoSegui;
+    }
+
+    public void setCodiTipoSegui(TipoSeguimiento codiTipoSegui) {
+        this.codiTipoSegui = codiTipoSegui;
+    }
+
+    @XmlTransient
+    public List<Seguimiento> getSeguimientoList() {
+        return seguimientoList;
+    }
+
+    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
+        this.seguimientoList = seguimientoList;
+    }
+
+    public Seguimiento getPadrSegu() {
+        return padrSegu;
+    }
+
+    public void setPadrSegu(Seguimiento padrSegu) {
+        this.padrSegu = padrSegu;
     }
 
     @Override

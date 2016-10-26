@@ -6,22 +6,27 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Owner
+ * @author eduardo
  */
 @Entity
 @Table(name = "tipo_documento", catalog = "sistemas_pilet", schema = "")
@@ -48,10 +53,10 @@ public class TipoDocumento implements Serializable {
     @Size(max = 100)
     @Column(name = "desc_tipo_docu")
     private String descTipoDocu;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "esta_tipo_docu")
-    private int estaTipoDocu;
+    private Integer estaTipoDocu;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoDocu", fetch = FetchType.LAZY)
+    private List<Documento> documentoList;
 
     public TipoDocumento() {
     }
@@ -60,10 +65,9 @@ public class TipoDocumento implements Serializable {
         this.codiTipoDocu = codiTipoDocu;
     }
 
-    public TipoDocumento(Integer codiTipoDocu, String nombTipoDocu, int estaTipoDocu) {
+    public TipoDocumento(Integer codiTipoDocu, String nombTipoDocu) {
         this.codiTipoDocu = codiTipoDocu;
         this.nombTipoDocu = nombTipoDocu;
-        this.estaTipoDocu = estaTipoDocu;
     }
 
     public Integer getCodiTipoDocu() {
@@ -90,12 +94,21 @@ public class TipoDocumento implements Serializable {
         this.descTipoDocu = descTipoDocu;
     }
 
-    public int getEstaTipoDocu() {
+    public Integer getEstaTipoDocu() {
         return estaTipoDocu;
     }
 
-    public void setEstaTipoDocu(int estaTipoDocu) {
+    public void setEstaTipoDocu(Integer estaTipoDocu) {
         this.estaTipoDocu = estaTipoDocu;
+    }
+
+    @XmlTransient
+    public List<Documento> getDocumentoList() {
+        return documentoList;
+    }
+
+    public void setDocumentoList(List<Documento> documentoList) {
+        this.documentoList = documentoList;
     }
 
     @Override

@@ -31,7 +31,7 @@ CREATE TABLE donacion(
 codi_dona int NOT NULL AUTO_INCREMENT, 
 codi_empr int  NOT NULL,
 plaz_dona int NOT NULL, 
-cant_cuot int NOT NULL, 
+cant_cuot numeric(15,2) NOT NULL, 
 mont_tot numeric(15,2) NOT NULL,
 mont_pend numeric(15,2),
 

@@ -8,8 +8,8 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.DetalleBeca;
-import ejb.BecaFacadeLocal;
-import ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.ejb.BecaFacadeLocal;
+import com.sv.udb.ejb.DetalleBecaFacadeLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -172,7 +172,7 @@ public class BecaBean implements Serializable{
             this.objeBeca = FCDEBeca.find(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s", this.objeBeca.getMensAlum()) + "')");
+                    String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
             log.info("Beca Consultada");
         }
         catch(Exception ex)

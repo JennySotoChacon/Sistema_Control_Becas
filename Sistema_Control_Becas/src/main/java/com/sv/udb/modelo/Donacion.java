@@ -8,7 +8,9 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,11 +21,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,8 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Donacion.findByCantCuot", query = "SELECT d FROM Donacion d WHERE d.cantCuot = :cantCuot"),
     @NamedQuery(name = "Donacion.findByMontTot", query = "SELECT d FROM Donacion d WHERE d.montTot = :montTot"),
     @NamedQuery(name = "Donacion.findByMontPend", query = "SELECT d FROM Donacion d WHERE d.montPend = :montPend"),
-    @NamedQuery(name = "Donacion.findByEstaDona", query = "SELECT d FROM Donacion d WHERE d.estaDona = :estaDona"),
-    @NamedQuery(name = "Donacion.findByFechDona", query = "SELECT d FROM Donacion d WHERE d.fechDona = :fechDona")})
+    @NamedQuery(name = "Donacion.findByFechDona", query = "SELECT d FROM Donacion d WHERE d.fechDona = :fechDona"),
+    @NamedQuery(name = "Donacion.findByEstaDona", query = "SELECT d FROM Donacion d WHERE d.estaDona = :estaDona")})
 public class Donacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,31 +57,34 @@ public class Donacion implements Serializable {
     @NotNull
     @Column(name = "plaz_dona")
     private int plazDona;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "cant_cuot")
     private BigDecimal cantCuot;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "mont_tot")
     private BigDecimal montTot;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "mont_pend")
     private BigDecimal montPend;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "esta_dona")
-    private int estaDona;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fech_dona")
     @Temporal(TemporalType.DATE)
     private Date fechDona;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_dona")
+    private int estaDona;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Empresa codiEmpr;
+    @JoinColumn(name = "codi_tipo_dona", referencedColumnName = "codi_tipo_dona")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TipoDonacion codiTipoDona;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDona", fetch = FetchType.LAZY)
+    private List<Transaccion> transaccionList;
 
     public Donacion() {
     }
@@ -86,14 +93,13 @@ public class Donacion implements Serializable {
         this.codiDona = codiDona;
     }
 
-    public Donacion(Integer codiDona, int plazDona, BigDecimal cantCuot, BigDecimal montTot, BigDecimal montPend, int estaDona, Date fechDona) {
+    public Donacion(Integer codiDona, int plazDona, BigDecimal cantCuot, BigDecimal montTot, Date fechDona, int estaDona) {
         this.codiDona = codiDona;
         this.plazDona = plazDona;
         this.cantCuot = cantCuot;
         this.montTot = montTot;
-        this.montPend = montPend;
-        this.estaDona = estaDona;
         this.fechDona = fechDona;
+        this.estaDona = estaDona;
     }
 
     public Integer getCodiDona() {
@@ -136,14 +142,6 @@ public class Donacion implements Serializable {
         this.montPend = montPend;
     }
 
-    public int getEstaDona() {
-        return estaDona;
-    }
-
-    public void setEstaDona(int estaDona) {
-        this.estaDona = estaDona;
-    }
-
     public Date getFechDona() {
         return fechDona;
     }
@@ -152,12 +150,37 @@ public class Donacion implements Serializable {
         this.fechDona = fechDona;
     }
 
+    public int getEstaDona() {
+        return estaDona;
+    }
+
+    public void setEstaDona(int estaDona) {
+        this.estaDona = estaDona;
+    }
+
     public Empresa getCodiEmpr() {
         return codiEmpr;
     }
 
     public void setCodiEmpr(Empresa codiEmpr) {
         this.codiEmpr = codiEmpr;
+    }
+
+    public TipoDonacion getCodiTipoDona() {
+        return codiTipoDona;
+    }
+
+    public void setCodiTipoDona(TipoDonacion codiTipoDona) {
+        this.codiTipoDona = codiTipoDona;
+    }
+
+    @XmlTransient
+    public List<Transaccion> getTransaccionList() {
+        return transaccionList;
+    }
+
+    public void setTransaccionList(List<Transaccion> transaccionList) {
+        this.transaccionList = transaccionList;
     }
 
     @Override

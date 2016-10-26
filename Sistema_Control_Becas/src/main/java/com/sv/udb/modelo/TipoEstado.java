@@ -39,9 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoEstado.findByEstaTipoEsta", query = "SELECT t FROM TipoEstado t WHERE t.estaTipoEsta = :estaTipoEsta")})
 public class TipoEstado implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoEsta", fetch = FetchType.LAZY)
-    private List<Beca> becaList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +55,8 @@ public class TipoEstado implements Serializable {
     private String descTipoEsta;
     @Column(name = "esta_tipo_esta")
     private Integer estaTipoEsta;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoEsta", fetch = FetchType.LAZY)
+    private List<Beca> becaList;
 
     public TipoEstado() {
     }
@@ -103,6 +102,15 @@ public class TipoEstado implements Serializable {
         this.estaTipoEsta = estaTipoEsta;
     }
 
+    @XmlTransient
+    public List<Beca> getBecaList() {
+        return becaList;
+    }
+
+    public void setBecaList(List<Beca> becaList) {
+        this.becaList = becaList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -126,15 +134,6 @@ public class TipoEstado implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.TipoEstado[ codiTipoEsta=" + codiTipoEsta + " ]";
-    }
-
-    @XmlTransient
-    public List<Beca> getBecaList() {
-        return becaList;
-    }
-
-    public void setBecaList(List<Beca> becaList) {
-        this.becaList = becaList;
     }
     
 }
