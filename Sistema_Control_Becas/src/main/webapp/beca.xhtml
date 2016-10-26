@@ -88,8 +88,8 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.codiBeca}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                        <f:facet name="header">Numero de Solicitud</f:facet>
-                                        <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>   
+                                        <f:facet name="header">Alumno Solicitante</f:facet>
+                                        <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Tipo Estado</f:facet>
@@ -126,9 +126,9 @@ and open the template in the editor.
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{becaBean.objeBeca.codiBeca}" />
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="soli" value="Numero de solicitud: "/>
+                                            <h:outputLabel  for="soli" value="Alumno solicitante: "/>
                                             <h:selectOneMenu id="soli" value="#{becaBean.objeBeca.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.codiSoliBeca}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="soli" errorClass="field-error" />           

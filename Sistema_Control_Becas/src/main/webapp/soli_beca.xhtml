@@ -87,20 +87,13 @@ and open the template in the editor.
                                         <f:facet name="header">Código</f:facet>
                                         <h:outputText value="#{fila.codiSoliBeca}"/>
                                     </h:column>
-                                    
-                                    
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Empresa</f:facet> 
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiEmpr.nombEmpr eq null}">
+                                        <h:panelGroup class="label label-info" rendered="#{fila.codiEmpr.nombEmpr eq null}">
                                        <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiEmpr.nombEmpr ne null}">
+                                        <h:panelGroup class="label label-default" rendered="#{fila.codiEmpr.nombEmpr ne null}">
                                       <h:outputText value="#{fila.codiEmpr.nombEmpr}"/></h:panelGroup>
                                     </h:column>
-                                    
-                                    
-                                    
-                                    
-                                    
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">C. Alumno</f:facet>
                                         <h:outputText value="#{fila.carnAlum}"/>
@@ -114,7 +107,6 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.fechSoliBeca}">
                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>
-                                         
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estado</f:facet> 
@@ -169,7 +161,6 @@ and open the template in the editor.
                                             </h:inputText>
                                             <h:message for="fech" errorClass="field-error" />
                                         </div>
-                                        
                                     </fieldset>
                                 </div>
                                 <div class="modal-footer">

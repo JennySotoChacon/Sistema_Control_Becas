@@ -89,12 +89,12 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.codiDetaBeca}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                        <f:facet name="header">Beca</f:facet>
-                                        <h:outputText value="#{fila.codiBeca.codiBeca}"/>   
+                                        <f:facet name="header">Becado</f:facet>
+                                        <h:outputText value="#{fila.codiBeca.codiSoliBeca.nombAlum}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Tipo Beca</f:facet>
-                                        <h:outputText value="#{fila.codiTipoBeca.codiTipoBeca}"/>
+                                        <h:outputText value="#{fila.codiTipoBeca.nombTipoBeca}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Meses</f:facet>
@@ -123,7 +123,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="beca" value="Numero de beca "/>
                                             <h:selectOneMenu id="beca" value="#{detalleBecaBean.objeDetaBeca.codiBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{becaBean.listBeca}" var="lst" itemLabel="#{lst.codiBeca}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{becaBean.listBeca}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="beca" errorClass="field-error" />           
@@ -131,7 +131,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="tipo" value="Tipo Beca"/>
                                             <h:selectOneMenu id="tipo" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{tipoBecaBean.listTipo}" var="lst" itemLabel="#{lst.codiTipoBeca}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{tipoBecaBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="tipo" errorClass="field-error" />           
@@ -170,7 +170,7 @@ and open the template in the editor.
                                                     4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                 -->
                                                 <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!detalleBecaBean.guardar}" value="#" pt:data-placement="left"
-                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
                                                               pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
