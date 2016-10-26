@@ -95,19 +95,19 @@ and open the template in the editor.
                                         <f:facet name="header">Descuento:</f:facet>
                                         <h:outputText value="#{fila.descTipoBeca}"/>
                                     </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Estado</f:facet> 
-                                        <h:panelGroup class="label label-success" rendered="#{fila.estaTipoBeca eq '1'}">
-                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaTipoBeca ne '1'}">
-                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
-                                    </h:column>
                                     <h:column pt:data-sortable = "true">
                                         <f:facet name="header">Tipo</f:facet>
                                         <h:panelGroup class="label label-success" rendered="#{fila.tipoTipoBeca eq '1'}">
                                         <i class="fa fa-unlock"/> Mensualidad</h:panelGroup>
                                         <h:panelGroup class="label label-danger" rendered="#{fila.tipoTipoBeca ne '1'}">
                                         <i class="fa fa-lock"/> Otro</h:panelGroup>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Estado</f:facet> 
+                                        <h:panelGroup class="label label-success" rendered="#{fila.estaTipoBeca eq '1'}">
+                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaTipoBeca ne '1'}">
+                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
                                     </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
