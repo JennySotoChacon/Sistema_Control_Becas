@@ -12,6 +12,7 @@ import com.sv.udb.ejb.DonacionFacadeLocal;
 import com.sv.udb.ejb.TransaccionFacadeLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -75,6 +76,7 @@ public class TransaccionBean implements Serializable{
     public void limpForm()
     {
         this.objeTran = new Transaccion();
+         this.objeTran.setFechTran(new Date());
         this.guardar = true;        
     }
     
@@ -88,26 +90,50 @@ public class TransaccionBean implements Serializable{
             
             objeTran.setMontTran(objeDona.getCantCuot());
             objeTran.setTipoTran(1);         
-            //Restando del monto pendiente
-            BigDecimal resta = objeDona.getMontPend().subtract(objeDona.getCantCuot());
-            objeDona.setMontPend(resta);
-            //Comprobando si la resta es igual a cero para desactivar la donción
             
-             if(resta.compareTo(BigDecimal.valueOf(0))==0 ||resta.compareTo(BigDecimal.valueOf(0.00))==0 )
+            char tipoDona=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
+            //Si el tipo de donación no es del tipo recaudación se restara del monto
+            if(tipoDona=='F')
             {
-               objeDona.setEstaDona(0);
+                 //Restando del monto pendiente
+                BigDecimal resta = objeDona.getMontPend().subtract(objeDona.getCantCuot());
+                objeDona.setMontPend(resta);
+                //Comprobando si la resta es igual a cero para desactivar la donción
+
+                 if(resta.compareTo(BigDecimal.valueOf(0))==0 ||resta.compareTo(BigDecimal.valueOf(0.00))==0 )
+                {
+                   objeDona.setEstaDona(0);
+                }
             }
+            //Suma al monto total 
+            //consulta el ultimo registro pa ver el monto xd 
+            
+            //aqui consultar el ultimo registro xD
+            if(this.objeTran.getMontTota()==null)
+            {
+                this.objeTran.setMontTota(this.objeTran.getMontTran());
+            }
+            else
+            {
+                this.objeTran.setMontTota(this.objeTran.getMontTota().add(this.objeTran.getMontTran()));
+            }
+            
+            //setear el estado de tran xd
+            
+            this.objeTran.setEstaTran(1);
             //Para cuando edite la donación
             FCDEDona.edit(this.objeDona);
             //Para cuando cree la transacción
-            FCDETran.create(this.objeTran);
-                      
+            FCDETran.create(this.objeTran);                     
             
             this.listTran.add(this.objeTran);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Transaccion guardada");
         }
+        
+        
+        
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");

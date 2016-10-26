@@ -6,9 +6,11 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Transaccion;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -28,5 +30,6 @@ public class TransaccionFacade extends AbstractFacade<Transaccion> implements Tr
     public TransaccionFacade() {
         super(Transaccion.class);
     }
-    
+
+   
 }

@@ -37,12 +37,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
+    //@NamedQuery(name = "Transaccion.findLastRow", query = "SELECT t FROM Transaccion t ORDER BY t.codi_tran DESC"),
     @NamedQuery(name = "Transaccion.findByCodiTran", query = "SELECT t FROM Transaccion t WHERE t.codiTran = :codiTran"),
     @NamedQuery(name = "Transaccion.findByMontTran", query = "SELECT t FROM Transaccion t WHERE t.montTran = :montTran"),
     @NamedQuery(name = "Transaccion.findByFechTran", query = "SELECT t FROM Transaccion t WHERE t.fechTran = :fechTran"),
     @NamedQuery(name = "Transaccion.findByMontTota", query = "SELECT t FROM Transaccion t WHERE t.montTota = :montTota"),
     @NamedQuery(name = "Transaccion.findByTipoTran", query = "SELECT t FROM Transaccion t WHERE t.tipoTran = :tipoTran"),
     @NamedQuery(name = "Transaccion.findByEstaTran", query = "SELECT t FROM Transaccion t WHERE t.estaTran = :estaTran")})
+
 public class Transaccion implements Serializable {
 
     private static final long serialVersionUID = 1L;

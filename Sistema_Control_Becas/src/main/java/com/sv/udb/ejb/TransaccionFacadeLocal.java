@@ -25,6 +25,8 @@ public interface TransaccionFacadeLocal {
     Transaccion find(Object id);
 
     List<Transaccion> findAll();
+    
+    //List<Transaccion> findLastRow();
 
     List<Transaccion> findRange(int[] range);
 

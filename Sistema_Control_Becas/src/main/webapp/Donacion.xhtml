@@ -107,6 +107,10 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.montPend}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Tipo de donación</f:facet>
+                                        <h:outputText value="#{fila.codiTipoDona.nombTipoDona}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
                                         <f:facet name="header">Fecha</f:facet>
                                         <h:outputText value="#{fila.fechDona}">
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
@@ -168,6 +172,18 @@ and open the template in the editor.
                                             <h:message for="montp" errorClass="field-error" />
                                             <h:inputText id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
                                         </div>
+                                        
+                                       
+                                        
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="tipoDona" value="Tipo donación: "/>
+                                             <h:selectOneMenu id="tipoDona" value="#{donacionBean.objeDona.codiTipoDona}" class="form-control" pt:data-live-search="true">
+                                            <f:selectItems value="#{tipoDonacionBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDona}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                            <h:message for="tipoDona" errorClass="field-error" />
+                                        </div>
+                                        
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha Inicio "/>
                                             <h:message for="fech" errorClass="field-error" />

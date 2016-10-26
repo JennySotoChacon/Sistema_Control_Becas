@@ -105,35 +105,15 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.montTran}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Fecha entrada</f:facet> 
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.fechEntrTran eq null}">
+                                        <f:facet name="header">Fecha movimiento</f:facet> 
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.fechTran eq null}">
                                        <i class="fa fa-lock"/> Sin fecha</h:panelGroup>
-                                        <h:panelGroup  rendered="#{fila.fechEntrTran ne null}">
-                                         <h:outputText value="#{fila.fechEntrTran}">
+                                        <h:panelGroup  rendered="#{fila.fechTran ne null}">
+                                         <h:outputText value="#{fila.fechTran}">
                                              <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>                                         
                                         </h:panelGroup>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Fecha confirmación</f:facet> 
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.fechConfTran eq null}">
-                                       <i class="fa fa-lock"/> Sin fecha</h:panelGroup>
-                                        <h:panelGroup  rendered="#{fila.fechConfTran ne null}">
-                                         <h:outputText value="#{fila.fechConfTran}">
-                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
-                                        </h:outputText>                                         
-                                        </h:panelGroup>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Fecha Salida</f:facet> 
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.fechSaliTran eq null}">
-                                       <i class="fa fa-lock"/> Sin fecha</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.fechSaliTran ne null}">
-                                         <h:outputText value="#{fila.fechSaliTran}">
-                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
-                                        </h:outputText>                                         
-                                        </h:panelGroup>
-                                    </h:column>
+                                    </h:column>                                  
                                     
                                     
                                     
@@ -176,17 +156,11 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha Entrada "/>
                                             <h:message for="fech" errorClass="field-error" />
-                                            <h:inputText id="fech" value="#{transaccionBean.objeTran.fechEntrTran}" class="form-control">
+                                            <h:inputText id="fech" value="#{transaccionBean.objeTran.fechTran}" class="form-control">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText>
                                         </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="fech2" value="Fecha Confirmación "/>
-                                            <h:message for="fech2" errorClass="field-error" />
-                                            <h:inputText id="fech2" value="#{transaccionBean.objeTran.fechConfTran}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText>
-                                        </div>
+                                       
                                     </fieldset>
                                 </div>
                                 <div class="modal-footer">
