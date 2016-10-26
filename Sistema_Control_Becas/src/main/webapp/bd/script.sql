@@ -14,11 +14,15 @@ PRIMARY KEY (codi_empr),
 UNIQUE (nomb_empr));
 
 
-
+/* reca_tipo_dona es para decir si el campo esta destinado para ser utilizado como reacudación
+ si no es para recaidación se insertara una F de y si es para recaudación se insertara una V 
+*/
+  
 CREATE TABLE tipo_donacion(
 codi_tipo_dona int NOT NULL AUTO_INCREMENT,
 nomb_tipo_dona varchar(50) not null, 
 desc_tipo_dona varchar(500),
+reca_tipo_dona char(1), 
 esta_dona int,
 PRIMARY KEY (codi_tipo_dona)
 );
