@@ -104,6 +104,10 @@ and open the template in the editor.
                                         <f:facet name="header">Monto </f:facet>
                                         <h:outputText value="#{fila.montTran}"/>   
                                     </h:column>
+                                    <h:column pt:data-sortable="true" pt:data-field="montTotal">
+                                        <f:facet name="header">Monto total</f:facet>
+                                        <h:outputText value="#{fila.montTota}"/>   
+                                    </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Fecha movimiento</f:facet> 
                                         <h:panelGroup class="label label-danger" rendered="#{fila.fechTran eq null}">

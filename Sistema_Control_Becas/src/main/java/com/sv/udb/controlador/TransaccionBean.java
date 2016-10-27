@@ -33,6 +33,8 @@ public class TransaccionBean implements Serializable{
     @EJB
     private TransaccionFacadeLocal FCDETran;
     private Transaccion objeTran;
+    //Objeto para guardar ultimo registro de la tabla transaccionesxd
+    private Transaccion objeTranTemp;
     @EJB
     private DonacionFacadeLocal FCDEDona;
     private Donacion objeDona;
@@ -85,37 +87,58 @@ public class TransaccionBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-//            this.objeDona.setCodiDona(this.objeTran.getCodiDona().getCodiDona());
+            //Primero creamos el objeto de donación, consultandolo a partir de la llave foranaea en transacción    
             this.objeDona = FCDEDona.find(this.objeTran.getCodiDona().getCodiDona());
             
+            //Seteamos el monto de la transacción, en este caso será, la cantidad $$ cuotas de donación
             objeTran.setMontTran(objeDona.getCantCuot());
+            //tipo de tansacción 1
             objeTran.setTipoTran(1);         
             
-            char tipoDona=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
+            //consultamos el tipo de donación, es de tipo caracter xd
+            char recaudacion=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
             //Si el tipo de donación no es del tipo recaudación se restara del monto
-            if(tipoDona=='F')
+            if(recaudacion=='F')
             {
                  //Restando del monto pendiente
                 BigDecimal resta = objeDona.getMontPend().subtract(objeDona.getCantCuot());
                 objeDona.setMontPend(resta);
                 //Comprobando si la resta es igual a cero para desactivar la donción
-
+                
+                /*
+                comparación con big decimal(unicos y especiales:c)
+                la resta se compara a (compareTo) otro numero big decimal, pero el cero es entero
+                no es big decimal, así que se debe de convertir a big decimal con:
+                BigDecimal.valueof(NumeroEntero)
+                resta.SeComparaA(ConvertirABigDecimal(cero))
+                
+                las compàraciones de big decimal pueden devolver tres numeros
+                0,1 y 2
+                0= son iguales
+                1=es menor
+                2= es mayor
+                *esta en el javadoc*
+                como queremos comprobar que la comparaciones es igual a cero
+                
+                resta.SeComparaA(ConvertirABigDecimal(cero)) == son iguales
+                resta.SeComparaA(ConvertirABigDecimal(cero)) == 0
+                */
                  if(resta.compareTo(BigDecimal.valueOf(0))==0 ||resta.compareTo(BigDecimal.valueOf(0.00))==0 )
                 {
                    objeDona.setEstaDona(0);
                 }
             }
             //Suma al monto total 
-            //consulta el ultimo registro pa ver el monto xd 
+            this.objeTranTemp = FCDETran.findLast();
             
-            //aqui consultar el ultimo registro xD
-            if(this.objeTran.getMontTota()==null)
+            System.out.println("nooooooooooo" +objeTranTemp);
+            if(this.objeTranTemp==null)
             {
                 this.objeTran.setMontTota(this.objeTran.getMontTran());
             }
             else
             {
-                this.objeTran.setMontTota(this.objeTran.getMontTota().add(this.objeTran.getMontTran()));
+                this.objeTran.setMontTota(this.objeTranTemp.getMontTota().add(this.objeTran.getMontTran()));
             }
             
             //setear el estado de tran xd
@@ -138,6 +161,7 @@ public class TransaccionBean implements Serializable{
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             log.error(getRootCause(ex).getMessage());
+            System.out.println(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -193,7 +217,7 @@ public class TransaccionBean implements Serializable{
     {
         try
         {
-            this.objeTran = FCDETran.findLast();
+            this.listTran = FCDETran.findAll();
             log.info("Transacciones Consultadas");
         }
         catch(Exception ex)
