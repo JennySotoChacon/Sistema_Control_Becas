@@ -44,13 +44,7 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().createQuery(cq).getResultList();
     }
     
-     public List<T> findLastRow() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
-    }
-
-
+     
     public List<T> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));

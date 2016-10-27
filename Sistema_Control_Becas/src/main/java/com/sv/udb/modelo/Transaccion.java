@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "transaccion", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
-    //@NamedQuery(name = "Transaccion.findLastRow", query = "SELECT t FROM Transaccion t ORDER BY t.codi_tran DESC"),
+    @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),   
     @NamedQuery(name = "Transaccion.findByCodiTran", query = "SELECT t FROM Transaccion t WHERE t.codiTran = :codiTran"),
     @NamedQuery(name = "Transaccion.findByMontTran", query = "SELECT t FROM Transaccion t WHERE t.montTran = :montTran"),
     @NamedQuery(name = "Transaccion.findByFechTran", query = "SELECT t FROM Transaccion t WHERE t.fechTran = :fechTran"),

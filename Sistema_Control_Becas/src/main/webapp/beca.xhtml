@@ -120,39 +120,87 @@ and open the template in the editor.
                             <h:form id="FormRegi" class="form-horizontal">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                    <h4 class="modal-title">Gestion Beca</h4>
+                                </div>
+                                <div class="modal-body" style="padding-top: 2px;">
+                                    <ui:fragment id="FragBusc" rendered="#{webServicesBean.showBusc}">
+                                        <fieldset>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="soli" value="Tipo Retiro: "/>
+                                                <h:selectOneMenu id="soli" value="#{becaBean.objeBeca.codiReti}" class="form-control" pt:data-live-search="true">
+                                                    <f:selectItems value="#{tipoRetiBean.listTipoReti}" var="lst" itemLabel="#{lst.nombReti}" itemValue="#{lst}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                                <h:message for="soli" errorClass="field-error" />           
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="por" value="Por que? "/>
+                                                <h:message for="por" errorClass="field-error" />
+                                                <h:inputText id="por" value="#{becaBean.objeBeca.retiBeca}" class="form-control" />
+                                            </div>
+                                            <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!becaBean.guardar}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                    <i class="fa fa-times"/> Eliminar
+                                            </h:outputLink>
+                                            <h:commandLink id="btonOculBusc" class="btn btn-default btn-sm">
+                                                <p:ajax listener="#{webServicesBean.toogBusc()}" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar
+                                            </h:commandLink>
+                                        </fieldset>
+                                    </ui:fragment>
+                                    <ui:fragment id="FragForm" rendered="#{!webServicesBean.showBusc}">
+                                        <fieldset class="col-md-12">
+                                            <h:inputHidden id="codi" value="#{becaBean.objeBeca.codiBeca}" />
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="soli" value="Alumno solicitante: "/>
+                                                <h:selectOneMenu id="soli" value="#{becaBean.objeBeca.codiSoliBeca}" class="form-control" pt:data-live-search="true">
+                                                    <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                                <h:message for="soli" errorClass="field-error" />           
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="tipoEsta" value="Tipo estado "/>
+                                                <h:selectOneMenu id="tipoEsta" value="#{becaBean.objeBeca.codiTipoEsta}" class="form-control" pt:data-live-search="true">
+                                                    <f:selectItems value="#{tipoEstadoBean.listTipoEsta}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="fech" value="Fecha Inicio "/>
+                                                <h:message for="fech" errorClass="field-error" />
+                                                <h:inputText id="fech" value="#{becaBean.objeBeca.fechInic}" class="form-control">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:inputText>
+                                            </div>
+                                            <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
+                                                <p:ajax listener="#{webServicesBean.toogBusc()}" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-search"/> Buscar ...
+                                            </h:commandLink>
+                                        </fieldset>
+                                    </ui:fragment>
+                                </div>
+                                <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
+                                    <div class="input-group-btn right" style="padding-top: 5px;">
+                                        <div class="btn-group">
+                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                <p:ajax listener="#{webServicesBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                <i class="fa fa-mail-forward"/> Cerrar
+                                            </h:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                            <h:form id="FormRegi" class="form-horizontal">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                     <h4 class="modal-title">Gestión Beca</h4>
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
-                                    <fieldset class="col-md-12">
-                                        <h:inputHidden id="codi" value="#{becaBean.objeBeca.codiBeca}" />
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="soli" value="Alumno solicitante: "/>
-                                            <h:selectOneMenu id="soli" value="#{becaBean.objeBeca.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="soli" errorClass="field-error" />           
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="tipoEsta" value="Tipo estado "/>
-                                            <h:selectOneMenu id="tipoEsta" value="#{becaBean.objeBeca.codiTipoEsta}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{tipoEstadoBean.listTipoEsta}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="mens" value="Mensualidad alumno "/>
-                                            <h:message for="mens" errorClass="field-error" />
-                                            <h:inputText id="mens" value="#{becaBean.objeBeca.mensAlum}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="fech" value="Fecha Inicio "/>
-                                            <h:message for="fech" errorClass="field-error" />
-                                            <h:inputText id="fech" value="#{becaBean.objeBeca.fechInic}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText>
-                                        </div>
-                                    </fieldset>
+                                    
                                 </div>
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">

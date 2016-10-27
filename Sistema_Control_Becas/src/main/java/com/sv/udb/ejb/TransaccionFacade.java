@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -29,6 +30,14 @@ public class TransaccionFacade extends AbstractFacade<Transaccion> implements Tr
 
     public TransaccionFacade() {
         super(Transaccion.class);
+    }
+
+
+    @Override
+    public Transaccion findLast() {
+        Query q = getEntityManager().createNativeQuery("select * from transaccion order by fech_tran DESC limit 1", Transaccion.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Transaccion)resu.get(0);
     }
 
    

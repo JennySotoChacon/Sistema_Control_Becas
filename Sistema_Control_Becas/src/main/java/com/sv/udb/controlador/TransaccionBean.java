@@ -193,7 +193,7 @@ public class TransaccionBean implements Serializable{
     {
         try
         {
-            this.listTran = FCDETran.findAll();
+            this.objeTran = FCDETran.findLast();
             log.info("Transacciones Consultadas");
         }
         catch(Exception ex)

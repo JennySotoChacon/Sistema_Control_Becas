@@ -7,22 +7,18 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,22 +41,30 @@ public class Grado implements Serializable {
     @Basic(optional = false)
     @Column(name = "codi_grad")
     private Integer codiGrad;
-    @Size(max = 50)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "nomb_grad")
     private String nombGrad;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "mens_grad")
     private BigDecimal mensGrad;
     @Column(name = "esta_grad")
     private Integer estaGrad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiGrad", fetch = FetchType.LAZY)
-    private List<SolicitudBeca> solicitudBecaList;
 
     public Grado() {
     }
 
     public Grado(Integer codiGrad) {
         this.codiGrad = codiGrad;
+    }
+
+    public Grado(Integer codiGrad, String nombGrad, BigDecimal mensGrad) {
+        this.codiGrad = codiGrad;
+        this.nombGrad = nombGrad;
+        this.mensGrad = mensGrad;
     }
 
     public Integer getCodiGrad() {
@@ -93,15 +97,6 @@ public class Grado implements Serializable {
 
     public void setEstaGrad(Integer estaGrad) {
         this.estaGrad = estaGrad;
-    }
-
-    @XmlTransient
-    public List<SolicitudBeca> getSolicitudBecaList() {
-        return solicitudBecaList;
-    }
-
-    public void setSolicitudBecaList(List<SolicitudBeca> solicitudBecaList) {
-        this.solicitudBecaList = solicitudBecaList;
     }
 
     @Override

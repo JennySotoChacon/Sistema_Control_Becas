@@ -46,8 +46,8 @@ alter table donacion add foreign key (codi_tipo_dona) references tipo_donacion (
 
 CREATE TABLE grado(
 codi_grad int NOT NULL AUTO_INCREMENT, 
-nomb_grad varchar(50), 
-mens_grad numeric(15,2),
+nomb_grad varchar(50) NOT NULL, 
+mens_grad numeric(15,2) NOT NULL,
 esta_grad int,
 PRIMARY KEY(codi_grad)
 );
@@ -138,6 +138,7 @@ CREATE TABLE tipo_retiro (
 codi_reti int NOT NULL AUTO_INCREMENT,
 nomb_reti varchar(50), 
 desc_reti varchar(500),
+esta_reti int NOT NULL,
 PRIMARY KEY(codi_reti), 
 UNIQUE(nomb_reti)
 );
