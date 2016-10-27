@@ -179,7 +179,7 @@ public class UploadBean implements Serializable {
             File[] fList = directory.listFiles();
             for (File file : fList){
                 InputStream targetStream = new FileInputStream(file);
-                 this.listNombFile.add(new Archivo(file.getName().split(".").toString().substring(0), targetStream, file.getName()));
+                 this.listNombFile.add(new Archivo(file.getName(), targetStream, file.getName()));
                 System.out.println(file.getName());
             }
             

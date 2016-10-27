@@ -145,6 +145,15 @@ and open the template in the editor.
                                             <h:message for="Empr" errorClass="field-error" />
                                         </div>
                                         <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="Grad" value="Grado: "/>
+                                            <h:selectOneMenu id="Grad" value="#{solicitudBecaBean.objeSoli.codiGrad}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                <f:selectItems value="#{gradoBean.listGrad}" var="lst" itemLabel="#{lst.nombGrad}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                            <h:message for="Grad" errorClass="field-error" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
                                             <h:outputLabel  for="carn" value="Carnet Alumno: "/>
                                             <h:message for="carn" errorClass="field-error" />
                                             <h:inputText id="carn" value="#{solicitudBecaBean.objeSoli.carnAlum}" class="form-control" />
