@@ -92,18 +92,14 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Tipo Estado</f:facet>
-                                        <h:outputText value="#{fila.codiTipoEsta.nombTipoEsta}"/>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Mensualidad Alumno</f:facet>
-                                        <h:outputText value="$#{fila.mensAlum}"/>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
                                         <f:facet name="header">Fecha Inicio</f:facet>
                                         <h:outputText value="#{fila.fechInic}">
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Tipo Estado</f:facet>
+                                        <h:outputText value="#{fila.codiTipoEsta.nombTipoEsta}"/>
                                     </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
@@ -126,25 +122,18 @@ and open the template in the editor.
                                     <ui:fragment id="FragBusc" rendered="#{webServicesBean.showBusc}">
                                         <fieldset>
                                             <div class="form-group input-group-xs">
-                                                <h:outputLabel  for="soli" value="Tipo Retiro: "/>
-                                                <h:selectOneMenu id="soli" value="#{becaBean.objeBeca.codiReti}" class="form-control" pt:data-live-search="true">
+                                                <h:outputLabel  for="reti" value="Tipo Retiro: "/>
+                                                <h:selectOneMenu id="reti" value="#{becaBean.objeBeca.codiReti}" class="form-control" pt:data-live-search="true">
                                                     <f:selectItems value="#{tipoRetiBean.listTipoReti}" var="lst" itemLabel="#{lst.nombReti}" itemValue="#{lst}"/>
                                                     <f:converter converterId="PooConv"/>
                                                 </h:selectOneMenu>
-                                                <h:message for="soli" errorClass="field-error" />           
+                                                <h:message for="reti" errorClass="field-error" />           
                                             </div>
                                             <div class="form-group input-group-xs">
                                                 <h:outputLabel  for="por" value="Por que? "/>
                                                 <h:message for="por" errorClass="field-error" />
                                                 <h:inputText id="por" value="#{becaBean.objeBeca.retiBeca}" class="form-control" />
                                             </div>
-                                            <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!becaBean.guardar}" value="#" pt:data-placement="left"
-                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
-                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
-                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
-                                                    <i class="fa fa-times"/> Eliminar
-                                            </h:outputLink>
                                             <h:commandLink id="btonOculBusc" class="btn btn-default btn-sm">
                                                 <p:ajax listener="#{webServicesBean.toogBusc()}" process="@this" update="@form" global="true"/>
                                                 <i class="fa fa-undo"/> Regresar
@@ -178,29 +167,10 @@ and open the template in the editor.
                                             </div>
                                             <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
                                                 <p:ajax listener="#{webServicesBean.toogBusc()}" process="@this" update="@form" global="true"/>
-                                                <i class="fa fa-search"/> Buscar ...
+                                                <i class="fa fa-chevron-down"/> Retirar alumno
                                             </h:commandLink>
                                         </fieldset>
                                     </ui:fragment>
-                                </div>
-                                <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
-                                    <div class="input-group-btn right" style="padding-top: 5px;">
-                                        <div class="btn-group">
-                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                <p:ajax listener="#{webServicesBean.limpForm()}" process="@form" update="@form" global="true"/>
-                                                <i class="fa fa-mail-forward"/> Cerrar
-                                            </h:commandLink>
-                                        </div>
-                                    </div>
-                                </div>
-                            </h:form>
-                            <h:form id="FormRegi" class="form-horizontal">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                    <h4 class="modal-title">Gestión Beca</h4>
-                                </div>
-                                <div class="modal-body" style="padding-top: 2px;">
-                                    
                                 </div>
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">
