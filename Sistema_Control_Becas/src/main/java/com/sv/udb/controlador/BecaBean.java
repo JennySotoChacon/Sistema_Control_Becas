@@ -10,6 +10,7 @@ import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.DetalleBeca;
 import com.sv.udb.ejb.BecaFacadeLocal;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.modelo.TipoEstado;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -128,11 +129,15 @@ public class BecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEBeca.remove(this.objeBeca);
-            this.listBeca.remove(this.objeBeca);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
-            log.info("Beca Eliminada");
+            this.listBeca.remove(this.objeBeca); //Limpia el objeto viejo
+            System.out.println("sdfsdf"+this.objeBeca.getRetiBeca());
+            TipoEstado esta = new TipoEstado();
+            esta.setCodiTipoEsta(2);
+            this.objeBeca.setCodiTipoEsta(esta);
+            FCDEBeca.edit(this.objeBeca);
+            this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Beca Eliminado");
         }
         catch(Exception ex)
         {

@@ -138,6 +138,9 @@ public class TransaccionBean implements Serializable{
             }
             else
             {
+                System.out.println("Monto total>"+this.objeTranTemp.getMontTota());
+                
+                System.out.println("Monto actual>"+this.objeTran.getMontTran());
                 this.objeTran.setMontTota(this.objeTranTemp.getMontTota().add(this.objeTran.getMontTran()));
             }
             

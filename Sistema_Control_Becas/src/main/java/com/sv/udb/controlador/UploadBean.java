@@ -73,7 +73,7 @@ public class UploadBean implements Serializable {
     
     public void uploFile()
     {
-        String Path = "C:/Users/Ariel/Desktop/becas/";
+        String Path = "/home/eduardo/Escritorio/asd/";
         try
         {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -174,7 +174,8 @@ public class UploadBean implements Serializable {
     {
         try
         {
-            File directory = new File("C:/Users/Ariel/Desktop/becas/");
+            //tags file java investigar
+            File directory = new File("/home/eduardo/Escritorio/asd/");
             //get all the files from a directory
             File[] fList = directory.listFiles();
             for (File file : fList){
