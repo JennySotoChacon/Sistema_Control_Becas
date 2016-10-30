@@ -8,9 +8,7 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,17 +19,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author eduardo
+ * @author Owner
  */
 @Entity
 @Table(name = "donacion", catalog = "sistemas_pilet", schema = "")
@@ -39,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Donacion.findAll", query = "SELECT d FROM Donacion d"),
     @NamedQuery(name = "Donacion.findByCodiDona", query = "SELECT d FROM Donacion d WHERE d.codiDona = :codiDona"),
+    @NamedQuery(name = "Donacion.findByNombDona", query = "SELECT d FROM Donacion d WHERE d.nombDona = :nombDona"),
     @NamedQuery(name = "Donacion.findByPlazDona", query = "SELECT d FROM Donacion d WHERE d.plazDona = :plazDona"),
     @NamedQuery(name = "Donacion.findByCantCuot", query = "SELECT d FROM Donacion d WHERE d.cantCuot = :cantCuot"),
     @NamedQuery(name = "Donacion.findByMontTot", query = "SELECT d FROM Donacion d WHERE d.montTot = :montTot"),
@@ -53,6 +51,11 @@ public class Donacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "codi_dona")
     private Integer codiDona;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "nomb_dona")
+    private String nombDona;
     @Basic(optional = false)
     @NotNull
     @Column(name = "plaz_dona")
@@ -77,14 +80,12 @@ public class Donacion implements Serializable {
     @NotNull
     @Column(name = "esta_dona")
     private int estaDona;
-    @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Empresa codiEmpr;
     @JoinColumn(name = "codi_tipo_dona", referencedColumnName = "codi_tipo_dona")
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoDonacion codiTipoDona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDona", fetch = FetchType.LAZY)
-    private List<Transaccion> transaccionList;
+    @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Empresa codiEmpr;
 
     public Donacion() {
     }
@@ -93,8 +94,9 @@ public class Donacion implements Serializable {
         this.codiDona = codiDona;
     }
 
-    public Donacion(Integer codiDona, int plazDona, BigDecimal cantCuot, BigDecimal montTot, Date fechDona, int estaDona) {
+    public Donacion(Integer codiDona, String nombDona, int plazDona, BigDecimal cantCuot, BigDecimal montTot, Date fechDona, int estaDona) {
         this.codiDona = codiDona;
+        this.nombDona = nombDona;
         this.plazDona = plazDona;
         this.cantCuot = cantCuot;
         this.montTot = montTot;
@@ -108,6 +110,14 @@ public class Donacion implements Serializable {
 
     public void setCodiDona(Integer codiDona) {
         this.codiDona = codiDona;
+    }
+
+    public String getNombDona() {
+        return nombDona;
+    }
+
+    public void setNombDona(String nombDona) {
+        this.nombDona = nombDona;
     }
 
     public int getPlazDona() {
@@ -158,14 +168,6 @@ public class Donacion implements Serializable {
         this.estaDona = estaDona;
     }
 
-    public Empresa getCodiEmpr() {
-        return codiEmpr;
-    }
-
-    public void setCodiEmpr(Empresa codiEmpr) {
-        this.codiEmpr = codiEmpr;
-    }
-
     public TipoDonacion getCodiTipoDona() {
         return codiTipoDona;
     }
@@ -174,13 +176,12 @@ public class Donacion implements Serializable {
         this.codiTipoDona = codiTipoDona;
     }
 
-    @XmlTransient
-    public List<Transaccion> getTransaccionList() {
-        return transaccionList;
+    public Empresa getCodiEmpr() {
+        return codiEmpr;
     }
 
-    public void setTransaccionList(List<Transaccion> transaccionList) {
-        this.transaccionList = transaccionList;
+    public void setCodiEmpr(Empresa codiEmpr) {
+        this.codiEmpr = codiEmpr;
     }
 
     @Override

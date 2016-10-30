@@ -24,7 +24,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "tipoRetiBean")
 @ViewScoped
-public class TipoRetiBean implements Serializable{
+public class TipoRetiroBean implements Serializable{
 
     @EJB
     private TipoRetiroFacadeLocal FCDETipoReti;
@@ -32,7 +32,7 @@ public class TipoRetiBean implements Serializable{
     private TipoRetiro objeTipoReti;
     private List<TipoRetiro> listTipoReti;
     private boolean guardar;        
-    private static Logger log = Logger.getLogger(TipoRetiBean.class);
+    private static Logger log = Logger.getLogger(TipoRetiroBean.class);
 
     public TipoRetiro getObjeTipoReti() {
         return objeTipoReti;
@@ -76,7 +76,7 @@ public class TipoRetiBean implements Serializable{
     /**
      * Creates a new instance of TipoRetiBean
      */
-    public TipoRetiBean() {
+    public TipoRetiroBean() {
     }
     
     public void guar()
