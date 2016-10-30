@@ -28,8 +28,9 @@ PRIMARY KEY (codi_tipo_dona)
 );
 
 CREATE TABLE donacion(
-codi_dona int NOT NULL AUTO_INCREMENT, 
+codi_dona int NOT NULL AUTO_INCREMENT,
 codi_empr int  NOT NULL,
+nomb_dona varchar(50) NOT NULL, 
 plaz_dona int NOT NULL, 
 cant_cuot numeric(15,2) NOT NULL, 
 mont_tot numeric(15,2) NOT NULL,

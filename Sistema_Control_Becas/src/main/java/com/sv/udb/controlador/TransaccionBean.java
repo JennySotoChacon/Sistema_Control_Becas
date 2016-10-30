@@ -91,7 +91,9 @@ public class TransaccionBean implements Serializable{
             this.objeDona = FCDEDona.find(this.objeTran.getCodiDona().getCodiDona());
             
             //Seteamos el monto de la transacción, en este caso será, la cantidad $$ cuotas de donación
-            objeTran.setMontTran(objeDona.getCantCuot());
+            if (objeTran.getMontTran()==null) {
+                objeTran.setMontTran(objeDona.getCantCuot());
+            }
             //tipo de tansacción 1
             objeTran.setTipoTran(1);         
             
@@ -100,8 +102,8 @@ public class TransaccionBean implements Serializable{
             //Si el tipo de donación no es del tipo recaudación se restara del monto
             if(recaudacion=='F')
             {
-                 //Restando del monto pendiente
-                BigDecimal resta = objeDona.getMontPend().subtract(objeDona.getCantCuot());
+                //Restando del monto pendiente
+                BigDecimal resta = objeDona.getMontPend().subtract(objeTran.getMontTran());
                 objeDona.setMontPend(resta);
                 //Comprobando si la resta es igual a cero para desactivar la donción
                 

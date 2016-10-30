@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Transaccion;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +40,13 @@ public class TransaccionFacade extends AbstractFacade<Transaccion> implements Tr
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (Transaccion)resu.get(0);
     }
-
-   
+    
+    @Override
+    public BigDecimal findMonto(Object id){
+        String query = "SELECT SUM(mont_tran) FROM transaccion WHERE codi_dona = ?1";
+        Query q = getEntityManager().createNativeQuery(query);
+        q.setParameter(1, id);
+        BigDecimal paga = (BigDecimal) q.getSingleResult();
+        return paga;
+    }
 }

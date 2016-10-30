@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Transaccion;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -28,7 +29,7 @@ public interface TransaccionFacadeLocal {
 
     List<Transaccion> findAll();
     
-
+    BigDecimal findMonto(Object id);
 
     List<Transaccion> findRange(int[] range);
 

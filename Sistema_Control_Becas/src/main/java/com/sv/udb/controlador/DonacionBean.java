@@ -8,6 +8,8 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Donacion;
 import com.sv.udb.ejb.DonacionFacadeLocal;
+import com.sv.udb.ejb.TransaccionFacadeLocal;
+import com.sv.udb.modelo.Transaccion;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,6 +32,9 @@ import org.primefaces.context.RequestContext;
 @Named(value = "donacionBean")
 @ViewScoped
 public class DonacionBean implements Serializable{
+
+    @EJB
+    private TransaccionFacadeLocal FCDETran;
     @EJB
     private DonacionFacadeLocal FCDEDona;
     private Donacion objeDona;
@@ -51,7 +56,6 @@ public class DonacionBean implements Serializable{
     public List<Donacion> getListDona() {
         return listDona;
     }
-
     /**
      * Creates a new instance of DonacionBean
      */
@@ -83,10 +87,13 @@ public class DonacionBean implements Serializable{
         {
             BigDecimal total = this.objeDona.getCantCuot().multiply(BigDecimal.valueOf(objeDona.getPlazDona()));
             this.objeDona.setMontTot(total);
-            if(this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0))==0 ||this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0.00))==0 )
-            {
+            char recaudacion=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
+            if ( recaudacion== 'F') {
                 this.objeDona.setMontPend(total);
-            }            
+            } else {
+                objeDona.setMontPend(BigDecimal.ZERO);
+            }
+            
             this.objeDona.setEstaDona(1);
             FCDEDona.create(this.objeDona);
             this.listDona.add(this.objeDona);
@@ -110,6 +117,23 @@ public class DonacionBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            BigDecimal total = this.objeDona.getCantCuot().multiply(BigDecimal.valueOf(objeDona.getPlazDona()));
+            //Actualización del tipo de donacion
+            char recaudacion=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
+            if ( recaudacion == 'F') {
+                this.objeDona.setMontPend(total);
+            } else {
+                objeDona.setMontPend(BigDecimal.ZERO);
+            }
+            //Operaciones para el monto pendiente
+            //Crear la variable 
+            BigDecimal pagoCanc = FCDETran.findMonto(objeDona.getCodiDona());
+            if (pagoCanc == null) {
+                this.objeDona.setMontPend(total);
+            }
+            else{
+                this.objeDona.setMontPend(total.subtract(pagoCanc));
+            }
             this.listDona.remove(this.objeDona); //Limpia el objeto viejo
             if(this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0))!=0 ||this.objeDona.getMontPend().compareTo(BigDecimal.valueOf(0.00))!=0 )
             {
