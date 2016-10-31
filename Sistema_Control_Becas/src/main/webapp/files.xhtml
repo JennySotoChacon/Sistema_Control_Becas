@@ -10,7 +10,9 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:cs="http://xmlns.udb.edu.sv/component">
     <ui:composition template="/WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="Bienvenido ::: Página Uploads"/>
@@ -21,12 +23,36 @@ and open the template in the editor.
         <ui:param name="actiUpload" value="active"/>
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
+            <h:outputStylesheet library="css" name="datepicker3.css"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.js"/>
+        <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
+        <!--Plugins Select-->
+        <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+        <h:outputScript library="js" name="bootstrap-select.js"/>
+        <!--Plugins custom-->
+            <h:outputScript library="js" name="custom/general.js"/>
+            
             <h:outputScript library="js" name="bootstrap-filestyle.js"/>
             <h:outputScript library="js" name="custom/file.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
             <style>
+                img {
+                display: block;
+                max-width: 60%;
+                margin-left: 20%;
+                margin-top: 7%;
+                height: auto;
+            }
+                      .modal-dialog2{
+                        position: relative;
+                        display: table;
+                        overflow-y: auto;    
+                        overflow-x: auto;
+                        width: auto;
+                        min-width: 300px;   
+                    }
             </style>
             <h:form id="FormAlum" class="form-horizontal" enctype="multipart/form-data">
                 <div class="panel panel-default">
@@ -34,14 +60,25 @@ and open the template in the editor.
                     <div class="panel-heading">
                         <div class="row btn-group btn-group-justified">
                             
-                             <div class="col-md-11">
-                                            <h:outputLabel  for="cant" value="Carnet"/>
+                             <div class="col-md-11" >
+                                            <h:outputLabel  for="cant" value="Nombre carpeta:"/>
                                             <h:message for="cant" errorClass="field-error" />
                                             <h:inputText id="cant" value="#{uploadBean.carnet}" class="form-control" />
                                         </div>
                             
+                            
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
+                              <div class="col-md-11" ></div>
 
-                            <div class="col-md-11" style="padding-right: 0;">
+                            <div class="col-md-9" style="padding-right: 0;">
+                               
                                 <h:inputFile pt:data-id="file" value="#{uploadBean.file}" pt:multiple="true"/>
                             </div>
                             <div class="col-md-1">
@@ -50,18 +87,150 @@ and open the template in the editor.
                                     <i class="fa fa-cloud-upload"/> Subir
                                 </h:commandLink>
                             </div>
+                              <div class="col-md-1"  >
+                                  
+                                  
+                                  <h:commandLink id="btonMostImag" class="btn btn-info btn-sm">
+                                                <p:ajax listener="#{uploadBean.toogImag()}" update=":FormAlum"  oncomplete="INIT_OBJE_FILE();" global="true"/> 
+                                                <i class="fa fa-eye"/>
+                                            </h:commandLink>
+                                  
+                                  </div>
+                              <div class="col-md-1"  >
+                                   <h:commandLink id="btonMostDocu" class="btn btn-info btn-sm">
+                                       <p:ajax listener="#{uploadBean.toogDocu()}" update=":FormAlum"  oncomplete="INIT_OBJE_FILE();" global="true"/> 
+                                                <i class="fa fa-file"/>
+                                            </h:commandLink>
+                                  
+                              </div>
+                             
+                              
+                              
+                              
+
                         </div>
                     </div>
+                    
+                    
                     <!-- List group -->
-                    <ul class="list-group">
+                    <ul class="list-group" id ="resultado">
                         <ui:repeat var="item" varStatus="status" value="#{uploadBean.listNombFile}">
                             <li class="list-group-item">
-                                #{item.nomb} -----> #{item.tipo}
+                               
+                                
+                                <h:panelGroup rendered="#{uploadBean.showImag }">
+                                
+                                    <h:panelGroup rendered="#{item.exte eq 'jpg'}">
+                                            <h:graphicImage value="/images/#{item.nomb}" />
+                                                                                                                                                                         
+                                        </h:panelGroup>
+                                                                 
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{!uploadBean.showImag }"> 
+                                    
+                                    <h:panelGroup rendered="#{item.exte eq 'jpg'}">
+                                          <!--  <h:graphicImage value="/images/#{item.nomb}" /> -->
+                                            <h3>  
+                                                <a href="#">
+
+                                                </a> 
+                                                <i class="fa fa-camera"></i>
+                                                #{item.nomb} ---> #{item.exte}</h3>
+
+                                    </h:panelGroup>
+
+                                </h:panelGroup>     
+                                
+                                
+                                
+                                
+                                <h:panelGroup rendered="#{uploadBean.showDocu }">
+                                
+                                    <h:panelGroup rendered="#{item.exte eq 'pdf'}">
+                                                  <h3> 
+                                          <a href="#">
+                                              
+                                          </a> 
+                                          <i class="fa fa-file"></i>
+                                          <cs:PdfViewer id="demo" value="#{item.fileInbyte}" width="100%" height="500px"/>   
+                                          #{item.nomb} ---> #{item.exte}
+                                                  
+                                                  </h3>                                                                                                                                                                  
+                                        </h:panelGroup>
+                                                                 
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{!uploadBean.showDocu }"> 
+                                    
+                                    <h:panelGroup rendered="#{item.exte eq 'pdf'}">
+                                                                                           <h3> 
+                                          <a href="#">
+                                              
+                                          </a> 
+                                          <i class="fa fa-file"></i>
+                                          #{item.nomb} ---> #{item.exte}
+                                                  
+                                                  </h3>              
+
+                                    </h:panelGroup>
+
+                                </h:panelGroup>  
+                                
+                                
+                                                              
+                                <h:panelGroup rendered="#{item.exte eq 'folder'}">
+                                    
+                                   <h3 > 
+                                       
+                                       <a href="#" class="">
+                                           
+                                       </a>
+                                       <i class="fa fa-folder"></i>
+                                       #{item.nomb} ---> #{item.exte}
+                                   
+                                   </h3>
+                                            
+                                </h:panelGroup>  
+                                
+                                
+                                
                             </li>
                         </ui:repeat>
                     </ul>
                 </div>
+                
             </h:form>
+            
+            <h:form>
+                                        <!--Form exclusivo para los remotos-->
+                                        <p:remoteCommand name="consObje" actionListener="#{uploadBean.cons()}" update=":FormAlum" 
+                                                          oncomplete="INIT_OBJE_FILE();" global="true"/>
+                                        
+                                    </h:form>
+            
+            
+                <!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+      </div>
+      <div class="modal-body">
+          
+          
+          <h:graphicImage id = "imagepreview" value="/images/#{item.nomb}"  />
+        <!-- <img src="" id="imagepreview" style="width: 850px; height: 638px;" /> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+              
         </ui:define>
     </ui:composition>
+    
+
 </html>
