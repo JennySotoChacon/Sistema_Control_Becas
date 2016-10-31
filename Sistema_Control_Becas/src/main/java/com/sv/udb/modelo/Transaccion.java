@@ -56,7 +56,7 @@ public class Transaccion implements Serializable {
     @Column(name = "mont_tran")
     private BigDecimal montTran;
     @Column(name = "fech_tran")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechTran;
     @Column(name = "mont_tota")
     private BigDecimal montTota;

@@ -99,8 +99,33 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.codiTran}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                        <f:facet name="header">Nombre empresa</f:facet>
-                                        <h:outputText value="#{fila.codiDona.codiEmpr.nombEmpr}"/>   
+                                         <f:facet name="header">Nombre empresa</f:facet>
+                                         
+                                         
+                                       
+                                        
+                                       
+                                       <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr ne null}">
+                                      
+                                        <h:outputText value="#{fila.codiDona.codiEmpr.nombEmpr}"/>  
+                                        
+                                        </h:panelGroup>
+                                       
+                                       <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr eq null}">
+                                      
+                                       
+                                            <i class="fa fa-lock"/> Sin Empresa
+                                        </h:panelGroup> 
+                                         
+                                         <h:panelGroup class="label label-success" rendered="#{fila.codiDetaBeca ne null }">
+                                      
+                                             <h:outputText value="#{fila.codiDetaBeca.codiBeca.codiSoliBeca.codiEmpr.nombEmpr}"/>  
+                                        
+                                        </h:panelGroup>
+                                       
+                                         
+                                        
+                                        
                                     </h:column>
                                     
                                     <h:column pt:data-sortable="true">
@@ -175,7 +200,7 @@ and open the template in the editor.
                                             <h:outputLabel  for="fech" value="Fecha Entrada "/>
                                             <h:message for="fech" errorClass="field-error" />
                                             <h:inputText id="fech" value="#{transaccionBean.objeTran.fechTran}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                             </h:inputText>
                                         </div>
                                        
@@ -250,7 +275,7 @@ and open the template in the editor.
                                             <h:outputLabel  for="fechSali" value="Fecha Entrada "/>
                                             <h:message for="fechSali" errorClass="field-error" />
                                             <h:inputText id="fechSali" value="#{transaccionBean.objeTran.fechTran}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                             </h:inputText>
                                         </div>
                                        
