@@ -255,6 +255,7 @@ public class TransaccionBean implements Serializable{
             if (guarSali) {
                 //setear el estado de tran xd
                 this.objeTran.setEstaTran(1);
+                this.objeTran.setTipoTran(2);
                 //Para cuando edite el detalle de beca
                 this.FCDEDetaBeca.edit(objeDetaBeca);
                 //Para cuando cree la transacción
