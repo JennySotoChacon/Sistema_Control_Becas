@@ -100,6 +100,13 @@ and open the template in the editor.
                                         <f:facet name="header">Meses</f:facet>
                                         <h:outputText value="#{fila.cantMese}"/>
                                     </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Estado</f:facet> 
+                                        <h:panelGroup class="label label-success" rendered="#{fila.estaDetaBeca eq '1'}">
+                                       <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaDetaBeca ne '1'}">
+                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                    </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
                         </div>

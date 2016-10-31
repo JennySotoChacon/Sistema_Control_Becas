@@ -6,6 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +15,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TipoRetiro.findByDescReti", query = "SELECT t FROM TipoRetiro t WHERE t.descReti = :descReti"),
     @NamedQuery(name = "TipoRetiro.findByEstaReti", query = "SELECT t FROM TipoRetiro t WHERE t.estaReti = :estaReti")})
 public class TipoRetiro implements Serializable {
+
+    @OneToMany(mappedBy = "codiReti")
+    private Collection<Beca> becaCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -118,6 +124,15 @@ public class TipoRetiro implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.TipoRetiro[ codiReti=" + codiReti + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Beca> getBecaCollection() {
+        return becaCollection;
+    }
+
+    public void setBecaCollection(Collection<Beca> becaCollection) {
+        this.becaCollection = becaCollection;
     }
     
 }

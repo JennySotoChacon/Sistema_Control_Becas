@@ -68,11 +68,16 @@ public class DetalleBean implements Serializable{
         this.guardar = true;        
     }
     
-    public void guar()
+    public void guar(int codiTran)
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            
+            
+            
+            
+            
             FCDEDeta.create(this.objeDeta);
             this.listDeta.add(this.objeDeta);
             this.limpForm();

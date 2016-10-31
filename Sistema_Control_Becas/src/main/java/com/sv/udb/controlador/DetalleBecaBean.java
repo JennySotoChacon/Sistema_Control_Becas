@@ -84,6 +84,7 @@ public class DetalleBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeDetaBeca.setEstaDetaBeca(1);
             FCDEDetaBeca.create(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca);
             this.limpForm();
@@ -129,15 +130,16 @@ public class DetalleBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEDetaBeca.remove(this.objeDetaBeca);
-            this.listDetaBeca.remove(this.objeDetaBeca);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
-            log.info("Detalle Eliminado");
+            this.objeDetaBeca.setEstaDetaBeca(0);
+            this.listDetaBeca.remove(this.objeDetaBeca); //Limpia el objeto viejo
+            FCDEDetaBeca.edit(this.objeDetaBeca);
+            this.listDetaBeca.add(this.objeDetaBeca); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Detalle Modificado");
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
             log.error(getRootCause(ex).getMessage());
         }
         finally

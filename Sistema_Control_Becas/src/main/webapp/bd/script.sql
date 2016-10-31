@@ -163,6 +163,7 @@ codi_deta_beca int NOT NULL AUTO_INCREMENT,
 codi_beca int NOT NULL,
 codi_tipo_beca int NOT NULL,
 cant_mese int NOT NULL,
+esta_deta_beca INT,
 PRIMARY KEY (codi_deta_beca));
 
 alter table detalle_beca add foreign key (codi_beca) references beca (codi_beca);
@@ -170,7 +171,7 @@ alter table detalle_beca add foreign key (codi_tipo_beca) references tipo_beca (
 
 CREATE TABLE transaccion (
 codi_tran int NOT NULL AUTO_INCREMENT,
-codi_dona int NOT NULL,
+codi_dona int,
 codi_deta_beca int,
 mont_tran numeric(15,2), 
 fech_tran date, 
@@ -247,3 +248,5 @@ CREATE TABLE `AppLog` (
   `LEVEL` varchar(10) NOT NULL,
   `MESSAGE` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO tipo_estado VALUES(null, 'Activo', 'Tienen que seguir pagango', 1), (null, 'Inactivo', 'Ya no hay que seguir pagando', 1);

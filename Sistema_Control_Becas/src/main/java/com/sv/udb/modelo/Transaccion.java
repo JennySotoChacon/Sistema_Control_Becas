@@ -67,7 +67,7 @@ public class Transaccion implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTran", fetch = FetchType.LAZY)
     private List<Detalle> detalleList;
     @JoinColumn(name = "codi_dona", referencedColumnName = "codi_dona")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Donacion codiDona;
     @JoinColumn(name = "codi_deta_beca", referencedColumnName = "codi_deta_beca")
     @ManyToOne(fetch = FetchType.LAZY)

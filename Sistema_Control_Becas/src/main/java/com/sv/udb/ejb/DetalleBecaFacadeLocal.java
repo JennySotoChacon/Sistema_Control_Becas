@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author eduardo
+ * @author Owner
  */
 @Local
 public interface DetalleBecaFacadeLocal {

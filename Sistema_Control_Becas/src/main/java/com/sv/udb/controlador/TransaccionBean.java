@@ -6,10 +6,14 @@
 package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
+import com.sv.udb.ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.ejb.DetalleFacadeLocal;
 import com.sv.udb.modelo.Donacion;
 import com.sv.udb.modelo.Transaccion;
 import com.sv.udb.ejb.DonacionFacadeLocal;
 import com.sv.udb.ejb.TransaccionFacadeLocal;
+import com.sv.udb.modelo.Detalle;
+import com.sv.udb.modelo.DetalleBeca;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,17 +34,27 @@ import org.primefaces.context.RequestContext;
 @Named(value = "transaccionBean")
 @ViewScoped
 public class TransaccionBean implements Serializable{
+
+    @EJB
+    private DetalleBecaFacadeLocal FCDEDetaBeca;
     @EJB
     private TransaccionFacadeLocal FCDETran;
-    private Transaccion objeTran;
-    //Objeto para guardar ultimo registro de la tabla transaccionesxd
-    private Transaccion objeTranTemp;
     @EJB
     private DonacionFacadeLocal FCDEDona;
-    private Donacion objeDona;
+    
+    private Transaccion objeTran;
     private List<Transaccion> listTran;
+    //Objeto para guardar ultimo registro de la tabla transaccionesxd
+    private Transaccion objeTranTemp;
+    private Donacion objeDona;
+    
+    //Para agregar el detalle cuando se haga una salida
+    private Detalle objeDeta;
+    
     private boolean guardar;
+    boolean guarSali; //Usado en el switch
     private static Logger log = Logger.getLogger(TransaccionBean.class);
+    
     public Transaccion getObjeTran() {
         return objeTran;
     }
@@ -59,6 +73,18 @@ public class TransaccionBean implements Serializable{
     public List<Transaccion> getListTran() {
         return listTran;
     }
+    
+    //Para las salidas
+    private DetalleBeca objeDetaBeca;
+
+    public DetalleBeca getObjeDetaBeca() {
+        return objeDetaBeca;
+    }
+
+    public void setObjeDetaBeca(DetalleBeca objeDetaBeca) {
+        this.objeDetaBeca = objeDetaBeca;
+    }
+
 
     /**
      * Creates a new instance of TransaccionBean
@@ -147,7 +173,6 @@ public class TransaccionBean implements Serializable{
             }
             
             //setear el estado de tran xd
-            
             this.objeTran.setEstaTran(1);
             //Para cuando edite la donación
             FCDEDona.edit(this.objeDona);
@@ -173,6 +198,91 @@ public class TransaccionBean implements Serializable{
             
         }
     }
+    
+    public void guarSali(){
+        
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+        //Crear el objeto detalle de beca
+        this.objeDetaBeca = FCDEDetaBeca.find(objeTran.getCodiDetaBeca().getCodiDetaBeca());
+        //Setear monto de transacción
+        this.objeTran.setMontTran(this.objeTran.getCodiDetaBeca().getCodiTipoBeca().getDescTipoBeca());
+        //Obtener el monto total disponible en el fondo
+        this.objeTranTemp = FCDETran.findLast();
+          
+        // objeto 1 = monto total, objeto 2 = monto transacción
+        // Posibles resultados de la comparación
+        // "0" ambos montos son iguales
+        // "1" el monto total es mayor al monto de transacción
+        // "-1" el monto de transacción es mayor al monto total
+        
+        switch (this.objeTranTemp.getMontTota().compareTo(this.objeTran.getMontTran())) {
+        //Operación normal de resta, fondo queda a 0. Recordar emitir alerta xD
+            case 0: 
+                //Setear el nuevo monto total
+                BigDecimal nuevMont = this.objeTranTemp.getMontTota().subtract(this.objeTran.getMontTran());
+                this.objeTran.setMontTota(nuevMont);
+                //Modificaciones al detalle de beca, consultar la cantidad de meses que dura el detalle y restarle uno con la operación
+                //Si el resultado es 0 desactivar el detalle
+                int nuevMese = this.objeDetaBeca.getCantMese() - 1;
+                this.objeDetaBeca.setCantMese(nuevMese);
+                if (nuevMese == 0) {
+                    this.objeDetaBeca.setEstaDetaBeca(0);
+                }
+                //Cambia el boolean para guardar xd
+                this.guarSali = true;
+                break;
+        //Operación normal
+            case 1:
+                BigDecimal nuevMont1 = this.objeTranTemp.getMontTota().subtract(this.objeTran.getMontTran());
+                this.objeTran.setMontTota(nuevMont1);
+                //Modificaciones al detalle de beca, consultar la cantidad de meses que dura el detalle y restarle uno con la operación
+                //Si el resultado es 0 desactivar el detalle
+                int nuevMese1 = this.objeDetaBeca.getCantMese() - 1;
+                this.objeDetaBeca.setCantMese(nuevMese1);
+                if (nuevMese1 == 0) {
+                    this.objeDetaBeca.setEstaDetaBeca(0);
+                }
+                //Cambia el boolean para guardar xd
+                this.guarSali = true;
+                break;
+        //Error, el fondo no alcanza para realizar la transacción
+            default:     
+                //Cambia el boolean para salir del guardar xd
+                this.guarSali = false;
+                break;     
+        }
+            if (guarSali) {
+                //setear el estado de tran xd
+                this.objeTran.setEstaTran(1);
+                //Para cuando edite el detalle de beca
+                this.FCDEDetaBeca.edit(objeDetaBeca);
+                //Para cuando cree la transacción
+                FCDETran.create(this.objeTran);
+
+                this.listTran.add(this.objeTran);
+                this.limpForm();
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                log.info("Transaccion guardada");
+                
+                //Manda las cositas para el detalle
+                
+                
+            }
+            else{
+                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El fondo no alcanza para realizar la transacción')");
+            }
+            
+        } catch (Exception ex){
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(ex).getMessage());
+            System.out.println(getRootCause(ex).getMessage());
+            
+        }
+    }
+    
+
+    
     
     public void modi()
     {
@@ -235,6 +345,8 @@ public class TransaccionBean implements Serializable{
             
         }
     }
+    
+    //Modificar this para consultar el tipo de transacción y elegir el form a mostrar
     
     public void cons()
     {
