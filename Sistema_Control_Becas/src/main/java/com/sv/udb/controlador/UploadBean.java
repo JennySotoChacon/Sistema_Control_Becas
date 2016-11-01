@@ -35,22 +35,15 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class UploadBean implements Serializable {
     private Part file;
-    private String carnet;
-    
+    private String carnet;    
     List<String> rutas;
-    int DireActuInde;
-    
+    int DireActuInde;    
     List<Archivo> listNombFile;
-
-   
 
     public String getCarnet() {
         return carnet;
     }
 
-   
-
-        
     public void setCarnet(String carnet) {
         this.carnet = carnet;
     }
@@ -90,13 +83,8 @@ public class UploadBean implements Serializable {
         catch(Exception e)
         {
             System.out.println(getRootCause(e).getMessage());
-        }
-
-        
-       
-    
-    }
-    
+        }   
+    }    
     public void RegresarRuta()
     {
 
@@ -173,7 +161,10 @@ public class UploadBean implements Serializable {
         if(item.getName().equals(file.getName()))
         {
             
-            
+            System.out.println("Path:" +path);
+             for (int i = 0; i <= this.listNombFile.size(); i++) {
+                 System.out.println(this.listNombFile.get(i));
+            }
             this.listNombFile.add(new Archivo(
                     item.getSubmittedFileName(),
                     item.getInputStream(),
@@ -264,8 +255,16 @@ public class UploadBean implements Serializable {
     public void consTodo(String parametro)
     {
         System.out.println("Directorio" + this.DireActuInde);
+        System.out.println("Parametro" + parametro.trim());
+        System.out.println("Directorio " + this.DireActuInde);
         try
         {
+           
+           if(parametro.equals("Subir"))
+           {
+               this.listNombFile.clear();
+               parametro="";
+           }
            if(parametro.trim().length()!=0)
            {
                
@@ -276,11 +275,6 @@ public class UploadBean implements Serializable {
            {
                  this.listNombFile.clear();
                this.listNombFile.add(new Archivo("Subir","folder"  ));
-           }
-           if(parametro.equals("Subir"))
-           {
-               this.listNombFile.clear();
-               parametro="";
            }
            
             //tags file java investigar
