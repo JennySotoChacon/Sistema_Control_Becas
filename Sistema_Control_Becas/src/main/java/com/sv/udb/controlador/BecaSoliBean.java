@@ -117,6 +117,7 @@ public class BecaSoliBean implements Serializable {
         this.guardar = true;
         this.objeBeca = new Beca();
         this.consTodo();
+        
     }
     
     public void limpForm()
@@ -126,6 +127,9 @@ public class BecaSoliBean implements Serializable {
         this.objeSoli.setFechSoliBeca(new Date());
         this.guardar = true; 
         this.showBusc = false;
+        this.beca = false;
+        this.elim = false;
+        this.empresa = false;
         this.filt = "";
     }
     
@@ -320,7 +324,33 @@ public class BecaSoliBean implements Serializable {
     
     //Lógica slider
     private  boolean showBusc = false;
+    private  boolean empresa = false;
+    private boolean beca = false;
+    private boolean elim = false;
+    private boolean estado = false;
+    private boolean detalle = false;
 
+    public boolean isDetalle() {
+        return detalle;
+    }
+    
+    public boolean isEstado() {
+        return estado;
+    }
+    
+
+    public boolean isBeca() {
+        return beca;
+    }
+
+    public boolean isElim() {
+        return elim;
+    }
+
+    public boolean isEmpresa() {
+        return empresa;
+    }
+    
     public boolean isShowBusc() {
         return showBusc;
     }
@@ -329,5 +359,41 @@ public class BecaSoliBean implements Serializable {
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.showBusc = !this.showBusc;
+    }
+    
+    public void empr()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        EmpresaBean asd = new EmpresaBean();
+        asd.limpForm();
+        this.empresa = !this.empresa;
+        this.beca = !this.beca;
+    }
+    
+    public void esta()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.estado = !this.estado;
+        this.beca = !this.beca;
+    }
+    
+    public void elim()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.elim = !this.elim;
+        this.beca = !this.beca;
+    }
+    
+    public void beca()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.beca = !this.beca;
+    }
+    
+    public void deta()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.detalle = !this.detalle;
+        this.beca = !this.beca;
     }
 }
