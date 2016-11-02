@@ -97,10 +97,12 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-sortable = "true">
                                         <f:facet name="header">Tipo</f:facet>
-                                        <h:panelGroup class="label label-success" rendered="#{fila.tipoTipoBeca eq '1'}">
-                                        <i class="fa fa-unlock"/> Mensualidad</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoTipoBeca ne '1'}">
-                                        <i class="fa fa-lock"/> Otro</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTipoBeca eq '1'}">
+                                        Matrícula</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTipoBeca eq '2'}">
+                                        Mensualidad</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTipoBeca eq '0'}">
+                                        Otro</h:panelGroup>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estado</f:facet> 
@@ -144,7 +146,8 @@ and open the template in the editor.
                                             <h:outputLabel  for="tipo" value="Descuento: "/>
                                             <h:message for="tipo" errorClass="field-error" />
                                             <h:selectOneRadio value="#{tipoBecaBean.objeTipo.tipoTipoBeca}">
-                                                <f:selectItem itemValue="1" itemLabel="Mensualidad" />
+                                                <f:selectItem itemValue="1" itemLabel="Matrícula" />
+                                                <f:selectItem itemValue="2" itemLabel="Mensualidad" />
                                                 <f:selectItem itemValue="0" itemLabel="Otro" />
                                             </h:selectOneRadio>
                                         </div>

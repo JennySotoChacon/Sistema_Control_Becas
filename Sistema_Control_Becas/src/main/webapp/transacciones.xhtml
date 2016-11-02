@@ -100,11 +100,6 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
                                          <f:facet name="header">Nombre empresa</f:facet>
-                                         
-                                         
-                                       
-                                        
-                                       
                                        <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr ne null}">
                                       
                                         <h:outputText value="#{fila.codiDona.codiEmpr.nombEmpr}"/>  
@@ -117,15 +112,7 @@ and open the template in the editor.
                                             <i class="fa fa-lock"/> Sin Empresa
                                         </h:panelGroup> 
                                          
-                                         <h:panelGroup class="label label-success" rendered="#{fila.codiDetaBeca ne null }">
-                                      
-                                             <h:outputText value="#{fila.codiDetaBeca.codiBeca.codiSoliBeca.codiEmpr.nombEmpr}"/>  
-                                        
-                                        </h:panelGroup>
                                        
-                                         
-                                        
-                                        
                                     </h:column>
                                     
                                     <h:column pt:data-sortable="true">

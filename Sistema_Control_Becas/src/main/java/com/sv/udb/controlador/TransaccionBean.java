@@ -41,6 +41,8 @@ public class TransaccionBean implements Serializable{
     private TransaccionFacadeLocal FCDETran;
     @EJB
     private DonacionFacadeLocal FCDEDona;
+    @EJB
+    private DetalleFacadeLocal FCDEDeta;
     
     private Transaccion objeTran;
     private List<Transaccion> listTran;
@@ -49,7 +51,7 @@ public class TransaccionBean implements Serializable{
     private Donacion objeDona;
     
     //Para agregar el detalle cuando se haga una salida
-    private Detalle objeDeta;
+    private DetalleBean detaBean;
     
     private boolean guardar;
     boolean guarSali; //Usado en el switch
@@ -95,8 +97,10 @@ public class TransaccionBean implements Serializable{
     @PostConstruct
     public void init()
     {
+        this.objeDeta = new Detalle();
         this.objeTran = new Transaccion();
-          this.objeDona = new Donacion();
+        this.objeDona = new Donacion();
+        this.detaBean = new DetalleBean();
         this.guardar = true;
         this.consTodo();
     }
@@ -266,9 +270,8 @@ public class TransaccionBean implements Serializable{
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 log.info("Transaccion guardada");
                 
-                //Manda las cositas para el detalle
-                
-                
+                //Llamada al metodo para enviar la información del detalle
+                guarDetalle();
             }
             else{
                  ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El fondo no alcanza para realizar la transacción')");
@@ -281,8 +284,51 @@ public class TransaccionBean implements Serializable{
             
         }
     }
-    
-
+    private Detalle objeDeta;
+    private List<Detalle> listDeta;
+    public void guarDetalle()
+    {
+        try
+        {
+            this.objeTran = this.FCDETran.findLast();
+            this.objeDeta.setCodiTran(objeTran);
+            //Obtener lo que el tipo de beca cubre
+            //1 = Matricula
+            //2 = Mensualidad
+            switch (objeTran.getCodiDetaBeca().getCodiTipoBeca().getTipoTipoBeca()) {
+                case 1:
+                    //Obtener el monto que pagó el alumno
+                    this.objeDeta.setMontAlum(objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiGrad().getMatrGrac().subtract(objeTran.getMontTran()));
+                    this.guardar = true;
+                    break;
+                case 2:
+                    this.objeDeta.setMontAlum(objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiGrad().getMensGrad().subtract(objeTran.getMontTran()));
+                    this.guardar = true;
+                    break;
+                default:
+                    this.guardar = false;
+                    break;
+            }
+            if (guardar) {
+                this.objeDeta.setFechDeta(this.objeTran.getFechTran());
+                this.objeDeta.setEstaDeta(1);
+                //Proceso normal para guardar
+                FCDEDeta.create(this.objeDeta);
+                this.listDeta.add(this.objeDeta);
+                this.limpForm();
+                log.info("Detalle Guardado");
+            }
+        }
+        catch(Exception ex)
+        {
+            log.error(getRootCause(ex).getMessage());
+            System.out.println(ex.getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
     
     
     public void modi()

@@ -93,6 +93,10 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Mensualidad:</f:facet>
+                                        <h:outputText value="#{fila.matrGrac}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Mensualidad:</f:facet>
                                         <h:outputText value="#{fila.mensGrad}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
@@ -127,6 +131,11 @@ and open the template in the editor.
                                             <h:message for="nomb" errorClass="field-error" />
                                             <h:inputText id="nomb" value="#{gradoBean.objeGrad.nombGrad}" class="form-control" />
                                             
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="matr" value="Matrícula: "/>
+                                            <h:message for="matr" errorClass="field-error" />
+                                            <h:inputText id="matri" value="#{gradoBean.objeGrad.matrGrac}" class="form-control" />
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="mens" value="Mensualidad: "/>

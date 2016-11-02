@@ -8,6 +8,8 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Detalle;
 import com.sv.udb.ejb.DetalleFacadeLocal;
+import com.sv.udb.ejb.TransaccionFacadeLocal;
+import com.sv.udb.modelo.Transaccion;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,11 +28,15 @@ import org.primefaces.context.RequestContext;
 @Named(value = "detalleBean")
 @ViewScoped
 public class DetalleBean implements Serializable{
+
+    @EJB
+    private TransaccionFacadeLocal FCDETran;
     @EJB
     private DetalleFacadeLocal FCDEDeta;
+    
     private Detalle objeDeta;
     private List<Detalle> listDeta;
-    private boolean guardar;      
+    private boolean guardar;
     private static Logger log = Logger.getLogger(DetalleBean.class);
     public Detalle getObjeDeta() {
         return objeDeta;
@@ -48,6 +54,9 @@ public class DetalleBean implements Serializable{
         return listDeta;
     }
 
+    //Para obtener la transacción
+    private Transaccion objeTran;
+    
     /**
      * Creates a new instance of DetalleBean
      */
@@ -57,6 +66,7 @@ public class DetalleBean implements Serializable{
     @PostConstruct
     public void init()
     {
+        this.objeTran = new Transaccion();
         this.objeDeta = new Detalle();
         this.guardar = true;
         this.consTodo();
@@ -68,27 +78,48 @@ public class DetalleBean implements Serializable{
         this.guardar = true;        
     }
     
-    public void guar(int codiTran)
+    public void guar()
     {
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            
-            
-            
-            
-            
-            FCDEDeta.create(this.objeDeta);
-            this.listDeta.add(this.objeDeta);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Detalle Guardado");
-            
+            System.out.println("cancer begins");
+//            this.objeTran = 
+           this.FCDETran.findLast();
+           /* System.out.println("Registro al que le insertaremos el detalle: "+objeTran.getCodiTran());
+            this.objeDeta.setCodiTran(objeTran);
+            System.out.println("Transacción: "+objeDeta.getCodiDeta());
+            //Obtener lo que el tipo de beca cubre
+            //1 = Matricula
+            //2 = Mensualidad
+            switch (objeTran.getCodiDetaBeca().getCodiTipoBeca().getTipoTipoBeca()) {
+                case 1:
+                    //Obtener el monto que pagó el alumno
+                    this.objeDeta.setMontAlum(objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiGrad().getMatrGrac().subtract(objeTran.getMontTran()));
+                    this.guardar = true;
+                    break;
+                case 2:
+                    this.objeDeta.setMontAlum(objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiGrad().getMensGrad().subtract(objeTran.getMontTran()));
+                    this.guardar = true;
+                    break;
+                default:
+                    this.guardar = false;
+                    break;
+            }
+            if (guardar) {
+                this.objeDeta.setFechDeta(this.objeTran.getFechTran());
+                this.objeDeta.setEstaDeta(1);
+                //Proceso normal para guardar
+                FCDEDeta.create(this.objeDeta);
+                this.listDeta.add(this.objeDeta);
+                this.limpForm();
+                log.info("Detalle Guardado");
+            }*/
+           System.out.println("Holas");
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             log.error(getRootCause(ex).getMessage());
+            System.out.println(ex.getMessage());
         }
         finally
         {
