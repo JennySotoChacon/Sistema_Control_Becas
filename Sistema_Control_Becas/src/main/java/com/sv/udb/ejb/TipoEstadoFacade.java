@@ -6,9 +6,11 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.TipoEstado;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,13 @@ public class TipoEstadoFacade extends AbstractFacade<TipoEstado> implements Tipo
 
     public TipoEstadoFacade() {
         super(TipoEstado.class);
+    }
+    
+    @Override
+    public List<TipoEstado> findAllIna() {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM tipo_estado WHERE codi_tipo_esta != 2", TipoEstado.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
     }
     
 }

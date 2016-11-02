@@ -18,6 +18,7 @@ public class AlumnosPojo {
     private String mail;
     private Date fechNaci;
     private String usua;
+    private String grad;
 
     public boolean isResp() {
         return resp;
@@ -58,5 +59,13 @@ public class AlumnosPojo {
     public void setUsua(String usua) {
         this.usua = usua;
     }
-    
+
+    public String getGrad() {
+        return grad;
+    }
+
+    public void setGrad(String grad) {
+        this.grad = grad;
+    }
+        
 }

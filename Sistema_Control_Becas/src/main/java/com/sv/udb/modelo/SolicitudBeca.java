@@ -58,7 +58,6 @@ public class SolicitudBeca implements Serializable {
     private String carnAlum;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "nomb_alum")
     private String nombAlum;
     @Basic(optional = false)

@@ -6,9 +6,11 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Beca;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,12 @@ public class BecaFacade extends AbstractFacade<Beca> implements BecaFacadeLocal 
         super(Beca.class);
     }
     
+    @Override
+    public Beca findSoli(Object id)
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM beca where codi_soli_beca = ?1", Beca.class);
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Beca)resu.get(0);
+    }
 }

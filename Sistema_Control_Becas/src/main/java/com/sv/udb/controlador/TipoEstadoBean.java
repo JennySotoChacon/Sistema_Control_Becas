@@ -30,6 +30,7 @@ public class TipoEstadoBean implements Serializable{
     private TipoEstadoFacadeLocal FCDETipo;
     private TipoEstado objeTipoEsta;
     private List<TipoEstado> listTipoEsta;
+    private List<TipoEstado> listTipoEstaIna;
     private boolean guardar;   
     private static Logger log = Logger.getLogger(TipoEstadoBean.class);
     public TipoEstado getObjeTipoEsta() {
@@ -47,6 +48,10 @@ public class TipoEstadoBean implements Serializable{
     public List<TipoEstado> getListTipoEsta() {
         return listTipoEsta;
     }
+    
+    public List<TipoEstado> getListTipoEstaIna() {
+        return listTipoEstaIna;
+    }
 
     /**
      * Creates a new instance of TipoEstadoBean
@@ -61,6 +66,7 @@ public class TipoEstadoBean implements Serializable{
 //        this.guardar = true;
         limpForm();
         this.consTodo();
+        this.consTodoIna();
     }
     
     public void limpForm()
@@ -154,6 +160,27 @@ public class TipoEstadoBean implements Serializable{
         try
         {
             this.listTipoEsta = FCDETipo.findAll();
+            log.info("Tipo Estados Consultados");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    /**
+     * Metodo que consulta todos los registros de la tabla Tipo Estado
+     */
+    public void consTodoIna()
+    {
+        try
+        {
+            this.listTipoEstaIna = FCDETipo.findAllIna();
             log.info("Tipo Estados Consultados");
         }
         catch(Exception ex)

@@ -23,6 +23,8 @@ public interface BecaFacadeLocal {
     void remove(Beca beca);
 
     Beca find(Object id);
+    
+    Beca findSoli(Object id);
 
     List<Beca> findAll();
 

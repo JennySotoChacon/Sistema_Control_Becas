@@ -27,6 +27,8 @@ public interface SolicitudBecaFacadeLocal {
     List<SolicitudBeca> findAll();
 
     List<SolicitudBeca> findRange(int[] range);
+    
+    SolicitudBeca findLast();
 
     int count();
     
