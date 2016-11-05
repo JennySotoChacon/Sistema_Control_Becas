@@ -3,25 +3,31 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            consObjeSali([{name : 'codiObjePara', value : row.id.trim()}]);
             var cadena =row.movimiento.trim();
             if(cadena=='<span class="label label-danger"><i class="fa fa-lock"></i> Salida</span>')
             {
-
-                $('#SaliForm').modal('show');
+              consObjeSali([{name : 'codiObjePara', value : row.id.trim()}]);
+              $('#SaliForm').modal('show');
 
             }
             else
                 {
+                  consObje([{name : 'codiObjePara', value : row.id.trim()}]);
                  $('#ModaForm').modal('show');
             }
 
-            var res = cadena.substring(10, 4);
-            console.log(row.movimiento.trim());
+            /*var res = cadena.substring(10, 4);
+            console.log(row.movimiento.trim());*/
 
         });
         return false;
     };
+    $('#ModaForm').on('hidden.bs.modal', function () {
+  $('.modal').modal('hide');
+});
+$('#SaliForm').on('hidden.bs.modal', function () {
+  $('.modal').modal('hide');
+});
     $.fn.initDatePick = function() {
         $(this).datepicker({
             format: "dd/mm/yyyy",
@@ -44,6 +50,14 @@ $(document).ready(function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
     });
 
+    $('#ModaForm').on('show.bs.modal', function() {
+        INIT_OBJE_MODA();
+    });
+    $('#ModaForm').on('hide.bs.modal', function() {
+        $("#TablRegi").bootstrapTable('uncheckAll');
+    });
+
+
     INIT_OBJE_SALI();
     INIT_OBJE();
 });
@@ -56,10 +70,10 @@ function INIT_OBJE_SALI()
 
 function INIT_OBJE_MODA_SALI()
 {
-    $("#FormRegi1\\:btonElim").confirmation({container: '#FormRegi1'});
+        console.log("Inicialice salidas");
+    $("#FormRegi1\\:btonElim1").confirmation({container: '#FormRegi1'});
     $("#FormRegi1\\:fech1").initDatePick();
 }
-
 
 function INIT_OBJE()
 {
@@ -69,6 +83,8 @@ function INIT_OBJE()
 
 function INIT_OBJE_MODA()
 {
+    console.log("Inicialice entradas");
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
      $("#FormRegi\\:fech").initDatePick();
+     
 }

@@ -23,6 +23,8 @@ public interface DetalleFacadeLocal {
     void remove(Detalle detalle);
 
     Detalle find(Object id);
+    
+    Detalle findDetaTran(Object id);
 
     List<Detalle> findAll();
 

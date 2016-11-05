@@ -28,8 +28,8 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap-select.css"/>
         <h:outputScript library="js" name="bootstrap-select.js"/>
         <!--Plugins custom-->
-            <h:outputScript library="js" name="custom/general.js"/>
-            <h:outputScript library="js" name="custom/salidas.js"/>
+            <!--<h:outputScript library="js" name="custom/general.js"/>-->
+            <h:outputScript library="js" name="custom/transacciones.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
@@ -65,8 +65,8 @@ and open the template in the editor.
                                         <!--Form exclusivo para los remotos-->
                                         <!--Entradas-->
                                         <p:remoteCommand name="consObje" actionListener="#{transaccionBean.cons()}" update=":FormRegi" 
-                                                         oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{transaccionBean.elim()}" update=":FormRegi :ContRegi" 
+                                                        oncomplete="$('#ModaForm').modal('show');" global="true"/>
+                                        <p:remoteCommand name="elimObje" actionListener="#{transaccionBean.desaEntr()}" update=":FormRegi :ContRegi" 
                                                          oncomplete="INIT_OBJE();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
                                             <p:ajax listener="#{transaccionBean.limpForm()}" update=":FormRegi" global="true" 
@@ -75,8 +75,8 @@ and open the template in the editor.
                                         </h:commandLink>
                                         <!--Salidas-->
                                         <p:remoteCommand name="consObjeSali" actionListener="#{transaccionBean.cons()}" update=":FormRegi1" 
-                                                         oncomplete="$('#SaliForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{transaccionBean.elim()}" update=":FormRegi1 :ContRegi" 
+                                                          oncomplete="$('#SaliForm').modal('show');" global="true"/>
+                                        <p:remoteCommand name="elimObjeSali" actionListener="#{transaccionBean.desaSali()}" update=":FormRegi1 :ContRegi" 
                                                          oncomplete="INIT_OBJE_SALI();" global="true"/>
                                          <h:commandLink id="btonNuevSali" class="btn btn-success">
                                             <p:ajax listener="#{transaccionBean.limpForm()}" update=":FormRegi1" global="true" 
@@ -142,12 +142,10 @@ and open the template in the editor.
                                         </h:outputText>                                         
                                         </h:panelGroup>
                                     </h:column>                                  
-                                    <h:column pt:data-sortable="true">
+                                    <h:column pt:data-sortable="true" pt:data-field="movimiento">
                                         <f:facet name="header">Movimiento</f:facet> 
-                                        <h:panelGroup class="label label-success" rendered="#{fila.tipoTran eq '1'}">
-                                       <i class="fa fa-unlock"/> Entrada</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoTran ne '1'}">
-                                       <i class="fa fa-lock"/> Salida</h:panelGroup>
+                                        <h:panelGroup class="label label-success" rendered="#{fila.tipoTran eq '1'}"><i class="fa fa-unlock"/> Entrada</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoTran ne '1'}"><i class="fa fa-lock"/> Salida</h:panelGroup>
                                     </h:column>
                                     
                                 </h:dataTable>
@@ -201,16 +199,12 @@ and open the template in the editor.
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
                                                 <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{transaccionBean.guardar}">
-                                                    <p:ajax listener="#{transaccionBean.guarEntrada()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <p:ajax listener="#{transaccionBean.guarEntr()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                     <i class="fa fa-plus"/> Guardar
                                                 </h:commandLink>
                                                 <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!transaccionBean.guardar}">
                                                     <p:ajax listener="#{transaccionBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
                                                     <i class="fa fa-plus"/> Nuevo
-                                                </h:commandLink>
-                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!transaccionBean.guardar}">
-                                                    <p:ajax listener="#{transaccionBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                    <i class="fa fa-edit"/> Modificar
                                                 </h:commandLink>
                                                 <!--
                                                     # Para corregir el error que redirecciona hice una serie de pasos
@@ -220,7 +214,7 @@ and open the template in the editor.
                                                     4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                 -->
                                                 <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!transaccionBean.guardar}" value="#" pt:data-placement="left"
-                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
                                                               pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
@@ -250,14 +244,35 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codiSali" value="#{transaccionBean.objeTran.codiTran}" />
+                                        
                                         <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="becaAlum" value="Alumno "/>
+                                            <h:selectOneMenu id="becaAlum"  value="#{transaccionBean.objeCombPadr }" class="form-control" pt:data-live-search="true">
+                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <p:ajax update="becaSali" listener="#{transaccionBean.onDetalleSelect}" process="@this"/>  
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                            
+                                            
+                                          <h:outputLabel  for="becaSali" value="Beca "/>
+                                            <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{transaccionBean.listHijo}" var="lst" itemLabel="#{lst.codiTipoBeca.nombTipoBeca}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                                                                        
+                                                                                        
+                                            <h:message for="becaSali" errorClass="field-error" />           
+                                        </div>
+                                        
+                                        <!-- <div class="form-group input-group-xs">
                                             <h:outputLabel  for="becaSali" value="Beca "/>
                                             <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control" pt:data-live-search="true">
                                                 <f:selectItems value="#{detalleBecaBean.listDetaBeca}" var="lst" itemLabel="#{lst.codiBeca.codiSoliBeca.nombAlum.concat(' - ').concat(lst.codiTipoBeca.nombTipoBeca)}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="becaSali" errorClass="field-error" />           
-                                        </div>
+                                        </div> -->
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fechSali" value="Fecha Entrada "/>
                                             <h:message for="fechSali" errorClass="field-error" />
@@ -283,10 +298,6 @@ and open the template in the editor.
                                                     <p:ajax listener="#{transaccionBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA_SALI();" />
                                                     <i class="fa fa-plus"/> Nuevo
                                                 </h:commandLink>
-                                                <h:commandLink id="btonModiSali" class="btn btn-primary" rendered="#{!transaccionBean.guardar}">
-                                                    <p:ajax listener="#{transaccionBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE_SALI();" />
-                                                    <i class="fa fa-edit"/> Modificar
-                                                </h:commandLink>
                                                 <!--
                                                     # Para corregir el error que redirecciona hice una serie de pasos
                                                     1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
@@ -294,11 +305,11 @@ and open the template in the editor.
                                                     3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
                                                     4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                 -->
-                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!transaccionBean.guardar}" value="#" pt:data-placement="left"
-                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                <h:outputLink id="btonElim1" class="btn btn-danger" rendered="#{!transaccionBean.guardar}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                              pt:data-on-confirm="elimObjeSali"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
                                                     <i class="fa fa-times"/> Eliminar
                                                 </h:outputLink>
                                             </div>
