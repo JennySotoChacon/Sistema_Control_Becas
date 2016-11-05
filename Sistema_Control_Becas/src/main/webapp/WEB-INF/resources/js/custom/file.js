@@ -26,6 +26,14 @@ initList = function()
                 
                
             }
+            else if(res[1]== "image/jpeg")
+            {
+                 
+                 $('#imagepreview').attr('src', "/Sistema_Control_Becas/images/"+res[0]); // here asign the image to the modal when the user click the enlarge link
+                 $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+                
+               
+            }
             else
             {
                 console.log(res[1]);

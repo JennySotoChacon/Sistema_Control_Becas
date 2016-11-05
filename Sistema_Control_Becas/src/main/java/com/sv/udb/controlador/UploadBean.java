@@ -138,44 +138,50 @@ public class UploadBean implements Serializable {
         }
         catch(Exception ex)
         {
-            
+            System.out.println("Error en uploFile"+ex.getMessage());
         }
     }
     
     
     public static byte[] readFully(InputStream input) throws IOException
-{
-    byte[] buffer = new byte[8192];
-    int bytesRead;
-    ByteArrayOutputStream output = new ByteArrayOutputStream();
-    while ((bytesRead = input.read(buffer)) != -1)
     {
-        output.write(buffer, 0, bytesRead);
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        while ((bytesRead = input.read(buffer)) != -1)
+        {
+            output.write(buffer, 0, bytesRead);
+        }
+        return output.toByteArray();
     }
-    return output.toByteArray();
-}
     
     
     private void moveFilePart(Part item,String path) throws IOException
     {
-        if(item.getName().equals(file.getName()))
-        {
-            
-            System.out.println("Path:" +path);
-             for (int i = 0; i <= this.listNombFile.size(); i++) {
-                 System.out.println(this.listNombFile.get(i));
-            }
-            this.listNombFile.add(new Archivo(
-                    item.getSubmittedFileName(),
-                    item.getInputStream(),
-                    item.getContentType(),
-                    readFully(item.getInputStream())
-            ));
-            
-           // System.out.println(item.getSubmittedFileName() +" "+item.getInputStream()+" "+ item.getContentType());
-            this.processFilePart(item, String.format("%s%s",path, item.getSubmittedFileName()));
+        try {
+            if(item.getName().equals(file.getName()))
+            {
+                
+                System.out.println(item.getSubmittedFileName());
+                
+                                System.out.println(item.getContentType());
+                                
+                                
+                 this.listNombFile.add(new Archivo(
+                        item.getSubmittedFileName(),
+                        item.getInputStream(),
+                        item.getContentType(),
+                        readFully(item.getInputStream())
+                ));
 
-         }
+               // System.out.println(item.getSubmittedFileName() +" "+item.getInputStream()+" "+ item.getContentType());
+                this.processFilePart(item, String.format("%s%s",path, item.getSubmittedFileName()));
+
+             }
+        } catch (Exception e) {
+            System.out.println("Error en moveFilePart"+e.getMessage());
+        }
+        
     }
     private void processFilePart(Part part, String filename) throws IOException
     {
@@ -305,7 +311,7 @@ public class UploadBean implements Serializable {
         }
         catch(Exception ex)
         {
-            ex.printStackTrace();
+            System.out.println("Error en cons todo"+ex.getMessage());
            
         }
         finally

@@ -114,29 +114,40 @@ and open the template in the editor.
                     
                     <!-- List group -->
                     <ul class="list-group" id ="resultado">
+                        <!-- <ui:repeat var="item" varStatus="status" value="#{uploadBean.listNombFile}">
+                        
+                        #{item.nomb}  #{item.tipo }
+                        </ui:repeat> -->
                         <ui:repeat var="item" varStatus="status" value="#{uploadBean.listNombFile}">
                             <li class="list-group-item">
                                
                                 
                                 <h:panelGroup rendered="#{uploadBean.showImag }">
                                 
-                                    <h:panelGroup rendered="#{item.exte eq 'jpg'}">
+                                    <h:panelGroup rendered="#{item.exte eq 'jpg' }">
                                             <h:graphicImage value="/images/#{item.nomb}" />
                                                                                                                                                                          
-                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{item.tipo eq 'image/jpeg'}">
+                                            <h:graphicImage value="/images/#{item.nomb}" />                                                                                                                                                                         
+                                    </h:panelGroup>
                                                                  
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{!uploadBean.showImag }"> 
                                     
                                     <h:panelGroup rendered="#{item.exte eq 'jpg'}">
-                                          <!--  <h:graphicImage value="/images/#{item.nomb}" /> -->
-                                            <h3>  
-                                                <a href="#">
-
-                                                </a> 
+                                          
+                                            <h3>                                                
                                                 <i class="fa fa-camera"></i>
-                                                #{item.nomb} ---> #{item.exte}</h3>
-
+                                                #{item.nomb} ---> #{item.exte}
+                                            </h3>
+                                    </h:panelGroup>
+                                     <h:panelGroup rendered="#{ item.tipo eq 'image/jpeg'}">
+                                          
+                                            <h3>                                                
+                                                <i class="fa fa-camera"></i>
+                                                #{item.nomb} ---> jpg
+                                            </h3>
                                     </h:panelGroup>
 
                                 </h:panelGroup>     
@@ -146,30 +157,33 @@ and open the template in the editor.
                                 
                                 <h:panelGroup rendered="#{uploadBean.showDocu }">
                                 
-                                    <h:panelGroup rendered="#{item.exte eq 'pdf'}">
-                                                  <h3> 
-                                          <a href="#">
-                                              
-                                          </a> 
-                                          <i class="fa fa-file"></i>
-                                          <cs:PdfViewer id="demo" value="#{item.fileInbyte}" width="100%" height="500px"/>   
-                                          #{item.nomb} ---> #{item.exte}
-                                                  
+                                        <h:panelGroup rendered="#{item.exte eq 'pdf' or item.tipo eq 'application/pdf' }">
+                                                  <h3>                                           
+                                                        <i class="fa fa-file"></i>
+                                                        <cs:PdfViewer id="demo" value="#{item.fileInbyte}" width="100%" height="500px"/>   
+                                                        #{item.nomb} ---> #{item.exte}                                                  
                                                   </h3>                                                                                                                                                                  
-                                        </h:panelGroup>
+                                        </h:panelGroup>                                   
                                                                  
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{!uploadBean.showDocu }"> 
                                     
                                     <h:panelGroup rendered="#{item.exte eq 'pdf'}">
-                                                                                           <h3> 
-                                          <a href="#">
-                                              
-                                          </a> 
-                                          <i class="fa fa-file"></i>
-                                          #{item.nomb} ---> #{item.exte}
+                                                 <h3> 
+                                           
+                                                    <i class="fa fa-file"></i>
+                                                    #{item.nomb} ---> #{item.exte}
                                                   
-                                                  </h3>              
+                                                  </h3>             
+
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{item.tipo eq 'application/pdf'}">
+                                                 <h3> 
+                                           
+                                                    <i class="fa fa-file"></i>
+                                                    #{item.nomb} ---> #{item.tipo}
+                                                  
+                                                  </h3>             
 
                                     </h:panelGroup>
 
