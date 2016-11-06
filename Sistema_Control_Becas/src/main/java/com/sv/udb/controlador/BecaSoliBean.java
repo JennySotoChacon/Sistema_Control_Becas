@@ -50,6 +50,7 @@ public class BecaSoliBean implements Serializable {
     @EJB
     private BecaFacadeLocal FCDEBeca;
     private Beca objeBeca;
+    private Beca objeBeca2;
     private List<Beca> listBeca;
     
     
@@ -171,9 +172,31 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listSoli.remove(this.objeSoli); //Limpia el objeto viejo
-            FCDESoli.edit(this.objeSoli);
-            this.listSoli.add(this.objeSoli); //Agrega el objeto modificado
+            //this.listSoli.remove(this.objeSoli); //Limpia el objeto viejo
+            System.out.println(this.objeSoli);
+            System.out.println(this.objeSoli.getNombAlum());
+            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
+            System.out.println(this.objeSoli2.getNombAlum());
+            this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
+            this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
+            this.listSoli.remove(this.objeSoli);
+            this.objeSoli2.setEstaSoliBeca(0);
+            FCDESoli.edit(objeSoli2);
+            this.listSoli.add(objeSoli2);
+            FCDESoli.create(objeSoli);
+            this.listSoli.add(objeSoli);
+            this.listBeca.remove(this.objeBeca2);
+            TipoEstado es = new TipoEstado();
+            es.setCodiTipoEsta(10);
+            this.objeBeca2.setCodiTipoEsta(es);
+            FCDEBeca.edit(objeBeca2);
+            this.listBeca.add(objeBeca2);
+            this.objeSoli = FCDESoli.findLast();
+            this.objeBeca.setCodiSoliBeca(objeSoli);
+            FCDEBeca.create(objeBeca);
+            this.listBeca.add(objeBeca);
+            //FCDESoli.edit(this.objeSoli);
+            //this.listSoli.add(this.objeSoli); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
             
@@ -329,7 +352,12 @@ public class BecaSoliBean implements Serializable {
     private boolean elim = false;
     private boolean estado = false;
     private boolean detalle = false;
+    private boolean grado = false;
 
+    public boolean isGrado() {
+        return grado;
+    }
+    
     public boolean isDetalle() {
         return detalle;
     }
@@ -394,6 +422,13 @@ public class BecaSoliBean implements Serializable {
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.detalle = !this.detalle;
+        this.beca = !this.beca;
+    }
+    
+    public void grad()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.grado = !this.grado;
         this.beca = !this.beca;
     }
 }
