@@ -27,6 +27,10 @@ public interface BecaFacadeLocal {
     Beca findSoli(Object id);
 
     List<Beca> findAll();
+    
+    List<Beca> findAllH();
+    
+    List<Beca> findAllHisto();
 
     List<Beca> findRange(int[] range);
 

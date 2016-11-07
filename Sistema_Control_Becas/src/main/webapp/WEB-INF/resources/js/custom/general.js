@@ -44,6 +44,7 @@ $(document).ready(function() {
 function INIT_OBJE()
 {
     $("#TablRegi").initBootTable();
+    $("#TablRegiHist").initBootTable();
     INIT_OBJE_MODA();
 }
 

@@ -44,6 +44,7 @@ public class BecaSoliBean implements Serializable {
     private SolicitudBeca objeSoli;
     private SolicitudBeca objeSoli2;
     private List<SolicitudBeca> listSoli;
+    private List<SolicitudBeca> listSoliH;
     private String filt; //Filotro de búsqueda
 
 
@@ -52,6 +53,7 @@ public class BecaSoliBean implements Serializable {
     private Beca objeBeca;
     private Beca objeBeca2;
     private List<Beca> listBeca;
+    private List<Beca> listBecaH;
     
     
     private boolean guardar; 
@@ -64,6 +66,24 @@ public class BecaSoliBean implements Serializable {
     public void setObjeSoli(SolicitudBeca objeSoli) {
         this.objeSoli = objeSoli;
     }
+
+    public List<SolicitudBeca> getListSoliH() {
+        return listSoliH;
+    }
+
+    public void setListSoliH(List<SolicitudBeca> listSoliH) {
+        this.listSoliH = listSoliH;
+    }
+
+    public List<Beca> getListBecaH() {
+        return listBecaH;
+    }
+
+    public void setListBecaH(List<Beca> listBecaH) {
+        this.listBecaH = listBecaH;
+    }
+    
+    
 
     public List<SolicitudBeca> getListSoli() {
         return listSoli;
@@ -118,7 +138,7 @@ public class BecaSoliBean implements Serializable {
         this.guardar = true;
         this.objeBeca = new Beca();
         this.consTodo();
-        
+        this.consTodoH();
     }
     
     public void limpForm()
@@ -180,18 +200,21 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
             this.listSoli.remove(this.objeSoli);
-            this.objeSoli2.setEstaSoliBeca(0);
+            this.objeSoli2.setEstaSoliBeca(3);
             FCDESoli.edit(objeSoli2);
             this.listSoli.add(objeSoli2);
+            this.objeSoli.setEstaSoliBeca(1);
             FCDESoli.create(objeSoli);
             this.listSoli.add(objeSoli);
             this.listBeca.remove(this.objeBeca2);
             TipoEstado es = new TipoEstado();
-            es.setCodiTipoEsta(10);
+            es.setCodiTipoEsta(3);
             this.objeBeca2.setCodiTipoEsta(es);
+            this.objeBeca2.setFechBaja(new Date());
             FCDEBeca.edit(objeBeca2);
-            this.listBeca.add(objeBeca2);
+            //this.listBeca.add(objeBeca2);
             this.objeSoli = FCDESoli.findLast();
+            System.out.println(this.objeSoli.getCodiSoliBeca());
             this.objeBeca.setCodiSoliBeca(objeSoli);
             FCDEBeca.create(objeBeca);
             this.listBeca.add(objeBeca);
@@ -217,13 +240,38 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listBeca.remove(this.objeBeca); //Limpia el objeto viejo
+            /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
+            this.objeBeca2 = FCDEBeca.findSoli(this.objeBeca.getCodiSoliBeca().getCodiSoliBeca());
+            this.listBeca.remove(this.objeBeca2);
             TipoEstado esta = new TipoEstado();
-            esta.setCodiTipoEsta(1);
+            esta.setCodiTipoEsta(3);
             this.objeBeca.setCodiTipoEsta(esta);
-            FCDEBeca.edit(this.objeBeca);
-            this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
-            System.out.println(listBeca.get(listBeca.size() - 1).getCodiTipoEsta().getCodiTipoEsta());
+            FCDEBeca.edit(this.objeBeca2);
+            this.listBeca.add(this.objeBeca2); //Agrega el objeto modificado
+            
+            /**/
+            this.listSoli.remove(this.objeSoli);
+            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
+            objeSoli2.setEstaSoliBeca(3);
+            FCDESoli.edit(objeSoli2);
+            this.listSoli.add(objeSoli2);
+            
+            /**/
+            FCDESoli.create(objeSoli);
+            this.listSoli.add(objeSoli);
+            
+            
+            /*Setea la informacion ingresada en el objeto e inserta el nuevo objeto en la base*/
+            TipoEstado esta2 = new TipoEstado();
+            esta2.setCodiTipoEsta(1);
+            this.objeBeca.setCodiTipoEsta(esta2);
+            this.objeBeca.setRetiBeca(null);
+            this.objeBeca.setCodiReti(null);
+            this.objeSoli = FCDESoli.findLast();
+            this.objeBeca.setCodiSoliBeca(objeSoli);
+            this.objeBeca.setFechBaja(null);
+            FCDEBeca.create(this.objeBeca);
+            this.listBeca.add(this.objeBeca);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");
             this.consTodo();
@@ -301,7 +349,26 @@ public class BecaSoliBean implements Serializable {
         try
         {
             this.listSoli = FCDESoli.findAll();
-            this.listBeca = FCDEBeca.findAll();
+            this.listBeca = FCDEBeca.findAllH();
+            log.info("Beca Consultadas");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void consTodoH()
+    {
+        try
+        {
+            this.listSoliH = FCDESoli.findAll();
+            this.listBecaH = FCDEBeca.findAllHisto();
             log.info("Beca Consultadas");
         }
         catch(Exception ex)
@@ -346,16 +413,21 @@ public class BecaSoliBean implements Serializable {
     }
     
     //Lógica slider
-    private  boolean showBusc = false;
-    private  boolean empresa = false;
+    private boolean showBusc = false;
+    private boolean empresa = false;
     private boolean beca = false;
     private boolean elim = false;
     private boolean estado = false;
     private boolean detalle = false;
     private boolean grado = false;
+    private boolean historia = false;
 
     public boolean isGrado() {
         return grado;
+    }
+
+    public boolean isHistoria() {
+        return historia;
     }
     
     public boolean isDetalle() {
@@ -430,5 +502,13 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.grado = !this.grado;
         this.beca = !this.beca;
+    }
+    
+    public void hist()
+    {
+        System.out.println("historial"+this.historia);
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.historia = !this.historia;
+        System.out.println("Hostiral: "+this.historia);
     }
 }

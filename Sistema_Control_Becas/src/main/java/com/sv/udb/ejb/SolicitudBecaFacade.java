@@ -34,7 +34,7 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
     @Override
     public SolicitudBeca findLast()
     {
-        Query q = getEntityManager().createNativeQuery("select * from solicitud_beca order by fech_soli_beca DESC limit 1", SolicitudBeca.class);
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM solicitud_beca WHERE codi_soli_beca = (SELECT MAX(codi_soli_beca) from solicitud_beca)", SolicitudBeca.class);
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (SolicitudBeca)resu.get(0);
     }

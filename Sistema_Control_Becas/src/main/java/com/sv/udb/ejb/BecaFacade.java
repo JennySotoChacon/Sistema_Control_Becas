@@ -39,4 +39,20 @@ public class BecaFacade extends AbstractFacade<Beca> implements BecaFacadeLocal 
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (Beca)resu.get(0);
     }
+    
+    @Override
+    public List<Beca> findAllH()
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM beca WHERE codi_tipo_esta != 3", Beca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
+    
+    @Override
+    public List<Beca> findAllHisto()
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM beca WHERE codi_tipo_esta = 3", Beca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
 }

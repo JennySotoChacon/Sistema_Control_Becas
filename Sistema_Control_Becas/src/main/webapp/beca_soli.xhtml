@@ -64,71 +64,153 @@ and open the template in the editor.
             }  
         </style>
             <div class="row">
-                <div class="col-md-12 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Tabla de Datos</div>
-                        <div class="panel-body">
-                            <h:panelGroup id="ContRegi">
-                                <div id="toolTablRegi">
-                                    <h:form>
-                                        <!--Form exclusivo para los remotos-->
-                                        <p:remoteCommand name="consObje" actionListener="#{becaSoliBean.cons()}" update=":FormRegi" 
-                                                         oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{becaSoliBean.desa()}" update=":FormRegi :ContRegi" 
-                                                         oncomplete="INIT_OBJE();" global="true"/>
-                                        <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{becaSoliBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaForm').modal('show');"/>
-                                            <i class="fa fa-plus"/> Nuevo
-                                        </h:commandLink>
-                                    </h:form>
+                <h:panelGroup id="esto">
+                <ui:fragment id="FragTabl" rendered="#{!becaSoliBean.historia}">
+                    <fieldset>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Tabla de Datos</div>
+                                <div class="panel-body">
+                                    <h:panelGroup id="ContRegi">
+                                        <div id="toolTablRegi">
+                                            <h:form>
+                                                <!--Form exclusivo para los remotos-->
+                                                <p:remoteCommand name="consObje" actionListener="#{becaSoliBean.cons()}" update=":FormRegi" 
+                                                                 oncomplete="$('#ModaForm').modal('show');" global="true"/>
+                                                <p:remoteCommand name="elimObje" actionListener="#{becaSoliBean.desa()}" update=":FormRegi :ContRegi" 
+                                                                 oncomplete="INIT_OBJE();" global="true"/>
+                                                <h:commandLink id="btonNuev" class="btn btn-success">
+                                                    <p:ajax listener="#{becaSoliBean.limpForm()}" update=":FormRegi" global="true" 
+                                                            oncomplete="$('#ModaForm').modal('show');"/>
+                                                    <i class="fa fa-plus"/> Nuevo
+                                                </h:commandLink>
+                                                <h:commandLink id="btonTabl" class="btn btn-primary"><!--se trabo -_- xD -->
+                                                    <p:ajax listener="#{becaSoliBean.hist()}" process="@form" update="@form :esto" oncomplete="INIT_OBJE();" />
+                                                <i class="fa fa-edit"/> Historial
+                                            </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                        <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{becaSoliBean.listBeca}"
+                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
+                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                     pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                     pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                     pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                     pt:data-single-select="true">                                
+                                            <h:column pt:data-field="state" pt:data-checkbox="true">
+                                            </h:column>
+                                            <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                                <f:facet name="header">Código</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Empresa</f:facet> 
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr eq null}">
+                                               <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
+                                                <h:panelGroup class="label label-default" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr ne null}">
+                                              <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Alumno</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Grado Alumno</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.codiGrad.nombGrad}"/>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Fecha Solicitud</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
+                                                   <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                </h:outputText>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Estado beca</f:facet> 
+                                                <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
+                                                    <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 10}">
+                                                    <i class="fa fa-unlock"/> Historial</h:panelGroup>
+                                                <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
+                                                    <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </h:panelGroup>
                                 </div>
-                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{becaSoliBean.listBeca}"
-                                             var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
-                                             styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
-                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
-                                             pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
-                                             pt:data-click-to-select="true"  pt:data-select-item-name="radio"
-                                             pt:data-single-select="true">                                
-                                    <h:column pt:data-field="state" pt:data-checkbox="true">
-                                    </h:column>
-                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
-                                        <f:facet name="header">Código</f:facet>
-                                        <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Empresa</f:facet> 
-                                        <h:panelGroup class="label label-info" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr eq null}">
-                                       <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
-                                        <h:panelGroup class="label label-default" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr ne null}">
-                                      <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Alumno</f:facet>
-                                        <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Grado Alumno</f:facet>
-                                        <h:outputText value="#{fila.codiSoliBeca.codiGrad.nombGrad}"/>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Fecha Solicitud</f:facet>
-                                        <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
-                                           <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Estado beca</f:facet> 
-                                        <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta eq '1'}">
-                                       <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta ne '1'}">
-                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
-                                    </h:column>
-                                </h:dataTable>
-                            </h:panelGroup>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </fieldset>
+                </ui:fragment>
+                <ui:fragment id="FragTablHist" rendered="#{becaSoliBean.historia}">
+                    <fieldset>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Tabla de Datos</div>
+                                <div class="panel-body">
+                                    <h:panelGroup id="ContRegiHist">
+                                        <div id="toolTablRegiHist">
+                                            <h:form>
+                                                <!--Form exclusivo para los remotos-->
+                                                <p:remoteCommand name="consObje" actionListener="#{becaSoliBean.cons()}" update=":FormRegi" 
+                                                                 oncomplete="$('#ModaForm').modal('show');" global="true"/>
+                                                <p:remoteCommand name="elimObje" actionListener="#{becaSoliBean.desa()}" update=":FormRegi :ContRegi" 
+                                                                 oncomplete="INIT_OBJE();" global="true"/>
+                                                <h:commandLink id="btonOculTabl" class="btn btn-default btn-sm">
+                                                    <p:ajax listener="#{becaSoliBean.hist()}" process="@this" oncomplete="INIT_OBJE();" update="@form :esto" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar
+                                            </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                        <h:dataTable pt:data-id="TablRegiHist" id="TablRegiHist" value="#{becaSoliBean.listBecaH}"
+                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablRegiHist"
+                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                     pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                     pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                     pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                     pt:data-single-select="true">                                
+                                            <h:column pt:data-field="state" pt:data-checkbox="true">
+                                            </h:column>
+                                            <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idh">
+                                                <f:facet name="header">Código</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Empresa</f:facet> 
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr eq null}">
+                                               <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
+                                                <h:panelGroup class="label label-default" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr ne null}">
+                                              <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Alumno</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Grado Alumno</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.codiGrad.nombGrad}"/>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Fecha Solicitud</f:facet>
+                                                <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
+                                                   <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                </h:outputText>
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Estado beca</f:facet> 
+                                                <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
+                                                    <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 10}">
+                                                    <i class="fa fa-unlock"/> Historial</h:panelGroup>
+                                                <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
+                                                    <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </ui:fragment>
+                    </h:panelGroup>
             </div>
             <div class="row">
                 <!-- Modal -->
@@ -351,7 +433,7 @@ and open the template in the editor.
                                             <div class="form-group input-group-xs">
                                                 <h:outputLabel  for="beca" value="Numero de beca "/>
                                                 <h:selectOneMenu id="beca" value="#{detalleBecaBean.objeDetaBeca.codiBeca}" class="form-control" pt:data-live-search="true">
-                                                    <f:selectItems value="#{becaBean.listBeca}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
+                                                    <f:selectItems value="#{becaBean.listBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
                                                     <f:converter converterId="PooConv"/>
                                                 </h:selectOneMenu>
                                                 <h:message for="beca" errorClass="field-error" />           

@@ -74,7 +74,8 @@ public class UploadBean implements Serializable {
             
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
-            String ruta ="C:/Users/Ariel/Desktop/becas/";    
+            //String ruta ="C:/Users/Ariel/Desktop/becas/";    
+            String ruta = "/home/eduardo/Escritorio/asd/";
            rutas.add(ruta);
            DireActuInde = 0;
            this.consTodo("");
