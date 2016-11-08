@@ -6,12 +6,11 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author eduardo
+ * @author Ariel
  */
 @Entity
 @Table(name = "seguimiento", catalog = "sistemas_pilet", schema = "")
@@ -72,18 +71,18 @@ public class Seguimiento implements Serializable {
     @Column(name = "esta_segu")
     private Integer estaSegu;
     @JoinColumn(name = "codi_empr", referencedColumnName = "codi_empr")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Empresa codiEmpr;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private SolicitudBeca codiSoliBeca;
     @JoinColumn(name = "codi_tipo_segui", referencedColumnName = "codi_tipo_segui")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private TipoSeguimiento codiTipoSegui;
-    @OneToMany(mappedBy = "padrSegu", fetch = FetchType.LAZY)
-    private List<Seguimiento> seguimientoList;
+    @OneToMany(mappedBy = "padrSegu")
+    private Collection<Seguimiento> seguimientoCollection;
     @JoinColumn(name = "padr_segu", referencedColumnName = "codi_segu")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Seguimiento padrSegu;
 
     public Seguimiento() {
@@ -173,12 +172,12 @@ public class Seguimiento implements Serializable {
     }
 
     @XmlTransient
-    public List<Seguimiento> getSeguimientoList() {
-        return seguimientoList;
+    public Collection<Seguimiento> getSeguimientoCollection() {
+        return seguimientoCollection;
     }
 
-    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
-        this.seguimientoList = seguimientoList;
+    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
+        this.seguimientoCollection = seguimientoCollection;
     }
 
     public Seguimiento getPadrSegu() {

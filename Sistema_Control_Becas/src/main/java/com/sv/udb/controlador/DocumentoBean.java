@@ -9,14 +9,20 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Documento;
 import com.sv.udb.ejb.DocumentoFacadeLocal;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.jpa.jpql.Assert;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -65,7 +71,8 @@ public class DocumentoBean implements Serializable{
     public void limpForm()
     {
         this.objeDocu = new Documento();
-        this.guardar = true;        
+        this.guardar = true;  
+        this.objeDocu.setFechDocu(new Date());
     }
     
     public void guar()
@@ -73,17 +80,28 @@ public class DocumentoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeDocu.setEstaDocu(1);                   
+            
             FCDEDocu.create(this.objeDocu);
             this.listDocu.add(this.objeDocu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Documento Consultado");
         }
-        catch(Exception ex)
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
-        }
+        catch (Exception e) {
+//        @SuppressWarnings("ThrowableResultIgnored")
+//        Exception cause = e.getCausedByException();
+//        if (cause instanceof ConstraintViolationException) {
+//            @SuppressWarnings("ThrowableResultIgnored")
+//            ConstraintViolationException cve = (ConstraintViolationException) e.getCausedByException();
+//            for (Iterator<ConstraintViolation<?>> it = cve.getConstraintViolations().iterator(); it.hasNext();) {
+//                ConstraintViolation<? extends Object> v = it.next();
+//                System.err.println(v);
+//                System.err.println("==>>"+v.getMessage());
+//            }
+//        }
+//        Assert.fail("ejb exception");
+    }
         finally
         {
             
