@@ -22,9 +22,9 @@ import org.primefaces.context.RequestContext;
  *
  * @author Ariel
  */
-@Named(value = "tipoDonacionBean")
+@Named(value = "tipoTipoDonacionBean")
 @ViewScoped
-public class tipoDonacionBean implements Serializable {
+public class TipoTipoDonacionBean implements Serializable {
 
     
         @EJB
@@ -32,7 +32,7 @@ public class tipoDonacionBean implements Serializable {
     private TipoDonacion objeTipo;
     private List<TipoDonacion> listTipo;
     private boolean guardar;   
-    private static Logger log = Logger.getLogger(tipoDonacionBean.class);
+    private static Logger log = Logger.getLogger(TipoTipoDonacionBean.class);
     public TipoDonacion getObjeTipo() {
         return objeTipo;
     }
@@ -52,7 +52,7 @@ public class tipoDonacionBean implements Serializable {
     /**
      * Creates a new instance of tipoDonacionBean
      */
-    public tipoDonacionBean() {
+    public TipoTipoDonacionBean() {
     }
     
     @PostConstruct

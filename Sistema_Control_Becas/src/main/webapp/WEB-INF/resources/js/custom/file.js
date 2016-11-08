@@ -48,5 +48,6 @@ initList = function()
 function INIT_OBJE_FILE()
 {
     $(':file').initFile();
+    $('#FormRegi\\:file').initFile();
     initList();
 }

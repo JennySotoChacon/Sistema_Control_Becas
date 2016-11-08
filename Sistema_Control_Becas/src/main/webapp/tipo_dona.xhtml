@@ -64,18 +64,18 @@ and open the template in the editor.
                                 <div id="toolTablRegi">
                                     <h:form>
                                         <!--Form exclusivo para los remotos-->
-                                        <p:remoteCommand name="consObje" actionListener="#{tipoDonacionBean.cons()}" update=":FormRegi" 
+                                        <p:remoteCommand name="consObje" actionListener="#{tipoTipoDonacionBean.cons()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{tipoDonacionBean.elim()}" update=":FormRegi :ContRegi" 
+                                        <p:remoteCommand name="elimObje" actionListener="#{tipoTipoDonacionBean.elim()}" update=":FormRegi :ContRegi" 
                                                          oncomplete="INIT_OBJE();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{tipoDonacionBean.limpForm()}" update=":FormRegi" global="true" 
+                                            <p:ajax listener="#{tipoTipoDonacionBean.limpForm()}" update=":FormRegi" global="true" 
                                                     oncomplete="$('#ModaForm').modal('show');"/>
                                             <i class="fa fa-plus"/> Nuevo
                                         </h:commandLink>
                                     </h:form>
                                 </div>
-                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{tipoDonacionBean.listTipo}"
+                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{tipoTipoDonacionBean.listTipo}"
                                              var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
                                              styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                              pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -129,22 +129,22 @@ and open the template in the editor.
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
-                                        <h:inputHidden id="codi" value="#{tipoDonacionBean.objeTipo.codiTipoDona}" />
+                                        <h:inputHidden id="codi" value="#{tipoTipoDonacionBean.objeTipo.codiTipoDona}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="nomb" value="Nombre: "/> 
                                             <h:message for="nomb" errorClass="field-error" />
-                                            <h:inputText id="nomb" value="#{tipoDonacionBean.objeTipo.nombTipoDona}" class="form-control" />
+                                            <h:inputText id="nomb" value="#{tipoTipoDonacionBean.objeTipo.nombTipoDona}" class="form-control" />
                                             
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="desc" value="Descripcion: "/>
                                             <h:message for="desc" errorClass="field-error" />
-                                            <h:inputText id="desc" value="#{tipoDonacionBean.objeTipo.descTipoDona}" class="form-control" />
+                                            <h:inputText id="desc" value="#{tipoTipoDonacionBean.objeTipo.descTipoDona}" class="form-control" />
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="tipo" value="Donación "/>
                                             <h:message for="tipo" errorClass="field-error" />
-                                            <h:selectOneRadio value="#{tipoDonacionBean.objeTipo.recaTipoDona}">
+                                            <h:selectOneRadio value="#{tipoTipoDonacionBean.objeTipo.recaTipoDona}">
                                                 <f:selectItem itemValue="V" itemLabel="Recaudación" />
                                                 <f:selectItem itemValue="F" itemLabel="Particular" />
                                             </h:selectOneRadio>
@@ -155,19 +155,19 @@ and open the template in the editor.
                                         <div class="input-group-btn right" style="padding-top: 5px;">
                                             <div class="btn-group">
                                                 <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                    <p:ajax listener="#{tipoDonacionBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                    <p:ajax listener="#{tipoTipoDonacionBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{tipoDonacionBean.guardar}">
-                                                    <p:ajax listener="#{tipoDonacionBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{tipoTipoDonacionBean.guardar}">
+                                                    <p:ajax listener="#{tipoTipoDonacionBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                     <i class="fa fa-plus"/> Guardar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!tipoDonacionBean.guardar}">
-                                                    <p:ajax listener="#{tipoDonacionBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!tipoTipoDonacionBean.guardar}">
+                                                    <p:ajax listener="#{tipoTipoDonacionBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
                                                     <i class="fa fa-plus"/> Nuevo
                                                 </h:commandLink>
-                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!tipoDonacionBean.guardar}">
-                                                    <p:ajax listener="#{tipoDonacionBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!tipoTipoDonacionBean.guardar}">
+                                                    <p:ajax listener="#{tipoTipoDonacionBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                     <i class="fa fa-edit"/> Modificar
                                                 </h:commandLink>
                                                 <!--
@@ -177,7 +177,7 @@ and open the template in the editor.
                                                     3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
                                                     4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                 -->
-                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!tipoDonacionBean.guardar}" value="#" pt:data-placement="left"
+                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!tipoTipoDonacionBean.guardar}" value="#" pt:data-placement="left"
                                                               pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
