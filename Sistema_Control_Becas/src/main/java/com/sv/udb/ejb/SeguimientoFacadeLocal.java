@@ -27,6 +27,10 @@ public interface SeguimientoFacadeLocal {
     List<Seguimiento> findAll();
 
     List<Seguimiento> findRange(int[] range);
+    
+    List<Seguimiento> findByEstaSegu();
+    
+    Seguimiento findByCodiSegu(Seguimiento codi);
 
     int count();
     

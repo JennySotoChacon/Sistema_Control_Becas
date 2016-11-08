@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Seguimiento.findAll", query = "SELECT s FROM Seguimiento s"),
     @NamedQuery(name = "Seguimiento.findByCodiSegu", query = "SELECT s FROM Seguimiento s WHERE s.codiSegu = :codiSegu"),
     @NamedQuery(name = "Seguimiento.findByFechSegu", query = "SELECT s FROM Seguimiento s WHERE s.fechSegu = :fechSegu"),
-    @NamedQuery(name = "Seguimiento.findByFechReco", query = "SELECT s FROM Seguimiento s WHERE s.fechReco = :fechReco"),
     @NamedQuery(name = "Seguimiento.findByNombSegu", query = "SELECT s FROM Seguimiento s WHERE s.nombSegu = :nombSegu"),
     @NamedQuery(name = "Seguimiento.findByDescSegu", query = "SELECT s FROM Seguimiento s WHERE s.descSegu = :descSegu"),
     @NamedQuery(name = "Seguimiento.findByEstaSegu", query = "SELECT s FROM Seguimiento s WHERE s.estaSegu = :estaSegu")})
@@ -55,9 +54,12 @@ public class Seguimiento implements Serializable {
     @Column(name = "fech_segu")
     @Temporal(TemporalType.DATE)
     private Date fechSegu;
-    @Column(name = "fech_reco")
-    @Temporal(TemporalType.DATE)
-    private Date fechReco;
+    @Column(name = "fech_inicio")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechInicio;
+    @Column(name = "fech_fin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechFin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -115,13 +117,23 @@ public class Seguimiento implements Serializable {
         this.fechSegu = fechSegu;
     }
 
-    public Date getFechReco() {
-        return fechReco;
+    public Date getFechInicio() {
+        return fechInicio;
     }
 
-    public void setFechReco(Date fechReco) {
-        this.fechReco = fechReco;
+    public void setFechInicio(Date fechInic) {
+        this.fechInicio = fechInic;
     }
+
+    public Date getFechFin() {
+        return fechFin;
+    }
+
+    public void setFechFin(Date fechFin) {
+        this.fechFin = fechFin;
+    }
+
+    
 
     public String getNombSegu() {
         return nombSegu;
