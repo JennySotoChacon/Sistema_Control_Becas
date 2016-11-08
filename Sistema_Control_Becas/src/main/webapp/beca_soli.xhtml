@@ -223,7 +223,7 @@ and open the template in the editor.
                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                     <h4 class="modal-title">Gestión de Solicitud Beca</h4>
                                 </div>
-                                <div class="modal-body" style="padding-top: 2px;">                                    
+                                <div class="modal-body col-xs-12" style="padding-top: 2px;">                                    
                                     <ui:fragment id="FragBusc" rendered="#{becaSoliBean.elim}">
                                         <fieldset>
                                             <div class="form-group input-group-xs">
@@ -253,7 +253,7 @@ and open the template in the editor.
                                         <fieldset class="col-md-12">
                                             <h:inputHidden id="codiSoli" value="#{becaSoliBean.objeSoli.codiSoliBeca}" />
                                             <h:inputHidden id="codiBeca" value="#{becaSoliBean.objeBeca.codiBeca}" />
-                                            <div class="form-group input-group-xs col-md-11">
+                                            <div class="form-group input-group-xs col-md-10">
                                                 <h:outputLabel  for="Empr" value="Empresa: "/>
                                                 <h:selectOneMenu id="Empr" value="#{becaSoliBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
                                                     <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
@@ -275,14 +275,14 @@ and open the template in the editor.
                                             </div>
                                             <br/>
                                             <h:outputLabel value="Informacion Alumno"/>
-                                            <div class="form-group col-md-12 simple">
-                                                <div class="col-md-11 input-group-xs">
+                                            <div class="form-group col-xs-12 simple">
+                                                <div class="form-group col-md-11 input-group-xs">
                                                         <h:outputLabel value="Carnet:"/>
                                                         <h:inputText id="Filt" value="#{becaSoliBean.filt}" class="form-control" 
                                                                      pt:placeholder="Buscar por Carnet..." autocomplete="off"/>
-                                                        
                                                 </div>
-                                                <div class="col-md-1 input-group-xs">
+                                                <br/>
+                                                <div class="form-group col-md-1 input-group-xs">
                                                     <span class="input-group-btn">
                                                             <h:commandLink id="btonBusc" class="btn btn-default">
                                                                 <p:ajax listener="#{becaSoliBean.consW()}" process="@form" update="@form" global="true"/>
@@ -304,15 +304,16 @@ and open the template in the editor.
                                             <div class="form-group input-group-xs col-xs-1">
                                                 <span class="input-group-btn">
                                                     <h:commandLink id="btonAgreGrad" class="btn btn-default">
-                                                        <p:ajax listener="#{becaSoliBean.grad()}"  process="@this" update="@form" oncomplete="" global="true"/>
                                                         <p:ajax listener="#{becaBean.limpForm()}" update=":FormRegi" global="true" 
                                                     oncomplete="$('#ModaForm').modal('show');"/>
+                                                        <p:ajax listener="#{becaSoliBean.grad()}"  process="@this" update="@form" oncomplete="" global="true"/>
+                                                        
                                                         <i class="fa fa-plus"/>
                                                     </h:commandLink>
                                                 </span>  
                                             </div>  
                                                 </div>
-                                                 <div class="input-group-xs">
+                                                 <div class="input-group-xs col-xs-12">
                                                     <h:outputLabel  for="nomb" value="Nombre Alumno: "/>
                                                     <h:message for="nomb" errorClass="field-error" />
                                                     <h:inputText id="nomb" value="#{becaSoliBean.objeSoli.nombAlum}" class="form-control" />
@@ -356,7 +357,7 @@ and open the template in the editor.
                                                     </div>
                                                 </h:panelGroup>
                                             </c:if>
-                                            <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta ne 2}">
+                                            <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and becaSoliBean.guardar == false}">
                                                 <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
                                                     <p:ajax listener="#{becaSoliBean.elim()}" process="@this" update="@form" global="true"/>
                                                     <i class="fa fa-chevron-down"/> Retirar Beca

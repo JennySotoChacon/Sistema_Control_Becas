@@ -168,10 +168,9 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca.setCodiTipoEsta(a);
             this.objeBeca.setFechInic(new Date());
             this.FCDEBeca.create(objeBeca);
-            
-            
             this.listSoli.add(this.objeSoli);
-            this.listBeca.add(this.objeBeca);
+            System.out.println(this.objeBeca);
+            this.listBeca.add(objeBeca);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Beca Guardada");

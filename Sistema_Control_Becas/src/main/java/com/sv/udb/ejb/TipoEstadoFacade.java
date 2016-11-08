@@ -38,4 +38,11 @@ public class TipoEstadoFacade extends AbstractFacade<TipoEstado> implements Tipo
         return resu.isEmpty() ? null : resu;
     }
     
+    @Override
+    public List<TipoEstado> findAllN() {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM tipo_estado WHERE codi_tipo_esta != 1 and codi_tipo_esta != 2 and codi_tipo_esta != 3", TipoEstado.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
+    
 }
