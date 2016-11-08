@@ -6,9 +6,12 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Seguimiento;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,6 +30,21 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> implements Se
 
     public SeguimientoFacade() {
         super(Seguimiento.class);
+    }
+    
+    @Override
+    public List<Seguimiento> findByEstaSegu() {
+        TypedQuery<Seguimiento> q = (TypedQuery<Seguimiento>) getEntityManager().createQuery("SELECT s FROM Seguimiento s WHERE s.estaSegu = 1 ");
+        List resu = q.getResultList();
+        return (resu.isEmpty()) ? new ArrayList<Seguimiento>() : resu;
+    }
+    
+    @Override
+    public Seguimiento findByCodiSegu(Seguimiento codi) {
+        TypedQuery<Seguimiento> q = (TypedQuery<Seguimiento>) getEntityManager().createQuery("SELECT s FROM Seguimiento s WHERE s.codiSegu = :codi_segu ORDER BY s.fechInicio desc, s.fechFin desc ").setMaxResults(1);    
+        q.setParameter("codi_segu", codi.getCodiSegu());
+        Seguimiento resu = q.getSingleResult();
+        return (resu == null) ? null : resu;
     }
     
 }
