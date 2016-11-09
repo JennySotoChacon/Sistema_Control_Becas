@@ -29,10 +29,7 @@ public class DetalleBecaFacade extends AbstractFacade<DetalleBeca> implements De
     }
     
     @Override
-    public List<DetalleBeca> findForCombo(Object id)  {
-              
-        System.out.println("del facade: "+id);
-        
+    public List<DetalleBeca> findForCombo(Object id)  {        
         String consulta = "select d.codi_deta_beca,d.codi_beca,d.codi_tipo_beca,d.cant_mese,d.esta_deta_beca "
                 + "from detalle_beca d inner JOIN beca b on  d.codi_beca = b.codi_beca "
                 + "inner JOIN solicitud_beca s on  b.codi_soli_beca = s.codi_soli_beca  where s.codi_soli_beca =?1 and d.esta_deta_beca = 1";

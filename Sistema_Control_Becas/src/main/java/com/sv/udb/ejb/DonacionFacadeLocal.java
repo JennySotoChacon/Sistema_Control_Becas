@@ -27,6 +27,8 @@ public interface DonacionFacadeLocal {
     List<Donacion> findAll();
 
     List<Donacion> findRange(int[] range);
+    
+    List<Donacion> findForCombo2(Object id);
 
     int count();
     

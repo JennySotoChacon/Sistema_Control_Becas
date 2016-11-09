@@ -14,6 +14,7 @@ import com.sv.udb.ejb.DonacionFacadeLocal;
 import com.sv.udb.ejb.TransaccionFacadeLocal;
 import com.sv.udb.modelo.Detalle;
 import com.sv.udb.modelo.DetalleBeca;
+import com.sv.udb.modelo.Empresa;
 import com.sv.udb.modelo.SolicitudBeca;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -48,7 +49,7 @@ public class TransaccionBean implements Serializable{
     private Transaccion objeTran;
     private List<Transaccion> listTran;
     
-     //para el combo box
+     //para el combo box de salidas
     private SolicitudBeca objeCombPadr;
     private List<DetalleBeca> listHijo;
 
@@ -67,6 +68,31 @@ public class TransaccionBean implements Serializable{
     public void onDetalleSelect(){
     this.listHijo =  FCDEDetaBeca.findForCombo(this.objeCombPadr.getCodiSoliBeca());
 }
+    
+    //Para el combo box de entradas
+    private Empresa objeCombPadr1;
+    private List<Donacion> listHijo1;
+
+    public Empresa getObjeCombPadr1() {
+        return objeCombPadr1;
+    }
+
+    public void setObjeCombPadr1(Empresa objeCombPadr1) {
+        this.objeCombPadr1 = objeCombPadr1;
+    }
+
+    public List<Donacion> getListHijo1() {
+        return listHijo1;
+    }
+
+    public void setListHijo1(List<Donacion> listHijo1) {
+        this.listHijo1 = listHijo1;
+    }
+    
+    public void onEmpresaSelect(){
+        this.listHijo1 = FCDEDona.findForCombo2(this.objeCombPadr1.getCodiEmpr());
+    }
+    
     
     //Objeto para guardar ultimo registro de la tabla transaccionesxd
     private Transaccion objeTranTemp;
@@ -480,6 +506,10 @@ public class TransaccionBean implements Serializable{
         try
         {
             this.objeTran = FCDETran.find(codi);
+            if (objeTran.getTipoTran() == 1) {
+                this.objeCombPadr1 = objeTran.getCodiDona().getCodiEmpr();
+                this.onEmpresaSelect();
+            }
             if(objeTran.getTipoTran()==2)
             {
                 this.objeCombPadr = objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca();

@@ -172,13 +172,29 @@ and open the template in the editor.
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{transaccionBean.objeTran.codiTran}" />
                                         <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="emprDona" value="Empresa: "/>
+                                            <h:selectOneMenu id="emprDona"  value="#{transaccionBean.objeCombPadr1 }" class="form-control" pt:data-live-search="true">
+                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
+                                                <p:ajax update="donaEntr" listener="#{transaccionBean.onEmpresaSelect()}" process="@this"/>  
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                          <h:outputLabel  for="donaEntr" value="Donación: "/>
+                                          <h:selectOneMenu id="donaEntr" value="#{transaccionBean.objeTran.codiDona }" class="form-control" pt:data-live-search="true">
+                                              <f:selectItems value="#{transaccionBean.listHijo1}" var="lst" itemLabel="#{lst.nombDona}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>                                      
+                                            <h:message for="becaSali" errorClass="field-error" />           
+                                        </div>
+                                        
+                                        <!--<div class="form-group input-group-xs">
                                             <h:outputLabel  for="soli" value="Nombre empresa "/>
                                             <h:selectOneMenu id="soli" value="#{transaccionBean.objeTran.codiDona}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItems value="#{donacionBean.listDona}" var="lst" itemLabel="#{lst.codiEmpr.nombEmpr.concat(' ').concat(lst.nombDona)}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="soli" errorClass="field-error" />           
-                                        </div>
+                                        </div>-->
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="mont" value="Monto:"/>
                                             <h:message for="mont" errorClass="field-error" />
@@ -247,7 +263,6 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codiSali" value="#{transaccionBean.objeTran.codiTran}" />
-                                        
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="becaAlum" value="Alumno "/>
                                             <h:selectOneMenu id="becaAlum"  value="#{transaccionBean.objeCombPadr }" class="form-control" pt:data-live-search="true">
@@ -260,20 +275,9 @@ and open the template in the editor.
                                             <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control" pt:data-live-search="true">
                                                 <f:selectItems value="#{transaccionBean.listHijo}" var="lst" itemLabel="#{lst.codiTipoBeca.nombTipoBeca}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                                                                        
-                                                                                        
+                                            </h:selectOneMenu>                                      
                                             <h:message for="becaSali" errorClass="field-error" />           
                                         </div>
-                                        
-                                        <!-- <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="becaSali" value="Beca "/>
-                                            <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{detalleBecaBean.listDetaBeca}" var="lst" itemLabel="#{lst.codiBeca.codiSoliBeca.nombAlum.concat(' - ').concat(lst.codiTipoBeca.nombTipoBeca)}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="becaSali" errorClass="field-error" />           
-                                        </div> -->
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fechSali" value="Fecha Entrada "/>
                                             <h:message for="fechSali" errorClass="field-error" />
