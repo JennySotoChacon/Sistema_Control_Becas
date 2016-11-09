@@ -89,21 +89,22 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
                                         <f:facet name="header">Fecha </f:facet>
-                                       
-                                        
                                          <h:outputText value="#{fila.fechSegu}">
                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Fech. Recordatorio</f:facet>
-                                         <h:outputText value="#{fila.fechReco}">
+                                        <f:facet name="header">Fech Inicio</f:facet>
+                                        <h:outputText value="#{fila.fechInicio}">
                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>
                                     </h:column>
-                                    
-                                    
-                                    
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Fech Fin</f:facet>
+                                        <h:outputText value="#{fila.fechFin}">
+                                           <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                        </h:outputText>
+                                    </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Nombre</f:facet>
                                         <h:outputText value="#{fila.nombSegu}"/>
@@ -142,29 +143,42 @@ and open the template in the editor.
                                             <h:message for="Empr" errorClass="field-error" />
                                         </div>
                                         <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="Soli" value="Solicitud: "/>
+                                            <h:selectOneMenu id="Soli" value="#{seguimientoBean.objeSegu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.carnAlum}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                            <h:message for="Soli" errorClass="field-error" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="Tipo" value="Tipo Seguimiento: "/>
+                                            <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{tipoSeguBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoSegui}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                            <h:message for="Tipo" errorClass="field-error" />
+                                        </div>
+                                        <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha "/>
                                             <h:inputText id="fech" value="#{seguimientoBean.objeSegu.fechSegu}" class="form-control">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText>
                                             <h:message for="fech" errorClass="field-error" />
                                         </div>
-                                        
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="fechReco" value="Fecha recordatorio "/>
-                                            <h:inputText id="fechReco" value="#{seguimientoBean.objeSegu.fechReco}" class="form-control">
+                                            <h:outputLabel  for="fechInic" value="Fecha Inicio: "/>
+                                            <h:inputText id="fechInic" value="#{seguimientoBean.objeSegu.fechInicio}" class="form-control">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText>
-                                            <h:message for="fechReco" errorClass="field-error" />
+                                            <h:message for="fechInic" errorClass="field-error" />
                                         </div>
-                                        
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="padr" value="Padre "/>
-                                            <h:selectOneMenu id="padr" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{seguimientoBean.listSegu}" var="lst" itemLabel="#{lst.nombSegu}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
+                                            <h:outputLabel  for="fechFin" value="Fecha Fin: "/>
+                                            <h:inputText id="fechFin" value="#{seguimientoBean.objeSegu.fechFin}" class="form-control">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText>
+                                            <h:message for="fechFin" errorClass="field-error" />
                                         </div>
-                                       
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="nomb" value="Nombre seguimiento "/>
                                             <h:message for="nomb" errorClass="field-error" />
@@ -175,7 +189,13 @@ and open the template in the editor.
                                             <h:message for="desc" errorClass="field-error" />
                                             <h:inputTextarea  id="desc" value="#{seguimientoBean.objeSegu.descSegu}" class="form-control" />
                                         </div>
-                                       
+                                        <div class="form-group input-group-xs">
+                                            <h:outputLabel  for="padr" value="Padre "/>
+                                            <h:selectOneMenu id="padr" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{seguimientoBean.listSegu}" var="lst" itemLabel="#{lst.nombSegu}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                        </div>
                                     </fieldset>
                                 </div>
                                 <div class="modal-footer">
