@@ -65,23 +65,21 @@ public class TransaccionBean implements Serializable{
     }
     
     public void onDetalleSelect(){
-    //departmentList = someService.getDepartmentsForEmployee(employee);
-    
-        System.out.println("codigo xd: "+this.objeCombPadr.getCodiSoliBeca());
     this.listHijo =  FCDEDetaBeca.findForCombo(this.objeCombPadr.getCodiSoliBeca());
-    
-        
 }
     
     //Objeto para guardar ultimo registro de la tabla transaccionesxd
     private Transaccion objeTranTemp;
     private Donacion objeDona;
     
-    //Para agregar el detalle cuando se haga una salida
-    private DetalleBean detaBean;
+    
+    //Para desactivar las transacciones
+    boolean conf = false;
+    private Transaccion objeTranDesa;
     
     private boolean guardar;
     boolean guarSali; //Usado en el switch
+    private boolean guarTran; //Usado en el método de reembolso
     private static Logger log = Logger.getLogger(TransaccionBean.class);
     
     public Transaccion getObjeTran() {
@@ -95,14 +93,10 @@ public class TransaccionBean implements Serializable{
         this.objeDona = objeDona;
     }
 
- 
-
     public boolean isGuardar() {
         return guardar;
     }
     
-    
-
     public List<Transaccion> getListTran() {
         return listTran;
     }
@@ -117,8 +111,6 @@ public class TransaccionBean implements Serializable{
     public void setObjeDetaBeca(DetalleBeca objeDetaBeca) {
         this.objeDetaBeca = objeDetaBeca;
     }
-
-
     /**
      * Creates a new instance of TransaccionBean
      */
@@ -128,18 +120,19 @@ public class TransaccionBean implements Serializable{
     @PostConstruct
     public void init()
     {
+        this.objeTranDesa = new Transaccion();
         this.objeDeta = new Detalle();
         this.objeTran = new Transaccion();
         this.objeDona = new Donacion();
-        this.detaBean = new DetalleBean();
         this.guardar = true;
         this.consTodo();
     }
     
     public void limpForm()
     {
+        this.objeTranDesa = new Transaccion();
         this.objeTran = new Transaccion();
-         this.objeTran.setFechTran(new Date());
+        this.objeTran.setFechTran(new Date());
         this.guardar = true;        
     }
     
@@ -219,14 +212,10 @@ public class TransaccionBean implements Serializable{
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Transaccion guardada");
         }
-        
-        
-        
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             log.error(getRootCause(ex).getMessage());
-            System.out.println(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -240,6 +229,7 @@ public class TransaccionBean implements Serializable{
         try {
         //Crear el objeto detalle de beca
         this.objeDetaBeca = FCDEDetaBeca.find(objeTran.getCodiDetaBeca().getCodiDetaBeca());
+        //Comprobar que la cantidad de meses sea mayor a cero o que el estado sea activo
         //Setear monto de transacción
         this.objeTran.setMontTran(this.objeTran.getCodiDetaBeca().getCodiTipoBeca().getDescTipoBeca());
         //Obtener el monto total disponible en el fondo
@@ -297,6 +287,7 @@ public class TransaccionBean implements Serializable{
                 FCDETran.create(this.objeTran);
 
                 this.listTran.add(this.objeTran);
+
                 this.limpForm();
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 log.info("Transaccion guardada");
@@ -361,6 +352,9 @@ public class TransaccionBean implements Serializable{
         }
     }
     
+    /**
+     * Este método debe de desactivar una entrega de donación en caso de cualquier error, además debe de restar el monto de la transacción del monto total del fondo
+     */
     public void desaEntr()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -375,15 +369,21 @@ public class TransaccionBean implements Serializable{
                 this.objeDona.setEstaDona(1);
             }
             
-            //Modificar la donación
-            FCDEDona.edit(this.objeDona);
-            //Proceso normal de modificación de la transacción
-            this.listTran.remove(this.objeTran); //Limpia el objeto viejo
-            this.objeTran.setEstaTran(0);
-            FCDETran.edit(this.objeTran);
-            this.listTran.add(this.objeTran); //Agrega el objeto modificado
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Transaccion Modificada");
+            //Enviar el monto de la transacción al método para restarlo del fondo
+            boolean conf2 = this.reem(this.objeTran.getMontTran(), 1);
+            
+            if (conf2) {
+                //Modificar la donación
+                FCDEDona.edit(this.objeDona);
+                //Proceso normal de modificación de la transacción
+                this.listTran.remove(this.objeTran); //Limpia el objeto viejo
+                this.objeTran.setEstaTran(0);
+                FCDETran.edit(this.objeTran);
+                this.listTran.add(this.objeTran); //Agrega el objeto modificado
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+                log.info("Transaccion Modificada");
+            }
+
         }
         catch(Exception ex)
         {
@@ -396,6 +396,9 @@ public class TransaccionBean implements Serializable{
         }
     }
     
+    /**
+     * Éste método debe de desactivar una salida como entrega de detalles de beca y sumar el monto de la transacción al fondo total 
+     */
     public void desaSali()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -415,17 +418,28 @@ public class TransaccionBean implements Serializable{
             this.objeDeta = FCDEDeta.findDetaTran(this.objeTran.getCodiTran());
             this.objeDeta.setEstaDeta(0);
             
-            //Modificar el detalle de beca
-            FCDEDetaBeca.edit(objeDetaBeca);
-            //Modificar el detalle de beca
-            FCDEDeta.edit(objeDeta);
-            //Proceso normal de modificación de la transacción
-            this.listTran.remove(this.objeTran); //Limpia el objeto viejo
-            this.objeTran.setEstaTran(0);
-            FCDETran.edit(this.objeTran);
-            this.listTran.add(this.objeTran); //Agrega el objeto modificado
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Transaccion Modificada");
+            System.out.println("Monto que envía al método: " +this.objeTran.getMontTran());
+            
+            //Enviar al método para sumar el monto
+            boolean conf2 = this.reem(this.objeTran.getMontTran(), 2);
+            
+            if (conf2) {
+                System.out.println("Obje tran: " +this.objeTran);
+                System.out.println("Obje detalle: "+this.objeDeta);
+                //Modificar el detalle de beca
+                FCDEDetaBeca.edit(objeDetaBeca);
+                //Modificar el detalle de beca
+                FCDEDeta.edit(objeDeta);
+                //Proceso normal de modificación de la transacción
+                this.listTran.remove(this.objeTran); //Limpia el objeto viejo
+                this.objeTran.setEstaTran(0);
+                FCDETran.edit(this.objeTran);
+               //coñoxd
+                this.listTran.add(this.objeTran); //Agrega el objeto modificado
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+                log.info("Transaccion Modificada");
+            }
+            
         }
         catch(Exception ex)
         {
@@ -465,8 +479,13 @@ public class TransaccionBean implements Serializable{
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
-            System.out.println("codiObjePara: "+codi);
             this.objeTran = FCDETran.find(codi);
+            if(objeTran.getTipoTran()==2)
+            {
+                this.objeCombPadr = objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca();
+                onDetalleSelect();
+            }
+            
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeTran.getFechTran()) + "')");
@@ -483,4 +502,61 @@ public class TransaccionBean implements Serializable{
         }
     }
     
+    /**
+     * Este método sirve para las operaciones de sumar y restar montos de transacciones cuando se desactivan, realiza un nuevo insert a la tabla transacciones como reembolso del dinero
+     * @param monto de transacciones que se desea sumar o restar del fondo total
+     * @param tipo para decidir si se resta o suma del fondo total (1: restar, 2: sumar)
+     * @return 
+     */
+    public boolean reem(BigDecimal monto, int tipo){
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            System.out.println("Monto a desactivar: "+monto);
+            System.out.println("Tipo: "+tipo);
+            //Obtener el monto total al que hay que restarle el monto de transacciones
+            this.objeTranTemp = FCDETran.findLast();
+            this.objeTranDesa.setMontTran(monto);
+            //Obtener la fecha del sistema
+            Date fecha = new Date();
+            this.objeTranDesa.setFechTran(fecha);
+            switch (tipo) {
+                case 1:
+                    //Si el monto total disponible es menor a la cantidad que se desea restar la transacción no puede realizarse
+                    //1 el primer monto es mayor al segundo
+                    if (this.objeTranTemp.getMontTota().compareTo(monto) == 1 ) {
+                        this.objeTranDesa.setMontTota(objeTranTemp.getMontTota().subtract(monto));
+                        //Variable para guardar
+                        this.guarTran = true;
+                    } else {
+                        this.guarTran = false;
+                    }
+                    break;
+                case 2:
+                    this.objeTranDesa.setMontTota(objeTranTemp.getMontTota().add(monto));
+                    this.guarTran = true;
+                    break;
+                default:
+                    this.guarTran = false;
+                    break;
+            }
+            if (guarTran) {
+                //setear el estado de tran xd
+                this.objeTranDesa.setEstaTran(1);
+                this.objeTranDesa.setTipoTran(3);
+                //Para cuando cree la transacción
+                FCDETran.create(this.objeTranDesa);
+                this.listTran.add(this.objeTranDesa);
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                log.info("Fondo total actualizado");
+                conf = true;
+            }
+            else{
+                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El fondo no ha podido ser actualizado')");
+                 conf = false;
+            }
+        } catch (Exception e) {
+            System.out.println("Errosito:"+e.getMessage());
+        }
+        return conf;
+    }
 }

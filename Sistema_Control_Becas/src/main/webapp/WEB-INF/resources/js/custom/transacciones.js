@@ -4,8 +4,14 @@ $(document).ready(function() {
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
             var cadena =row.movimiento.trim();
-            if(cadena=='<span class="label label-danger"><i class="fa fa-lock"></i> Salida</span>')
+            console.log("Esta es la cadena:"+cadena);
+            var cut = cadena.split('>');
+            var cut2 = cut[1].split('<');
+            ///alert(cut2[0]);
+            //alert(cut[2]);
+            if(cut2[0]=='Salida')
             {
+                console.log("id:"+row.id.trim());
               consObjeSali([{name : 'codiObjePara', value : row.id.trim()}]);
               $('#SaliForm').modal('show');
 

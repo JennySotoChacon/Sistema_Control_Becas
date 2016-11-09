@@ -106,13 +106,9 @@ and open the template in the editor.
                                         
                                         </h:panelGroup>
                                        
-                                       <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr eq null}">
-                                      
-                                       
+                                       <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr eq null}">                                       
                                             <i class="fa fa-lock"/> Sin Empresa
                                         </h:panelGroup> 
-                                         
-                                       
                                     </h:column>
                                     
                                     <h:column pt:data-sortable="true">
@@ -144,10 +140,17 @@ and open the template in the editor.
                                     </h:column>                                  
                                     <h:column pt:data-sortable="true" pt:data-field="movimiento">
                                         <f:facet name="header">Movimiento</f:facet> 
-                                        <h:panelGroup class="label label-success" rendered="#{fila.tipoTran eq '1'}"><i class="fa fa-unlock"/> Entrada</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoTran ne '1'}"><i class="fa fa-lock"/> Salida</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTran eq '1'}">Entrada</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTran eq '2'}">Salida</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTran eq '3'}">Reembolso</h:panelGroup>
                                     </h:column>
-                                    
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Estado</f:facet> 
+                                        <h:panelGroup class="label label-success" rendered="#{fila.estaTran eq '1'}">
+                                       <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaTran ne '1'}">
+                                       <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                    </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
                         </div>
@@ -253,8 +256,6 @@ and open the template in the editor.
                                                 <p:ajax update="becaSali" listener="#{transaccionBean.onDetalleSelect}" process="@this"/>  
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
-                                            
-                                            
                                           <h:outputLabel  for="becaSali" value="Beca "/>
                                             <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control" pt:data-live-search="true">
                                                 <f:selectItems value="#{transaccionBean.listHijo}" var="lst" itemLabel="#{lst.codiTipoBeca.nombTipoBeca}" itemValue="#{lst}"/>
