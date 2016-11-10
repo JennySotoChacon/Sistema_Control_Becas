@@ -146,61 +146,155 @@ and open the template in the editor.
                                     <h4 class="modal-title">Gestión Donacion</h4>
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
-                                    <fieldset class="col-md-12">
-                                        <h:inputHidden id="codi" value="#{donacionBean.objeDona.codiDona}" />
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="soli" value="Nombre empresa "/>
-                                            <h:selectOneMenu id="soli" value="#{donacionBean.objeDona.codiEmpr}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="soli" errorClass="field-error" />           
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="nomb" value="Nombre Donacion"/>
-                                            <h:message for="nomb" errorClass="field-error" />
-                                            <h:inputText id="nomb" value="#{donacionBean.objeDona.nombDona}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="mens" value="Plazo Donacion"/>
-                                            <h:message for="mens" errorClass="field-error" />
-                                            <h:inputText id="mens" value="#{donacionBean.objeDona.plazDona}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="cant" value="Cantidad cuota"/>
-                                            <h:message for="cant" errorClass="field-error" />
-                                            <h:inputText id="cant" value="#{donacionBean.objeDona.cantCuot}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="mont" value="Monto total"/>
-                                            <h:message for="mont" errorClass="field-error" />
-                                            <h:inputText id="mont" value="#{donacionBean.objeDona.montTot}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="montp" value="Monto pendiente"/>
-                                            <h:message for="montp" errorClass="field-error" />
-                                            <h:inputText id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
-                                        </div>
-                                        
-                                       
-                                        
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="tipoDona" value="Tipo donación: "/>
-                                             <h:selectOneMenu id="tipoDona" value="#{donacionBean.objeDona.codiTipoDona}" class="form-control" pt:data-live-search="true">
-                                            <f:selectItems value="#{tipoTipoDonacionBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDona}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="tipoDona" errorClass="field-error" />
-                                        </div>
-                                        
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="fech" value="Fecha Inicio "/>
-                                            <h:message for="fech" errorClass="field-error" />
-                                            <h:inputText id="fech" value="#{donacionBean.objeDona.fechDona}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText>
-                                        </div>
-                                    </fieldset>
+                                    <ui:fragment id="FragDona" rendered="#{!donacionBean.donacion}">
+                                        <fieldset class="col-md-12">
+                                            <h:inputHidden id="codi" value="#{donacionBean.objeDona.codiDona}" />
+                                            <div class="form-group input-group-xs col-md-11">
+                                                <h:outputLabel  for="soli" value="Nombre empresa "/>
+                                                <h:selectOneMenu id="soli" value="#{donacionBean.objeDona.codiEmpr}" class="form-control" pt:data-live-search="true">
+                                                    <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                                <h:message for="soli" errorClass="field-error" />           
+                                            </div>
+                                            <br/>
+                                            <div class="form-group input-group-xs col-md-1">
+                                                <span class="input-group-btn">
+                                                    <h:commandLink id="btonAgreEmpr" class="btn btn-default">
+                                                        <p:ajax listener="#{donacionBean.empr()}"  process="@this" update="@form" oncomplete="" global="true"/>
+                                                        <p:ajax listener="#{empresaBean.limpForm()}" update=":FormRegi" global="true" 
+                                                    oncomplete="$('#ModaForm').modal('show');"/>
+                                                        <i class="fa fa-plus"/>
+                                                    </h:commandLink>
+                                                </span>  
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="nomb" value="Nombre Donacion"/>
+                                                <h:message for="nomb" errorClass="field-error" />
+                                                <h:inputText id="nomb" value="#{donacionBean.objeDona.nombDona}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="mens" value="Plazo Donacion"/>
+                                                <h:message for="mens" errorClass="field-error" />
+                                                <h:inputText id="mens" value="#{donacionBean.objeDona.plazDona}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="cant" value="Cantidad cuota"/>
+                                                <h:message for="cant" errorClass="field-error" />
+                                                <h:inputText id="cant" value="#{donacionBean.objeDona.cantCuot}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="mont" value="Monto total"/>
+                                                <h:message for="mont" errorClass="field-error" />
+                                                <h:inputText id="mont" value="#{donacionBean.objeDona.montTot}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="montp" value="Monto pendiente"/>
+                                                <h:message for="montp" errorClass="field-error" />
+                                                <h:inputText id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs col-md-11">
+                                                <h:outputLabel  for="tipoDona" value="Tipo donación: "/>
+                                                 <h:selectOneMenu id="tipoDona" value="#{donacionBean.objeDona.codiTipoDona}" class="form-control" pt:data-live-search="true">
+                                                <f:selectItems value="#{tipoTipoDonacionBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDona}" itemValue="#{lst}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                                <h:message for="tipoDona" errorClass="field-error" />
+                                            </div>
+                                            <br/>
+                                            <div class="form-group input-group-xs col-md-1">
+                                                <span class="input-group-btn">
+                                                    <h:commandLink id="btonAgreTipo" class="btn btn-default">
+                                                        <p:ajax listener="#{donacionBean.tipo()}"  process="@this" update="@form" oncomplete="" global="true"/>
+                                                        <p:ajax listener="#{tipoTipoDonacionBean.limpForm()}" update=":FormRegi" global="true" 
+                                                    oncomplete="$('#ModaForm').modal('show');"/>
+                                                        <i class="fa fa-plus"/>
+                                                    </h:commandLink>
+                                                </span>  
+                                            </div>
+                                            <br/>
+                                            <div class="form-group input-group-xs col-md-12">
+                                                <h:outputLabel  for="fech" value="Fecha Inicio "/>
+                                                <h:message for="fech" errorClass="field-error" />
+                                                <h:inputText id="fech" value="#{donacionBean.objeDona.fechDona}" class="form-control">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:inputText>
+                                            </div>
+                                        </fieldset>
+                                    </ui:fragment>
+                                    <ui:fragment id="FragEmpr" rendered="#{donacionBean.empresa}">
+                                        <fieldset class="col-md-12">
+                                            <h:inputHidden id="codiEmpr" value="#{empresaBean.objeEmpr.codiEmpr}" />
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="nombEmpr" value="Nombre: "/>
+                                                <h:message for="nombEmpr" errorClass="field-error" />
+                                                <h:inputText id="carnEmpr" value="#{empresaBean.objeEmpr.nombEmpr}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="direEmpr" value="Dirección: "/>
+                                                <h:inputText id="direEmpr" value="#{empresaBean.objeEmpr.direEmpr}" class="form-control"/>
+                                                <h:message for="direEmpr" errorClass="field-error" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="emaiEmpr" value="Correo electronico: "/>
+                                                <h:inputText id="emaiEmpr" value="#{empresaBean.objeEmpr.emaiEmpr}" class="form-control"/>
+                                                <h:message for="emaiEmpr" errorClass="field-error" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="encaEmpr" value="Encargado: "/>
+                                                <h:inputText id="encaEmpr" value="#{empresaBean.objeEmpr.encaEmpr}" class="form-control"/>
+                                                <h:message for="encaEmpr" errorClass="field-error" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="fechEmpr" value="Fecha de ingreso: "/>
+                                                <h:inputText id="fechEmpr" value="#{empresaBean.objeEmpr.fechEmpr}" class="form-control">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:inputText>
+                                                <h:message for="fechEmpr" errorClass="field-error" />
+                                            </div>
+                                            <h:commandLink id="btonOculBusc" class="btn btn-default btn-sm">
+                                                <p:ajax listener="#{donacionBean.empr()}" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar
+                                            </h:commandLink>
+                                            <h:commandLink id="btonGuarEmpr" class="btn btn-success" rendered="#{empresaBean.guardar}">
+                                                <p:ajax listener="#{empresaBean.limpForm()}" update=":FormRegi" global="true" />
+                                                    <p:ajax listener="#{empresaBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <i class="fa fa-plus"/> Guardar
+                                                </h:commandLink>
+                                        </fieldset>
+                                    </ui:fragment>
+                                    <ui:fragment id="FragTipo" rendered="#{donacionBean.tipo}">
+                                        <fieldset class="col-md-12">
+                                            <h:inputHidden id="codiTipo" value="#{tipoTipoDonacionBean.objeTipo.codiTipoDona}" />
+                                            <div class="form-group input-group-xs col-md-11">
+                                                <h:outputLabel  for="nombTipo" value="Nombre: "/> 
+                                                <h:message for="nombTipo" errorClass="field-error" />
+                                                <h:inputText id="nombTipo" value="#{tipoTipoDonacionBean.objeTipo.nombTipoDona}" class="form-control" />
+
+                                            </div>
+                                            <div class="form-group input-group-xs ">
+                                                <h:outputLabel  for="descTipo" value="Descripcion: "/>
+                                                <h:message for="descTipo" errorClass="field-error" />
+                                                <h:inputText id="descTipo" value="#{tipoTipoDonacionBean.objeTipo.descTipoDona}" class="form-control" />
+                                            </div>
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="tipoTipo" value="Donación "/>
+                                                <h:message for="tipoTipo" errorClass="field-error" />
+                                                <h:selectOneRadio value="#{tipoTipoDonacionBean.objeTipo.recaTipoDona}">
+                                                    <f:selectItem itemValue="V" itemLabel="Recaudación" />
+                                                    <f:selectItem itemValue="F" itemLabel="Particular" />
+                                                </h:selectOneRadio>
+                                            </div>
+                                            <h:commandLink id="btonGuarTipo" class="btn btn-success" rendered="#{tipoTipoDonacionBean.guardar}">
+                                                    <p:ajax listener="#{tipoTipoDonacionBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <i class="fa fa-plus"/> Guardar
+                                                </h:commandLink>
+                                            <h:commandLink id="btonOculBuscTipo" class="btn btn-default btn-sm">
+                                                <p:ajax listener="#{donacionBean.tipo()}" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar
+                                            </h:commandLink>
+                                        </fieldset>
+                                    </ui:fragment>
                                 </div>
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">

@@ -39,12 +39,32 @@ public class DonacionBean implements Serializable{
     private DonacionFacadeLocal FCDEDona;
     private Donacion objeDona;
     private List<Donacion> listDona;
-    private boolean guardar;    
+    private boolean guardar;
+    private boolean empresa = false;
+    private boolean tipo = false;
+    private boolean donacion = false;
     private static Logger log = Logger.getLogger(DonacionBean.class);
+
+    public boolean isTipo() {
+        return tipo;
+    }
+
+    public boolean isDonacion() {
+        return donacion;
+    }
+    
+    
+    
     public Donacion getObjeDona() {
         return objeDona;
     }
 
+    public boolean isEmpresa() {
+        return empresa;
+    }
+
+    
+    
     public void setObjeDona(Donacion objeDona) {
         this.objeDona = objeDona;
     }
@@ -217,6 +237,26 @@ public class DonacionBean implements Serializable{
         {
             
         }
+    }
+    
+    public void dona()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.donacion = !this.donacion;
+        
+    }
+    
+    public void empr()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.empresa = !this.empresa;
+        this.donacion = !this.donacion;
+    }
+    public void tipo()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.tipo = !this.tipo;
+        this.donacion = !this.donacion;
     }
     
 }
