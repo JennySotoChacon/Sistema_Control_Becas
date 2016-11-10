@@ -51,6 +51,7 @@ public class DocumentoBean implements Serializable{
     private List<Documento> listDocu;
     private boolean guardar;
     private static Logger log = Logger.getLogger(DocumentoBean.class);
+    private String rutaC;
     public Documento getObjeDocu() {
         return objeDocu;
     }
@@ -79,6 +80,8 @@ public class DocumentoBean implements Serializable{
         this.objeDocu = new Documento();
         this.guardar = true;
         this.consTodo();
+        this.objeDocu.setFechDocu(new Date());
+        this.inicializar();
     }
     
     public void limpForm()
@@ -88,7 +91,7 @@ public class DocumentoBean implements Serializable{
         this.objeDocu.setFechDocu(new Date());
     }
     
-    public void guar()
+    public void esta()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
@@ -101,10 +104,38 @@ public class DocumentoBean implements Serializable{
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Documento Consultado");
         }
-        catch (Exception e) {
- ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+        catch (Exception e) 
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             log.error(getRootCause(e).getMessage());
+        }
+        finally
+        {
+            
+        }
     }
+    
+    public void guar()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
+            this.uploFile();
+            this.objeDocu.setEstaDocu(1);           
+            FCDEDocu.create(this.objeDocu);
+            this.listDocu.add(this.objeDocu);
+            this.limpForm();
+            //this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
+            //this.uploFile();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Documento Consultado");
+        }
+        catch (Exception e) 
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(getRootCause(e).getMessage());
+        }
         finally
         {
             
@@ -138,11 +169,12 @@ public class DocumentoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEDocu.remove(this.objeDocu);
-            this.listDocu.remove(this.objeDocu);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
-            log.info("Documento Eliminado");
+            this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
+            this.objeDocu.setEstaDocu(0);
+            FCDEDocu.edit(this.objeDocu);
+            this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Documento Modificado");
         }
         catch(Exception ex)
         {
@@ -180,6 +212,10 @@ public class DocumentoBean implements Serializable{
         try
         {
             this.objeDocu = FCDEDocu.find(codi);
+            String h = this.rutas.get(0);
+            //System.out.println(h + this.objeDocu.getRutaDocu());
+            rutaC = h + this.objeDocu.getRutaDocu();
+            //this.objeDocu.setRutaDocu(h + this.objeDocu.getRutaDocu());
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDocu.getRutaDocu()) + "')");
@@ -236,12 +272,12 @@ public class DocumentoBean implements Serializable{
             
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
-            String ruta ="C:/Users/Ariel/Desktop/becas/";    
-            //String ruta = "/home/eduardo/Escritorio/asd/";
+            //String ruta ="C:/Users/Ariel/Desktop/becas/";    
+            String ruta = "/home/eduardo/Escritorio/asd/";
            rutas.add(ruta);
            DireActuInde = 0;
-           this.consTodo("");
-        
+          //this.consTodo("");
+           this.carnet = "";
         }
         catch(Exception e)
         {
@@ -261,6 +297,7 @@ public class DocumentoBean implements Serializable{
         try
         {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            System.out.println(request);
             for(Part item : request.getParts())
             {
                 if(this.carnet.trim().length()==0)
@@ -298,6 +335,7 @@ public class DocumentoBean implements Serializable{
                 }
                
             }
+            
         }
         catch(Exception ex)
         {
@@ -338,8 +376,10 @@ public class DocumentoBean implements Serializable{
                 ));
 
                // System.out.println(item.getSubmittedFileName() +" "+item.getInputStream()+" "+ item.getContentType());
+                System.out.println("RUTA:" + item.getSubmittedFileName());//Aqui esta la ruta :3 
+                
                 this.processFilePart(item, String.format("%s%s",path, item.getSubmittedFileName()));
-
+                this.objeDocu.setRutaDocu(this.objeDocu.getCodiSoliBeca().getCarnAlum() + "/" + item.getSubmittedFileName());
              }
         } catch (Exception e) {
             System.out.println("Error en moveFilePart"+e.getMessage());
@@ -406,7 +446,7 @@ public class DocumentoBean implements Serializable{
                 this.rutas.add(rutaNuev);
                 this.DireActuInde++;
                  
-                 consTodo(ruta.trim()+"/");
+                 //consTodo(ruta.trim()+"/");
             }
            
         }

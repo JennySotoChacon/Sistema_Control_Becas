@@ -21,10 +21,25 @@ and open the template in the editor.
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
             <!--h:outputScript library="js" name="custom/alum.js"/-->
+                        <h:outputScript library="js" name="custom/general.js"/>
+            
+            <h:outputScript library="js" name="bootstrap-filestyle.js"/>
+            <h:outputScript library="js" name="custom/file.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
-            Hola Mundo
+            <h:form id="FormAlumasd" class="form-horizontal" enctype="multipart/form-data">
+                                        <!--Form exclusivo para los remotos-->
+                                        <div class="col-md-12" style="padding-right: 0;">
+                               
+                                            <h:inputFile pt:data-id="file" value="#{uploadBean.file}" pt:multiple="true"/>
+                            </div>
+                                <h:commandLink id="btonSubir" class="btn btn-success btn-sm" actionListener="#{uploadBean.uploFile()}">
+                                    <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
+                                    <i class="fa fa-cloud-upload"/> Subir
+                                </h:commandLink>
+                                        
+                                    </h:form>
         </ui:define>
     </ui:composition>
 </html>

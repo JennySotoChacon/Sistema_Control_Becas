@@ -10,7 +10,8 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="Bienvenido ::: Página Principal"/>
@@ -64,17 +65,22 @@ and open the template in the editor.
                         <div class="panel-body">
                             <h:panelGroup id="ContRegi">
                                 <div id="toolTablRegi">
-                                    <h:form>
+                                    <h:form id="FormAlumasd" class="form-horizontal" enctype="multipart/form-data">
                                         <!--Form exclusivo para los remotos-->
-                                        <p:remoteCommand name="consObje" actionListener="#{documentoBean.cons()}" update=":FormRegi" 
+                                          
+                                        <p:remoteCommand name="consObje" actionListener="#{documentoBean.cons()}" update=":FormAlum" 
                                                          oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{documentoBean.elim()}" update=":FormRegi :ContRegi" 
-                                                         oncomplete="INIT_OBJE();" global="true"/>
+                                        <p:remoteCommand name="elimObje" actionListener="#{documentoBean.elim()}" update=":FormAlum :ContRegi" 
+                                                         oncomplete="INIT_OBJE();" global="true">
+                                        
+                                        </p:remoteCommand>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{documentoBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaForm').modal('show');"/>
+                                            <p:ajax listener="#{documentoBean.limpForm()}" update=":FormAlum" global="true" 
+                                                    oncomplete="$('#ModaForm').modal('show');" />
+                                            <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
                                             <i class="fa fa-plus"/> Nuevo
                                         </h:commandLink>
+                                        
                                     </h:form>
                                 </div>
                                 <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{documentoBean.listDocu}"
@@ -90,11 +96,6 @@ and open the template in the editor.
                                         <f:facet name="header">Código</f:facet>
                                         <h:outputText value="#{fila.codiDocu}"/>
                                     </h:column>
-                                    
-                                    
-                                    
-                                    
-                                    
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Nombre</f:facet>
                                         <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
@@ -105,8 +106,6 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="fech">
                                         <f:facet name="header">Fecha </f:facet>
-                                       
-                                        
                                          <h:outputText value="#{fila.fechDocu}">
                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>
@@ -137,12 +136,13 @@ and open the template in the editor.
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
-                            <h:form id="FormRegi" class="form-horizontal" enctype="multipart/form-data">
+                            <h:form id="FormAlum" class="form-horizontal" enctype="multipart/form-data">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                     <h4 class="modal-title">Gestión documento</h4>
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
+                                    <ui:fragment id="FragBusc" rendered="#{!documentoBean.showImag}">
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{documentoBean.objeDocu.codiDocu}" />
                                         <div class="form-group input-group-xs">
@@ -153,8 +153,6 @@ and open the template in the editor.
                                             </h:selectOneMenu>
                                             <h:message for="beca" errorClass="field-error" />           
                                         </div>
-                                        
-                                        
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha "/>
                                             <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
@@ -162,8 +160,6 @@ and open the template in the editor.
                                             </h:inputText>
                                             <h:message for="fech" errorClass="field-error" />
                                         </div>
-                                        
-                                        
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="tipo" value="Tipo de documento"/>
                                             <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control" pt:data-live-search="true">
@@ -172,14 +168,31 @@ and open the template in the editor.
                                             </h:selectOneMenu>
                                             <h:message for="tipo" errorClass="field-error" />           
                                         </div>
-                                        <div class="col-md-9" style="padding-right: 0;">
+                                        
+                            <div class="col-md-12" style="padding-right: 0;">
                                
-                                <h:inputFile pt:data-id="file" value="#{uploadBean.file}" pt:multiple="true"/>
+                                            <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
                             </div>
-                            
-                                       
+                                        <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
+                                            <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
+                                                    <i class="fa fa-chevron-down"/> Ver imagen
+                                                </h:commandLink>
                                     </fieldset>
+                                        </ui:fragment>
+                                    <ui:fragment id="FragGrad" rendered="#{documentoBean.showImag}">
+                                        <div class="panel panel-default">
+                                            <h:panelGroup>
+                                                <h:graphicImage height="300px" value="/images/#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
+                                            </h:panelGroup>
+                                        </div>
+                                        <h:commandLink id="btonOculEsta" class="btn btn-default btn-sm">
+                                            <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
+                                                <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar
+                                            </h:commandLink>
+                                    </ui:fragment>
                                 </div>
+                                
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">
                                             <div class="btn-group">
@@ -187,9 +200,9 @@ and open the template in the editor.
                                                     <p:ajax listener="#{documentoBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{documentoBean.guardar}">
-                                                    <p:ajax listener="#{documentoBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                    <i class="fa fa-plus"/> Guardar
+                                                <h:commandLink id="btonSubira" class="btn btn-success btn-sm" actionListener="#{documentoBean.guar()}">
+                                                    <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
+                                                    <i class="fa fa-cloud-upload"/> Subir
                                                 </h:commandLink>
                                                 <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!documentoBean.guardar}">
                                                     <p:ajax listener="#{documentoBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
@@ -216,7 +229,11 @@ and open the template in the editor.
                                             </div>
                                         </div>
                                 </div>
+                                
+                                
                             </h:form>
+                            
+                            
                         </div>
                     </div>
                 </div>
