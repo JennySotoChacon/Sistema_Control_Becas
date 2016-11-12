@@ -6,6 +6,7 @@
 package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
+import com.sun.jmx.remote.internal.ArrayQueue;
 import com.sv.udb.ejb.BecaFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
@@ -14,6 +15,7 @@ import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.utils.AlumnosPojo;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -170,6 +172,10 @@ public class BecaSoliBean implements Serializable {
             this.FCDEBeca.create(objeBeca);
             this.listSoli.add(this.objeSoli);
             System.out.println(this.objeBeca);
+            if(this.listBeca == null)
+            {
+                this.listBeca = new ArrayList<>();
+            }
             this.listBeca.add(objeBeca);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
@@ -463,8 +469,9 @@ public class BecaSoliBean implements Serializable {
     public void empr()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        EmpresaBean asd = new EmpresaBean();
+        EmpresaBean asd = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");
         asd.limpForm();
+        
         this.empresa = !this.empresa;
         this.beca = !this.beca;
     }

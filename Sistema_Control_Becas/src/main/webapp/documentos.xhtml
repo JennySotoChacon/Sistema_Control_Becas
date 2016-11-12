@@ -77,7 +77,6 @@ and open the template in the editor.
                                         <h:commandLink id="btonNuev" class="btn btn-success">
                                             <p:ajax listener="#{documentoBean.limpForm()}" update=":FormAlum" global="true" 
                                                     oncomplete="$('#ModaForm').modal('show');" />
-                                            <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
                                             <i class="fa fa-plus"/> Nuevo
                                         </h:commandLink>
                                         

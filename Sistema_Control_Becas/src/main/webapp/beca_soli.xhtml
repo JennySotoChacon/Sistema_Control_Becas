@@ -266,9 +266,8 @@ and open the template in the editor.
                                             <div class="form-group input-group-xs col-md-1">
                                                 <span class="input-group-btn">
                                                     <h:commandLink id="btonAgreEmpr" class="btn btn-default">
-                                                        <p:ajax listener="#{becaSoliBean.empr()}"  process="@this" update="@form" oncomplete="" global="true"/>
-                                                        <p:ajax listener="#{becaBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaForm').modal('show');"/>
+                                                        <p:ajax listener="#{becaSoliBean.empr()}"  process="@this" update="@form" oncomplete="INIT_OBJE();" global="true"/>
+                                                        
                                                         <i class="fa fa-plus"/>
                                                     </h:commandLink>
                                                 </span>  
@@ -349,8 +348,7 @@ and open the template in the editor.
                                                         <span class="input-group-btn">
                                                             <h:commandLink id="btonAgreEstado" class="btn btn-default">
                                                                 <p:ajax listener="#{becaSoliBean.esta()}"  process="@this" update="@form" oncomplete="" global="true"/>
-                                                                <p:ajax listener="#{tipoEstadoBean.limpForm()}" update=":FormRegi" global="true" 
-                                                            oncomplete="$('#ModaForm').modal('show');"/>
+                                                                <p:ajax listener="#{tipoEstadoBean.limpForm()}" update=":FormRegi" global="true"/>
                                                                 <i class="fa fa-plus"/>
                                                             </h:commandLink>
                                                         </span>                                                             
